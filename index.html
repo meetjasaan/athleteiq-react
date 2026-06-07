@@ -2098,8 +2098,8 @@
               <span class="text-[9px] text-gray-400 block">Statement Due</span>
               <strong class="text-dark">${p.balance === 0 ? '$0.00' : `$${p.balance.toFixed(2)}`}</strong>
             </div>
-            <button type="button" onclick="launchOverrideModal(${p.id}, '${p.name}', ${p.balance})" class="border border-dark hover:bg-dark hover:text-white px-2 py-1 font-bold text-[10px] uppercase transition-all">
-              Override
+            <button type="button" onclick="openEditProfileModal(${p.id})" class="border border-dark hover:bg-dark hover:text-white px-2 py-1 font-bold text-[10px] uppercase transition-all brutal-clip">
+              Edit Profile
             </button>
           </div>
         `;
