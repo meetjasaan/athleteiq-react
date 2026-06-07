@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { ROLES, hasRoleAccess } from '../../utils/authUtils';
+import { getAllOrganizations } from '../../services/firebaseService';
 import SearchOmnibar from './SearchOmnibar';
 import MetricsPanel from './MetricsPanel';
 import OrgTable from './OrgTable';
@@ -24,11 +25,22 @@ const AdminPortal = () => {
     );
   }
 
-  // Load organizations from localStorage
+  // Load organizations from Firebase (with fallback to localStorage)
   useEffect(() => {
-    const storedOrgs = JSON.parse(localStorage.getItem('athleteiq_organizations') || '[]');
-    setOrganizations(storedOrgs);
-    setFilteredOrgs(storedOrgs);
+    const loadOrganizations = async () => {
+      try {
+        const firebaseOrgs = await getAllOrganizations();
+        setOrganizations(firebaseOrgs);
+        setFilteredOrgs(firebaseOrgs);
+      } catch (error) {
+        console.error('Error loading from Firebase, falling back to localStorage:', error);
+        // Fallback to localStorage if Firebase fails
+        const storedOrgs = JSON.parse(localStorage.getItem('athleteiq_organizations') || '[]');
+        setOrganizations(storedOrgs);
+        setFilteredOrgs(storedOrgs);
+      }
+    };
+    loadOrganizations();
   }, []);
 
   // Handle search

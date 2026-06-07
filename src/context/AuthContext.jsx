@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { getCurrentUser, saveUserSession, clearUserSession } from '../utils/authUtils';
+import { saveUserSession as saveToFirebase, getUserSession } from '../services/firebaseService';
+import { getCurrentUser, clearUserSession } from '../utils/authUtils';
 
 export const AuthContext = createContext();
 
@@ -8,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load user from session on mount
+    // Try to load user from sessionStorage first (for current session)
     const sessionUser = getCurrentUser();
     if (sessionUser) {
       setUser(sessionUser);
@@ -16,9 +17,19 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = (userData) => {
-    saveUserSession(userData);
-    setUser(userData);
+  const login = async (userData) => {
+    try {
+      // Save to Firebase
+      await saveToFirebase(userData);
+      // Save to sessionStorage for current session
+      sessionStorage.setItem('athleteiq_session', JSON.stringify(userData));
+      setUser(userData);
+    } catch (error) {
+      console.error('Login error:', error);
+      // Fallback to sessionStorage if Firebase fails
+      sessionStorage.setItem('athleteiq_session', JSON.stringify(userData));
+      setUser(userData);
+    }
   };
 
   const logout = () => {
