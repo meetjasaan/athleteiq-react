@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AthleteIQ — Early Access Waitlist</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Barlow Condensed"', 'sans-serif'],
+          body: ['"Barlow"', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace'],
+        },
+        colors: {
+          brand: '#F59E0B',
+          dark: '#080808',
+          clinical: '#F9F9F9',
+          clinical2: '#F3F3F3',
+          borderLight: '#E8E8E8',
+          borderDark: '#DCDCDD',
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { font-family: 'Barlow', sans-serif; background-color: #FFFFFF; color: #080808; }
+  .grid-bg {
+    background-image: linear-gradient(rgba(8,8,8,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(8,8,8,0.015) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .brutal-clip {
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+</style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand selection:text-dark">
+
+  <!-- NAVIGATION -->
+  <nav class="fixed top-0 left-0 right-0 h-14 bg-white/95 border-b border-borderLight flex items-center px-4 z-50 backdrop-blur-md">
+    <div class="flex items-center gap-1.5 cursor-pointer font-mono text-xs font-bold tracking-wider">
+      ATHLETEIQ
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <div class="flex-1 pt-14 grid-bg flex items-center justify-center px-4 py-20 md:py-32">
+    <div class="max-w-2xl w-full text-center">
+      <h1 class="font-display text-4xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-dark mb-6">
+        The Next Generation of Club Operations is Coming.
+      </h1>
+      <p class="font-body text-gray-600 text-base md:text-lg mb-10 leading-relaxed max-w-xl mx-auto">
+        Stop managing your club in spreadsheets. AthleteIQ is the high-performance operations platform built for elite youth basketball programs. Get early access before our public launch.
+      </p>
+
+      <!-- WAITLIST FORM -->
+      <div id="form-container" class="max-w-md w-full mx-auto">
+        <form id="waitlist-form" onsubmit="handleWaitlistSubmit(event)" class="space-y-4 bg-clinical p-8 brutal-clip border border-borderLight">
+          <div>
+            <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-2">Full Name</label>
+            <input type="text" name="name" id="form-name" required placeholder="Your name" class="w-full bg-white border border-borderDark px-4 py-3 text-sm outline-none focus:border-brand transition-colors">
+          </div>
+
+          <div>
+            <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-2">Organization / Program Name</label>
+            <input type="text" name="organization" id="form-org" required placeholder="Your club or program" class="w-full bg-white border border-borderDark px-4 py-3 text-sm outline-none focus:border-brand transition-colors">
+          </div>
+
+          <div>
+            <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-2">Email Address</label>
+            <input type="email" name="email" id="form-email" required placeholder="your@email.com" class="w-full bg-white border border-borderDark px-4 py-3 text-sm outline-none focus:border-brand transition-colors">
+          </div>
+
+          <div>
+            <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-2">Phone Number</label>
+            <input type="tel" name="phone" id="form-phone" required placeholder="(555) 000-0000" class="w-full bg-white border border-borderDark px-4 py-3 text-sm outline-none focus:border-brand transition-colors">
+          </div>
+
+          <button type="submit" id="submit-btn" class="w-full bg-dark text-white font-display text-base font-black tracking-wider uppercase py-4 brutal-clip hover:bg-brand hover:text-dark transition-all duration-200 mt-6">
+            Secure Early Access
+          </button>
+
+          <p class="font-body text-[11px] text-gray-400 mt-4">
+            We respect your privacy. Your information is encrypted and will only be used to notify you about AthleteIQ's launch.
+          </p>
+        </form>
+      </div>
+
+      <!-- THANK YOU MESSAGE -->
+      <div id="thank-you-container" class="hidden max-w-md w-full mx-auto">
+        <div class="bg-clinical p-8 brutal-clip border-2 border-dark">
+          <div class="mb-4">
+            <svg class="w-16 h-16 mx-auto text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <h2 class="font-display text-2xl md:text-3xl font-black uppercase text-dark mb-3">You're On The List.</h2>
+          <p class="font-body text-gray-600 text-base mb-6">We'll notify you when we're ready to scale your program.</p>
+          <p class="font-mono text-[11px] text-gray-400">
+            Keep an eye on your inbox. We're building something special.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-borderLight bg-clinical py-6 px-4 text-center font-mono text-[10px] text-gray-400 uppercase tracking-widest">
+    © 2026 AthleteIQ. High-Performance Operations for Elite Programs.
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    async function handleWaitlistSubmit(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('form-name').value;
+      const organization = document.getElementById('form-org').value;
+      const email = document.getElementById('form-email').value;
+      const phone = document.getElementById('form-phone').value;
+
+      // Disable button during submission
+      const submitBtn = document.getElementById('submit-btn');
+      const originalText = submitBtn.innerText;
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Processing...';
+
+      try {
+        // BACKEND HOOK: Replace this with your actual backend endpoint
+        // Example configurations:
+        // 1. Formspree: POST to https://formspree.io/f/YOUR_FORM_ID
+        // 2. Supabase: POST to your Supabase function endpoint
+        // 3. Your own backend: POST to your API endpoint
+
+        const response = await fetch('https://formspree.io/f/mreveyqj', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            organization,
+            email,
+            phone,
+            timestamp: new Date().toISOString()
+          })
+        });
+
+        // Show thank you message
+        document.getElementById('form-container').classList.add('hidden');
+        document.getElementById('thank-you-container').classList.remove('hidden');
+
+        // Reset form for testing
+        document.getElementById('waitlist-form').reset();
+
+      } catch (error) {
+        console.error('Submission error:', error);
+        alert('There was an issue submitting your request. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+      }
+    }
+
+    // Optional: Log form submissions to console during development
+    document.getElementById('waitlist-form').addEventListener('submit', (e) => {
+      if (!e.target.checkValidity()) {
+        console.log('Form validation failed');
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -241,14 +241,14 @@
       if (modal) {
         modal.classList.remove('hidden');
         modal.classList.add('flex');
-        // Populate age group dropdown
+        // Populate division dropdown
         const select = document.getElementById('stub-player-division');
         if (select) {
           select.innerHTML = '';
           STATE.activeDivisions.forEach(d => {
             const opt = document.createElement('option');
             opt.value = d;
-            opt.innerText = d;
+            opt.innerText = `${d} Division`;
             select.appendChild(opt);
           });
         }
@@ -304,7 +304,7 @@
 
       closeAdminStubModal();
       renderDirectorDashboard();
-      alert(`${name} added to roster as an admin player. They can complete their profile once they sign up.`);
+      alert(`${name} added to roster as an admin stub. They can complete their profile once they sign up.`);
     }
     // === SESSION STATE PERSISTENCE ===
     function saveState() {
@@ -347,13 +347,14 @@
       <a onclick="routeTo('home')" class="hover:text-dark cursor-pointer transition-colors">Home</a>
       <a onclick="scrollToSection('features-block')" class="hover:text-dark cursor-pointer transition-colors">Features</a>
       <a onclick="scrollToSection('pricing-block')" class="hover:text-dark cursor-pointer transition-colors">Pricing</a>
+      <a id="public-link-nav" onclick="routeTo('public-register')" class="hover:text-dark cursor-pointer transition-colors text-amber-600 font-bold">[ Public Roster Link ]</a>
       <a onclick="routeTo('login')" class="hover:text-dark cursor-pointer transition-colors">Sign In</a>
       <a onclick="routeTo('signup')" class="text-brand hover:text-dark cursor-pointer transition-colors font-extrabold">[ Get Started ]</a>
     </div>
 
     <!-- MOBILE HAMBURGER & BUTTON -->
-    <div class="md:hidden flex items-center gap-2">
-      <button onclick="routeTo('signup')" class="bg-dark text-white font-display font-extrabold text-sm px-4 py-2 flex items-center justify-center brutal-clip hover:bg-brand hover:text-dark transition-all">Sign Up</button>
+    <div class="md:hidden flex items-center gap-3">
+      <button onclick="routeTo('signup')" class="text-brand font-display font-extrabold text-xs">Sign Up</button>
       <button id="hamburger-btn" onclick="toggleMobileMenu()" class="flex flex-col gap-1.5 w-6 h-6 justify-center hamburger">
         <span class="line1 hamburger-line w-full h-0.5 bg-dark block"></span>
         <span class="line2 hamburger-line w-full h-0.5 bg-dark block"></span>
@@ -368,6 +369,7 @@
       <a onclick="routeTo('home'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Home</a>
       <a onclick="scrollToSection('features-block'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Features</a>
       <a onclick="scrollToSection('pricing-block'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Pricing</a>
+      <a id="public-link-mobile" onclick="routeTo('public-register'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-amber-600 hover:bg-clinical transition-colors">[ Public Roster Link ]</a>
       <a onclick="routeTo('login'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Sign In</a>
     </div>
   </div>
@@ -772,7 +774,7 @@
         DIVISION_NODES.forEach(d => {
           const opt = document.createElement('option');
           opt.value = d;
-          opt.innerText = d;
+          opt.innerText = `${d} Division`;
           dropdown.appendChild(opt);
         });
       }
@@ -1127,7 +1129,7 @@
 
             <div class="pt-4 border-t border-dashed border-borderLight">
               <button type="button" onclick="openAdminStubModal()" class="text-dark border border-dark px-3 py-1.5 bg-white text-[10px] font-bold hover:bg-dark hover:text-white transition-colors">
-                + Add Player
+                + Add as Admin Stub
               </button>
               <p class="text-[9px] text-gray-400 mt-1">Add players without parent info yet. Complete their profile when they sign up.</p>
             </div>
@@ -1240,7 +1242,7 @@
   <!-- ADMIN ROSTER STUB MODAL -->
   <div id="admin-stub-modal" class="hidden fixed inset-0 bg-dark/80 backdrop-blur-sm justify-center items-center z-50 p-4">
     <div class="bg-white border-2 border-dark p-6 max-w-md w-full brutal-clip shadow-xl">
-      <h3 class="font-display text-lg font-black uppercase text-dark mb-4">Add Player</h3>
+      <h3 class="font-display text-lg font-black uppercase text-dark mb-4">Add Player (Admin)</h3>
       <form onsubmit="createAdminStub(event)" class="space-y-3">
         <div>
           <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Player Full Name</label>
@@ -1261,14 +1263,14 @@
           <select id="stub-player-division" required class="w-full border border-borderLight bg-clinical px-3 py-2 text-xs outline-none focus:border-brand"></select>
         </div>
         <div class="bg-blue-50 border border-blue-200 p-2.5 rounded text-[9px] text-blue-900">
-          This player will be added to the roster as Administrative Pending.
+          This player will be set as "Administrative Pending" until a parent email is added.
         </div>
         <div class="flex gap-2 justify-end">
           <button type="button" onclick="closeAdminStubModal()" class="border border-borderDark px-4 py-1.5 font-mono text-xs uppercase font-bold text-gray-500 hover:text-dark transition-colors">
             Cancel
           </button>
           <button type="submit" class="bg-dark text-white px-4 py-1.5 font-display text-xs tracking-wider font-bold uppercase brutal-clip hover:bg-brand hover:text-dark transition-all">
-            Add Player
+            Add Stub
           </button>
         </div>
       </form>
@@ -1440,7 +1442,7 @@
             <span class="text-gray-400 text-[10px]">Jersey #${p.jersey} | ${p.position} ${p.dob ? `| DOB: ${p.dob}` : '| Profile Pending'}</span>
             <div class="flex gap-1 mt-1">
               ${p.teams.map(t => `<span class="bg-dark text-white text-[9px] px-1 font-bold">${t}</span>`).join('')}
-              ${isStub ? `<span class="bg-blue-600 text-white text-[9px] px-1 font-bold">ADMIN PLAYER</span>` : ''}
+              ${isStub ? `<span class="bg-blue-600 text-white text-[9px] px-1 font-bold">ADMIN STUB</span>` : ''}
             </div>
           </div>
           <div class="flex items-center gap-3 font-mono">

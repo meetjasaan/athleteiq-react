@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AthleteIQ Waitlist QR Code</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  body {
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  .container {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  p {
+    margin: 0 0 30px 0;
+    color: #666;
+    font-size: 14px;
+  }
+  #qrcode {
+    display: inline-block;
+    padding: 20px;
+    background: white;
+    border: 2px solid #080808;
+  }
+  .info {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    font-size: 12px;
+    color: #999;
+  }
+  .url {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #333;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Scan to Join</h1>
+  <p>AthleteIQ Early Access Waitlist</p>
+  <div id="qrcode"></div>
+  <div class="info">
+    <p style="margin: 0 0 10px 0;">Scan this code with your phone to access the waitlist.</p>
+    <div class="url">athleteiq-teal.vercel.app/waitlist</div>
+  </div>
+</div>
+
+<script>
+  new QRCode(document.getElementById("qrcode"), {
+    text: "https://athleteiq-teal.vercel.app/waitlist",
+    width: 300,
+    height: 300,
+    colorDark: "#080808",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+</body>
+</html>

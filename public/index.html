@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#080808" />
+  <meta name="description" content="AthleteIQ - The Operating System for Youth Athletics" />
+  <title>AthleteIQ | Test Mode</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75' fill='%23F59E0B'>⚡</text></svg>" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: '#080808',
+            brand: '#F59E0B',
+            clinical: '#F9F9F9',
+            clinical2: '#F0F0F0',
+            borderLight: '#E5E5E5',
+            borderDark: '#D1D5DB',
+          },
+          fontFamily: {
+            display: ['Barlow Condensed', 'sans-serif'],
+            body: ['Barlow', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          fontSize: {
+            xs: ['0.75rem', { lineHeight: '1rem' }],
+            sm: ['0.875rem', { lineHeight: '1.25rem' }],
+            base: ['1rem', { lineHeight: '1.5rem' }],
+            lg: ['1.125rem', { lineHeight: '1.75rem' }],
+            xl: ['1.25rem', { lineHeight: '1.75rem' }],
+            '2xl': ['1.5rem', { lineHeight: '2rem' }],
+            '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+            '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+            '5xl': ['3rem', { lineHeight: '1' }],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;800;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .brutal-clip {
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    #root {
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body class="bg-clinical">
+  <div id="root"></div>
+
+  <!-- React & React Router -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-router-dom@6/dist/umd/react-router-dom.production.min.js"></script>
+
+  <!-- Your app will be injected here by the build tool -->
+</body>
+</html>
