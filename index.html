@@ -87,6 +87,12 @@
         playerId: null,
         formData: {}
       },
+      membersEditModal: {
+        show: false,
+        memberId: null,
+        isNew: false,
+        formData: {}
+      },
       programSettings: {
         baseSubscriptionPrice: 0,
         billingAdjustments: {} // { playerId: { basePrice, adjustedPrice, discount, notes, timestamp } }
@@ -1299,7 +1305,7 @@
               <h3 class="font-display text-xl font-black text-dark uppercase">Members Directory</h3>
               <div class="flex gap-2">
                 <input type="text" id="members-search" placeholder="Search by name or email..." onkeyup="filterMembers()" class="px-3 py-1.5 border border-borderLight bg-clinical font-mono text-xs rounded outline-none focus:border-brand w-48">
-                <button onclick="openAddMemberModal()" class="bg-dark text-white px-4 py-1.5 text-xs font-bold hover:bg-brand hover:text-dark transition-all">
+                <button onclick="openNewMemberModal()" class="bg-dark text-white px-4 py-1.5 text-xs font-bold hover:bg-brand hover:text-dark transition-all">
                   + Add Member
                 </button>
               </div>
@@ -1313,6 +1319,7 @@
                     <th class="p-2.5">Assigned Teams</th>
                     <th class="p-2.5">Email</th>
                     <th class="p-2.5">Phone Number</th>
+                    <th class="p-2.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-borderLight text-gray-700" id="members-table-body"></tbody>
@@ -1321,7 +1328,60 @@
           </div>
         </div>
 
-        <!-- ADD MEMBER MODAL -->
+        <!-- EDIT/ADD MEMBER MODAL -->
+        <div id="edit-member-modal" class="hidden fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
+          <div class="bg-white max-w-md w-full p-6 border border-dark brutal-clip">
+            <div class="mb-4 pb-3 border-b border-borderLight">
+              <h3 id="edit-member-modal-title" class="font-display text-xl font-black text-dark uppercase">Edit Member</h3>
+              <p id="edit-member-modal-name" class="font-body text-xs text-gray-500 mt-1"></p>
+            </div>
+
+            <form onsubmit="event.preventDefault(); submitEditMember();" class="space-y-3">
+              <div>
+                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Full Name *</label>
+                <input type="text" id="edit-member-name" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
+              </div>
+
+              <div>
+                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Role *</label>
+                <select id="edit-member-role" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
+                  <option value="">— Select Role —</option>
+                  <option value="Coach">Coach / Staff</option>
+                  <option value="Parent">Parent / Guardian</option>
+                  <option value="Assistant">Assistant Coach</option>
+                  <option value="Admin">Administrator</option>
+                  <option value="Athlete">Athlete</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Email *</label>
+                <input type="email" id="edit-member-email" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
+              </div>
+
+              <div>
+                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Phone Number</label>
+                <input type="tel" id="edit-member-phone" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
+              </div>
+
+              <div>
+                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-2">Assigned Teams</label>
+                <div id="edit-member-teams" class="space-y-1"></div>
+              </div>
+
+              <div class="flex gap-2 pt-4 border-t border-borderLight">
+                <button type="button" onclick="closeEditMemberModal()" class="flex-1 border border-dark text-dark px-3 py-2 text-xs font-bold hover:bg-dark hover:text-white transition-all">
+                  Cancel
+                </button>
+                <button type="submit" class="flex-1 bg-dark text-white px-3 py-2 text-xs font-bold hover:bg-brand hover:text-dark transition-all brutal-clip">
+                  Save Member
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- ADD MEMBER MODAL (Legacy - now handled by edit-member-modal) -->
         <div id="add-member-modal" class="hidden fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
           <div class="bg-white max-w-md w-full p-6 border border-dark brutal-clip">
             <div class="mb-4 pb-3 border-b border-borderLight">
@@ -1901,6 +1961,11 @@
           <td class="p-2.5 text-xs text-gray-600">${m.assignedTeams && m.assignedTeams.length > 0 ? m.assignedTeams.join(', ') : 'All Teams'}</td>
           <td class="p-2.5 text-xs text-gray-500">${m.email}</td>
           <td class="p-2.5 text-xs text-gray-500">${m.phone || '—'}</td>
+          <td class="p-2.5 text-right">
+            <button type="button" onclick="openEditMemberModal(${m.id})" class="border border-dark hover:bg-dark hover:text-white px-2 py-1 font-bold text-[10px] uppercase transition-all brutal-clip">
+              Edit
+            </button>
+          </td>
         `;
         tbody.appendChild(tr);
       });
@@ -1987,6 +2052,121 @@
       });
 
       recipientSelect.value = currentValue || 'all';
+    }
+
+    function openEditMemberModal(memberId) {
+      const member = STATE.members.find(m => m.id === memberId);
+      if (!member) return;
+
+      STATE.membersEditModal.show = true;
+      STATE.membersEditModal.memberId = memberId;
+      STATE.membersEditModal.isNew = false;
+      STATE.membersEditModal.formData = { ...member };
+
+      const modal = document.getElementById('edit-member-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        populateEditMemberForm(member);
+      }
+    }
+
+    function openNewMemberModal() {
+      STATE.membersEditModal.show = true;
+      STATE.membersEditModal.memberId = null;
+      STATE.membersEditModal.isNew = true;
+      STATE.membersEditModal.formData = {};
+
+      const modal = document.getElementById('edit-member-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.getElementById('edit-member-modal-title').innerText = 'Add New Member';
+        document.getElementById('edit-member-name').value = '';
+        document.getElementById('edit-member-role').value = '';
+        document.getElementById('edit-member-email').value = '';
+        document.getElementById('edit-member-phone').value = '';
+        document.getElementById('edit-member-modal-name').innerText = 'New Member';
+      }
+    }
+
+    function closeEditMemberModal() {
+      STATE.membersEditModal.show = false;
+      STATE.membersEditModal.memberId = null;
+      STATE.membersEditModal.formData = {};
+
+      const modal = document.getElementById('edit-member-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function populateEditMemberForm(member) {
+      document.getElementById('edit-member-modal-title').innerText = 'Edit Member';
+      document.getElementById('edit-member-modal-name').innerText = member.name;
+      document.getElementById('edit-member-name').value = member.name || '';
+      document.getElementById('edit-member-role').value = member.role || '';
+      document.getElementById('edit-member-email').value = member.email || '';
+      document.getElementById('edit-member-phone').value = member.phone || '';
+
+      // Populate team checkboxes
+      const teamsContainer = document.getElementById('edit-member-teams');
+      if (teamsContainer) {
+        teamsContainer.innerHTML = '';
+        STATE.activeDivisions.forEach(div => {
+          const label = document.createElement('label');
+          label.className = 'flex items-center gap-2 text-xs';
+          const isChecked = member.assignedTeams && member.assignedTeams.includes(div);
+          label.innerHTML = `
+            <input type="checkbox" value="${div}" class="w-4 h-4 border border-borderDark" ${isChecked ? 'checked' : ''}>
+            <span>${div}</span>
+          `;
+          teamsContainer.appendChild(label);
+        });
+      }
+    }
+
+    function submitEditMember() {
+      const name = document.getElementById('edit-member-name').value.trim();
+      const role = document.getElementById('edit-member-role').value;
+      const email = document.getElementById('edit-member-email').value.trim();
+      const phone = document.getElementById('edit-member-phone').value.trim();
+      const teams = Array.from(document.querySelectorAll('#edit-member-teams input:checked')).map(cb => cb.value);
+
+      if (!name || !role || !email) {
+        alert('Name, role, and email are required');
+        return;
+      }
+
+      if (STATE.membersEditModal.isNew) {
+        // Add new member
+        const newId = STATE.members.length ? Math.max(...STATE.members.map(m => m.id)) + 1 : 1;
+        STATE.members.push({
+          id: newId,
+          name,
+          role,
+          email,
+          phone,
+          assignedTeams: teams
+        });
+        alert(`${name} has been added to the members directory.`);
+      } else {
+        // Edit existing member
+        const member = STATE.members.find(m => m.id === STATE.membersEditModal.memberId);
+        if (member) {
+          member.name = name;
+          member.role = role;
+          member.email = email;
+          member.phone = phone;
+          member.assignedTeams = teams;
+          alert(`${name}'s information has been updated.`);
+        }
+      }
+
+      closeEditMemberModal();
+      renderMembersDirectory();
+      updateMessagingRecipients();
     }
 
     // === ROSTER MODULE ===
