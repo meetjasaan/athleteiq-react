@@ -86,6 +86,10 @@
         show: false,
         playerId: null,
         formData: {}
+      },
+      programSettings: {
+        baseSubscriptionPrice: 0,
+        billingAdjustments: {} // { playerId: { basePrice, adjustedPrice, discount, notes, timestamp } }
       }
     };
 
@@ -287,6 +291,77 @@
         renderDirectorDashboard();
         alert(`Fee adjusted to $${newBalance.toFixed(2)}`);
       }
+    }
+
+    // === PROGRAM BILLING MANAGEMENT ===
+    function updateProgramPrice() {
+      const input = document.getElementById('program-base-price');
+      const price = parseFloat(input.value);
+
+      if (isNaN(price) || price < 0) {
+        alert('Please enter a valid price');
+        return;
+      }
+
+      STATE.programSettings.baseSubscriptionPrice = price;
+      input.value = `$${price.toFixed(2)}`;
+      alert(`Base subscription price set to $${price.toFixed(2)}`);
+    }
+
+    function openAdjustBillingModal(playerId) {
+      const player = STATE.players.find(p => p.id === playerId);
+      if (!player) return;
+
+      const adjustment = STATE.programSettings.billingAdjustments[playerId] || {};
+      const basePrice = adjustment.basePrice || STATE.programSettings.baseSubscriptionPrice;
+      const adjustedPrice = adjustment.adjustedPrice || basePrice;
+
+      const modal = document.getElementById('adjust-billing-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.getElementById('adjust-billing-player-name').innerText = player.name;
+        document.getElementById('adjust-billing-base').innerText = `$${basePrice.toFixed(2)}`;
+        document.getElementById('adjust-billing-amount').value = adjustedPrice;
+        document.getElementById('adjust-billing-discount').value = (basePrice - adjustedPrice).toFixed(2);
+        document.getElementById('adjust-billing-notes').value = adjustment.notes || '';
+        document.getElementById('adjust-billing-amount').dataset.playerId = playerId;
+      }
+    }
+
+    function closeAdjustBillingModal() {
+      const modal = document.getElementById('adjust-billing-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function submitAdjustBilling() {
+      const input = document.getElementById('adjust-billing-amount');
+      const playerId = parseInt(input.dataset.playerId);
+      const adjustedPrice = parseFloat(input.value);
+      const notes = document.getElementById('adjust-billing-notes').value.trim();
+
+      if (isNaN(adjustedPrice) || adjustedPrice < 0) {
+        alert('Please enter a valid amount');
+        return;
+      }
+
+      const basePrice = STATE.programSettings.baseSubscriptionPrice;
+      const discount = basePrice - adjustedPrice;
+
+      STATE.programSettings.billingAdjustments[playerId] = {
+        basePrice: basePrice,
+        adjustedPrice: adjustedPrice,
+        discount: discount,
+        notes: notes,
+        timestamp: new Date().toISOString()
+      };
+
+      closeAdjustBillingModal();
+      renderFinancialsTabLedger();
+      alert(`Billing adjusted: Base $${basePrice.toFixed(2)} → $${adjustedPrice.toFixed(2)} (${discount > 0 ? 'Discount' : 'Premium'} of $${Math.abs(discount).toFixed(2)})`);
     }
 
     function markPlayerAsPaid(playerId) {
@@ -1420,12 +1495,32 @@
 
         <!-- FINANCIALS TAB -->
         <div id="dir-content-financials" class="dir-tab-panel hidden space-y-6">
+          <!-- PROGRAM SETTINGS -->
+          <div class="border border-brand bg-brand/5 p-5 brutal-clip">
+            <h3 class="font-display text-lg font-bold uppercase text-dark mb-4">Program Settings</h3>
+            <div class="space-y-3">
+              <div>
+                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-2">Base Subscription Price (for Stripe)</label>
+                <div class="flex gap-2 items-end">
+                  <input type="number" id="program-base-price" step="0.01" min="0" placeholder="0.00" class="flex-1 bg-white border border-borderDark px-3 py-2 text-sm font-mono outline-none focus:border-brand" value="399.00">
+                  <button onclick="updateProgramPrice()" class="bg-dark text-white px-4 py-2 text-xs font-bold uppercase hover:bg-brand hover:text-dark transition-all brutal-clip">
+                    Set Price
+                  </button>
+                </div>
+                <p class="text-[9px] text-gray-500 mt-2">This is the default price charged to all players. Individual players can be adjusted below.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- OUTSTANDING BALANCE -->
           <div class="border border-borderDark p-4 bg-clinical">
             <span class="font-mono text-[10px] text-gray-400 uppercase block">Total Outstanding Accounts Receivable</span>
             <div id="stat-unpaid-fees" class="font-display text-4xl font-black text-dark mt-1">$0.00</div>
           </div>
+
+          <!-- PLAYER BILLING LEDGER -->
           <div class="border border-borderDark p-4 bg-white">
-            <h3 class="font-display text-lg font-bold uppercase text-dark mb-3">Invoiced Club Dues</h3>
+            <h3 class="font-display text-lg font-bold uppercase text-dark mb-3">Player Billing & Adjustments</h3>
             <div id="financials-ledger-list" class="space-y-2"></div>
           </div>
         </div>
@@ -2060,6 +2155,12 @@
       renderMembersDirectory();
       renderFinancialsTabLedger();
       updateMessagingRecipients();
+
+      // Update program settings display
+      const priceInput = document.getElementById('program-base-price');
+      if (priceInput) {
+        priceInput.value = STATE.programSettings.baseSubscriptionPrice || '0.00';
+      }
     }
 
     function renderRosterTabList() {
@@ -2084,24 +2185,32 @@
         const isStub = p.status === 'Administrative Pending';
         const bgClass = isStub ? 'bg-blue-50' : 'bg-clinical hover:bg-white';
         div.className = `border border-borderLight p-3 flex flex-wrap items-center justify-between gap-2 ${bgClass} text-xs`;
+
+        // Calculate age from DOB
+        let ageText = 'Age TBD';
+        if (p.dob) {
+          const birthDate = new Date(p.dob);
+          const today = new Date();
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+          }
+          ageText = `Age ${age}`;
+        }
+
         div.innerHTML = `
-          <div class="font-mono">
+          <div class="font-mono flex-1">
             <strong class="text-sm font-display uppercase tracking-tight text-dark block">${p.name}</strong>
-            <span class="text-gray-400 text-[10px]">Jersey #${p.jersey} | ${p.position} ${p.dob ? `| DOB: ${p.dob}` : '| Profile Pending'}</span>
+            <span class="text-gray-400 text-[10px]">Jersey #${p.jersey} | ${p.position}</span>
+            <span class="text-gray-400 text-[10px] block mt-0.5">${ageText} | ${p.teams.join(', ')}</span>
             <div class="flex gap-1 mt-1">
-              ${p.teams.map(t => `<span class="bg-dark text-white text-[9px] px-1 font-bold">${t}</span>`).join('')}
               ${isStub ? `<span class="bg-blue-600 text-white text-[9px] px-1 font-bold">ADMIN PLAYER</span>` : ''}
             </div>
           </div>
-          <div class="flex items-center gap-3 font-mono">
-            <div class="text-right">
-              <span class="text-[9px] text-gray-400 block">Statement Due</span>
-              <strong class="text-dark">${p.balance === 0 ? '$0.00' : `$${p.balance.toFixed(2)}`}</strong>
-            </div>
-            <button type="button" onclick="openEditProfileModal(${p.id})" class="border border-dark hover:bg-dark hover:text-white px-2 py-1 font-bold text-[10px] uppercase transition-all brutal-clip">
-              Edit Profile
-            </button>
-          </div>
+          <button type="button" onclick="openEditProfileModal(${p.id})" class="border border-dark hover:bg-dark hover:text-white px-3 py-1.5 font-bold text-[10px] uppercase transition-all brutal-clip whitespace-nowrap">
+            Edit Profile
+          </button>
         `;
         container.appendChild(div);
       });
@@ -2169,15 +2278,39 @@
 
       STATE.players.forEach(p => {
         runningSum += p.balance;
+        const adjustment = STATE.programSettings.billingAdjustments[p.id];
+        const basePrice = adjustment?.basePrice || STATE.programSettings.baseSubscriptionPrice;
+        const adjustedPrice = adjustment?.adjustedPrice || basePrice;
+        const hasAdjustment = adjustment !== undefined;
+
         const line = document.createElement('div');
-        line.className = "p-2.5 bg-clinical border border-borderLight flex justify-between items-center text-xs font-mono cursor-pointer hover:bg-white transition-colors";
-        line.onclick = () => openFinancialDetailModal(p.id);
+        line.className = "p-3 bg-clinical border border-borderLight space-y-2";
         line.innerHTML = `
-          <div>
-            <span class="font-bold text-dark block">${p.name}</span>
-            <span class="text-gray-400 text-[9px]">Club Registration Invoice Status: ${p.paidStatus || 'Pending'}</span>
+          <div class="flex justify-between items-start">
+            <div class="flex-1">
+              <span class="font-bold text-dark block text-sm">${p.name}</span>
+              <span class="text-gray-400 text-[9px]">Status: ${p.paidStatus || 'Pending'}</span>
+            </div>
+            <button type="button" onclick="openAdjustBillingModal(${p.id})" class="border border-brand text-brand px-2 py-1 text-[9px] font-bold uppercase hover:bg-brand hover:text-dark transition-all ml-2">
+              Adjust Billing
+            </button>
           </div>
-          <strong class="${p.balance > 0 ? 'text-red-700' : 'text-gray-500'}">${p.balance === 0 ? '$0.00' : `$${p.balance.toFixed(2)}`}</strong>
+          <div class="flex gap-4 text-xs font-mono">
+            <div>
+              <span class="text-gray-400 block">Base Price</span>
+              <span class="text-dark font-bold">$${basePrice.toFixed(2)}</span>
+            </div>
+            ${hasAdjustment ? `
+              <div>
+                <span class="text-gray-400 block">Adjusted</span>
+                <span class="text-brand font-bold">$${adjustedPrice.toFixed(2)}</span>
+              </div>
+              <div>
+                <span class="text-gray-400 block">${adjustment.discount > 0 ? 'Discount' : 'Premium'}</span>
+                <span class="${adjustment.discount > 0 ? 'text-green-600' : 'text-red-600'} font-bold">$${Math.abs(adjustment.discount).toFixed(2)}</span>
+              </div>
+            ` : ''}
+          </div>
         `;
         container.appendChild(line);
       });
@@ -2449,6 +2582,52 @@
     switchDirectorTab('onboarding');
     refreshEventMatrixUI();
   </script>
+
+  <!-- ADJUST BILLING MODAL (Financials) -->
+  <div id="adjust-billing-modal" class="hidden fixed inset-0 bg-dark/80 backdrop-blur-sm justify-center items-center z-50 p-4">
+    <div class="bg-white border-2 border-dark p-6 max-w-sm w-full brutal-clip shadow-xl">
+      <div class="mb-4 pb-3 border-b border-borderLight">
+        <h3 class="font-display text-lg font-black uppercase text-dark">Adjust Player Billing</h3>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Player Name</label>
+          <div id="adjust-billing-player-name" class="font-display text-lg font-black text-dark"></div>
+        </div>
+
+        <div>
+          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Base Price</label>
+          <div id="adjust-billing-base" class="font-mono text-xl font-bold text-gray-600 mb-3">$0.00</div>
+        </div>
+
+        <div>
+          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Adjusted Amount *</label>
+          <input type="number" id="adjust-billing-amount" step="0.01" min="0" class="w-full bg-clinical border border-borderDark px-3 py-2 text-base font-mono outline-none focus:border-brand" placeholder="0.00">
+        </div>
+
+        <div>
+          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Discount/Premium</label>
+          <input type="number" id="adjust-billing-discount" step="0.01" readonly class="w-full bg-gray-100 border border-borderDark px-3 py-2 text-base font-mono" placeholder="0.00">
+          <span class="text-[9px] text-gray-400 mt-1 block">(Auto-calculated from base price)</span>
+        </div>
+
+        <div>
+          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Notes (Optional)</label>
+          <textarea id="adjust-billing-notes" placeholder="e.g., 'Early payment discount' or 'Family plan adjustment'" rows="2" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs font-body outline-none focus:border-brand resize-none"></textarea>
+        </div>
+      </div>
+
+      <div class="flex gap-2 justify-end mt-6 pt-4 border-t border-borderLight">
+        <button onclick="closeAdjustBillingModal()" class="border border-borderDark px-4 py-1.5 font-mono text-xs uppercase font-bold text-gray-500 hover:text-dark transition-colors">
+          Cancel
+        </button>
+        <button onclick="submitAdjustBilling()" class="bg-brand text-dark px-4 py-1.5 font-display text-xs tracking-wider font-bold uppercase brutal-clip hover:bg-dark hover:text-brand transition-all">
+          Save Adjustment
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ADJUST FEE MODAL -->
   <div id="adjust-fee-modal" class="hidden fixed inset-0 bg-dark/80 backdrop-blur-sm justify-center items-center z-50 p-4">
