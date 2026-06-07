@@ -71,6 +71,8 @@
       members: [],
       messageThreads: [],
       currentTier: 'FREE',
+      setup_complete: false,
+      isMobile: window.innerWidth < 768,
       modal: { show: false, actionType: null, playerId: null, val: null },
       financialDetailModal: { show: false, playerId: null },
       rosterSearch: '',
@@ -151,6 +153,11 @@
 
       if (STATE.activeView === 'director') {
         renderDirectorDashboard();
+        // Auto-route from onboarding to roster if setup is complete
+        if (STATE.setup_complete && STATE.directorTab === 'onboarding') {
+          STATE.directorTab = 'roster';
+          renderDirectorDashboard();
+        }
       }
       if (STATE.activeView === 'player') {
         renderPlayerDashboard();
@@ -160,6 +167,7 @@
       }
 
       closeMobileMenu();
+      detectMobileView();
       window.scrollTo(0,0);
     }
 
@@ -346,6 +354,70 @@
       origCreateAdminStub.call(this, e);
       saveState();
     };
+
+    // === MOBILE RESPONSIVE LOGIC ===
+    function detectMobileView() {
+      STATE.isMobile = window.innerWidth < 768;
+      updateMobileLayout();
+    }
+
+    function updateMobileLayout() {
+      const sidebar = document.getElementById('sidebar');
+      const mobileNavBar = document.getElementById('mobile-bottom-nav');
+      const desktopNav = document.getElementById('desktop-sidebar');
+
+      if (STATE.isMobile) {
+        // Show mobile bottom nav, hide desktop sidebar
+        if (mobileNavBar) mobileNavBar.classList.remove('hidden');
+        if (desktopNav) desktopNav.classList.add('hidden');
+        if (sidebar) sidebar.classList.add('hidden');
+      } else {
+        // Show desktop sidebar, hide mobile bottom nav
+        if (mobileNavBar) mobileNavBar.classList.add('hidden');
+        if (desktopNav) desktopNav.classList.remove('hidden');
+        if (sidebar) sidebar.classList.remove('hidden');
+      }
+    }
+
+    // === SETUP COMPLETION LOGIC ===
+    function completeSetup() {
+      STATE.setup_complete = true;
+      localStorage.setItem('athleteiq_setup_complete', 'true');
+      STATE.directorTab = 'roster'; // Default to roster after setup
+      renderDirectorDashboard();
+      updateDOMForSetupComplete();
+    }
+
+    function updateDOMForSetupComplete() {
+      // Update active tab styling
+      document.querySelectorAll('[id^="tab-"], [id^="mobile-tab-"]').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      const rosterBtn = document.getElementById('tab-roster') || document.getElementById('mobile-tab-roster');
+      if (rosterBtn) {
+        rosterBtn.classList.add('text-dark', 'bg-white', 'shadow-sm', 'border-l-4', 'border-brand', 'font-black');
+      }
+    }
+
+    function loadSetupState() {
+      const savedSetup = localStorage.getItem('athleteiq_setup_complete');
+      if (savedSetup === 'true') {
+        STATE.setup_complete = true;
+        STATE.directorTab = 'roster'; // Default tab after setup
+      }
+    }
+
+    // Listen for window resize
+    window.addEventListener('resize', () => {
+      detectMobileView();
+    });
+
+    // Load setup state on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSetupState();
+      detectMobileView();
+      updateDOM();
+    });
   </script>
 
   <!-- NAVIGATION BAR -->
@@ -946,6 +1018,17 @@
               </div>
               <button onclick="routeTo('public-register')" class="text-dark border border-dark px-2 py-0.5 bg-white text-[10px] font-bold shrink-0 hover:bg-dark hover:text-white transition-colors">Launch Public Link</button>
             </div>
+          </div>
+
+          <!-- SETUP COMPLETE CTA -->
+          <div class="border border-brand bg-brand/5 p-6 brutal-clip flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="font-display text-lg font-black text-dark uppercase">Ready to manage your program?</h3>
+              <p class="font-body text-xs text-gray-500 mt-1">You can always come back to this checklist. Let's get to work!</p>
+            </div>
+            <button onclick="completeSetup()" class="w-full sm:w-auto bg-dark text-white px-6 py-3 font-display font-black text-sm uppercase hover:bg-brand hover:text-dark transition-all brutal-clip shrink-0">
+              Go to Dashboard →
+            </button>
           </div>
         </div>
 
@@ -2293,6 +2376,41 @@
     switchDirectorTab('onboarding');
     refreshEventMatrixUI();
   </script>
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR -->
+  <div id="mobile-bottom-nav" class="hidden fixed bottom-0 left-0 right-0 bg-dark border-t border-brand px-1 py-2 z-40 md:hidden">
+    <div class="flex justify-around items-center h-16">
+      <button onclick="switchDirectorTab('roster'); window.scrollTo(0,0);" class="flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-colors">
+        <span class="text-xl mb-1">👥</span>
+        <span>Roster</span>
+      </button>
+      <button onclick="switchDirectorTab('messaging'); window.scrollTo(0,0);" class="flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-colors">
+        <span class="text-xl mb-1">💬</span>
+        <span>Messages</span>
+      </button>
+      <button onclick="switchDirectorTab('members'); window.scrollTo(0,0);" class="flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-colors">
+        <span class="text-xl mb-1">👤</span>
+        <span>Members</span>
+      </button>
+      <button onclick="switchDirectorTab('schedule'); window.scrollTo(0,0);" class="flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-colors">
+        <span class="text-xl mb-1">📅</span>
+        <span>Schedule</span>
+      </button>
+      <button onclick="switchDirectorTab('financials'); window.scrollTo(0,0);" class="flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-colors">
+        <span class="text-xl mb-1">💰</span>
+        <span>Finances</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Add bottom padding to director view to account for fixed mobile nav -->
+  <style>
+    @media (max-width: 767px) {
+      #view-director {
+        padding-bottom: 80px !important;
+      }
+    }
+  </style>
 
   <footer class="mt-auto border-t border-borderLight bg-clinical py-6 px-4 text-center font-mono text-[10px] text-gray-400 uppercase tracking-widest">
     © 2026 AthleteIQ Internal Operations Hub. All Channels Secured.
