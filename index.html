@@ -1063,13 +1063,13 @@
       <a onclick="routeTo('home'); return false;" class="hover:text-dark cursor-pointer transition-colors">Home</a>
       <a onclick="scrollToSection('features-block'); return false;" class="hover:text-dark cursor-pointer transition-colors">Features</a>
       <a onclick="scrollToSection('pricing-block'); return false;" class="hover:text-dark cursor-pointer transition-colors">Pricing</a>
-      <a onclick="navigateTo('login'); return false;" class="hover:text-dark cursor-pointer transition-colors">Sign In</a>
-      <a onclick="navigateTo('signup'); return false;" class="text-brand hover:text-dark cursor-pointer transition-colors font-extrabold">[ Get Started ]</a>
+      <a href="#login" class="hover:text-dark cursor-pointer transition-colors">Sign In</a>
+      <a href="#signup" class="text-brand hover:text-dark cursor-pointer transition-colors font-extrabold">[ Get Started ]</a>
     </div>
 
     <!-- MOBILE HAMBURGER & BUTTON -->
     <div class="md:hidden flex items-center gap-2">
-      <button onclick="routeTo('signup')" class="bg-dark text-white font-display font-extrabold text-sm px-4 py-2 flex items-center justify-center brutal-clip hover:bg-brand hover:text-dark transition-all">Sign Up</button>
+      <a href="#signup" class="bg-dark text-white font-display font-extrabold text-sm px-4 py-2 flex items-center justify-center brutal-clip hover:bg-brand hover:text-dark transition-all">Sign Up</a>
       <button id="hamburger-btn" onclick="toggleMobileMenu()" class="flex flex-col gap-1.5 w-6 h-6 justify-center hamburger">
         <span class="line1 hamburger-line w-full h-0.5 bg-dark block"></span>
         <span class="line2 hamburger-line w-full h-0.5 bg-dark block"></span>
@@ -1084,7 +1084,7 @@
       <a onclick="routeTo('home'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Home</a>
       <a onclick="scrollToSection('features-block'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Features</a>
       <a onclick="scrollToSection('pricing-block'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Pricing</a>
-      <a onclick="navigateTo('login'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Sign In</a>
+      <a href="#login" onclick="closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Sign In</a>
     </div>
   </div>
 
@@ -1101,9 +1101,9 @@
         Track rosters, log game statistics, manage upcoming schedules, and communicate directly with parents—all from one clean mobile dashboard.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <button onclick="navigateTo('signup')" class="w-full sm:w-auto bg-dark text-white font-display text-base tracking-wider uppercase font-black px-8 py-3.5 brutal-clip hover:bg-brand hover:text-dark transition-all duration-200">
+        <a href="#signup" class="inline-block w-full sm:w-auto bg-dark text-white font-display text-base tracking-wider uppercase font-black px-8 py-3.5 brutal-clip hover:bg-brand hover:text-dark transition-all duration-200 text-center">
           Get Started →
-        </button>
+        </a>
         <button onclick="scrollToSection('features-block')" class="w-full sm:w-auto border-2 border-dark text-dark font-display text-base tracking-wider uppercase font-black px-8 py-3 brutal-clip hover:bg-clinical2 transition-all duration-200">
           Explore Features
         </button>
