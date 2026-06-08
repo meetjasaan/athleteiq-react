@@ -1089,9 +1089,15 @@
 
   <!-- HOME VIEW -->
   <div id="view-home" class="route-panel pt-14 flex-1">
-    <!-- HERO SECTION: WHITE BACKGROUND -->
-    <div class="relative bg-white py-32 px-4 text-center">
-      <span class="font-mono text-[11px] text-dark uppercase tracking-widest font-bold block mb-3">Built for Youth Leagues & Teams</span>
+    <!-- HERO SECTION: WHITE BACKGROUND WITH TECHNICAL GRID -->
+    <div class="relative bg-white py-32 px-4 text-center overflow-hidden" style="background-image:
+      linear-gradient(rgba(229, 231, 235, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(229, 231, 235, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      background-position: 0 0, 0 0;
+      background-attachment: fixed;">
+      <div class="relative z-10">
+        <span class="font-mono text-[11px] text-dark uppercase tracking-widest font-bold block mb-3">Built for Youth Leagues & Teams</span>
       <h1 class="font-display text-4xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-dark max-w-4xl mx-auto mb-6">
         Player Stats & Team Schedules,<br>Simplified.
       </h1>
@@ -1105,6 +1111,7 @@
         <button onclick="scrollToSection('features-block')" class="w-full sm:w-auto border-2 border-dark text-dark font-display text-base tracking-wider uppercase font-black px-8 py-3 brutal-clip hover:bg-clinical2 transition-all duration-200">
           Explore Features
         </button>
+      </div>
       </div>
     </div>
 
