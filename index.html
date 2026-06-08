@@ -636,9 +636,16 @@
     }
 
     function updateDOM() {
+      console.log('updateDOM called - activeView:', STATE.activeView);
       document.querySelectorAll('.route-panel').forEach(panel => panel.classList.add('hidden'));
       const targetPanel = document.getElementById(`view-${STATE.activeView}`);
-      if (targetPanel) targetPanel.classList.remove('hidden');
+      console.log('Target panel:', targetPanel, 'ID:', `view-${STATE.activeView}`);
+      if (targetPanel) {
+        targetPanel.classList.remove('hidden');
+        console.log('Removed hidden class from', `view-${STATE.activeView}`);
+      } else {
+        console.log('ERROR: Could not find element with ID:', `view-${STATE.activeView}`);
+      }
 
       // === AUTHENTICATED ROUTE LOGIC ===
       // Show mobile bottom nav ONLY on authenticated routes (director, player)
@@ -682,6 +689,7 @@
 
     window.addEventListener('hashchange', () => {
       const view = window.location.hash.replace('#', '') || 'home';
+      console.log('HASHCHANGE FIRED - view:', view);
       STATE.activeView = view;
       updateDOM();
     });
@@ -3567,11 +3575,32 @@
         padding-bottom: 80px !important;
       }
     }
+    /* Force mobile nav to stay hidden except on authenticated routes */
+    #mobile-bottom-nav.hidden {
+      display: none !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
   </style>
 
   <footer class="mt-auto border-t border-borderLight bg-clinical py-6 px-4 text-center font-mono text-[10px] text-gray-400 uppercase tracking-widest">
     © 2026 AthleteIQ Internal Operations Hub. All Channels Secured.
   </footer>
+
+  <script>
+    // DEBUG: Verify elements exist
+    console.log('=== ATHLETEIQ ROUTING DEBUG ===');
+    const routePanels = document.querySelectorAll('.route-panel');
+    console.log(`Found ${routePanels.length} route-panel elements:`, Array.from(routePanels).map(el => ({id: el.id, hidden: el.classList.contains('hidden')})));
+    console.log('view-login element:', document.getElementById('view-login'));
+    console.log('view-signup element:', document.getElementById('view-signup'));
+    console.log('view-home element:', document.getElementById('view-home'));
+    console.log('STATE object:', typeof STATE !== 'undefined' ? STATE : 'STATE not defined');
+    window.addEventListener('load', () => {
+      console.log('Page fully loaded. Initial hash:', window.location.hash);
+      console.log('Initial STATE.activeView:', STATE.activeView);
+    });
+  </script>
 
 </body>
 </html>
