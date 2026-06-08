@@ -1274,8 +1274,8 @@
           </div>
 
           <!-- PLAN 03: MID-SIZE (FEATURED) -->
-          <div class="border-2 border-dark p-5 flex flex-col justify-between bg-white brutal-clip relative">
-            <div class="absolute -top-3 right-4 bg-dark text-white font-mono text-[9px] font-bold px-2 py-0.5">MOST POPULAR</div>
+          <div class="border-2 border-dark p-5 flex flex-col justify-between bg-white brutal-clip relative pt-8">
+            <div class="absolute top-2 right-4 bg-dark text-white font-mono text-[9px] font-bold px-2 py-0.5">MOST POPULAR</div>
             <div>
               <div class="font-mono text-[9px] text-brand font-bold uppercase mb-1">Plan 03</div>
               <h3 class="font-display text-xl font-black text-dark uppercase">Mid-Size Club</h3>
@@ -3482,8 +3482,8 @@
     </div>
   </div>
 
-  <!-- MOBILE BOTTOM NAVIGATION BAR -->
-  <div id="mobile-bottom-nav" class="hidden fixed bottom-0 left-0 right-0 bg-dark border-t border-brand px-1 py-2 z-40 md:hidden">
+  <!-- MOBILE BOTTOM NAVIGATION BAR (AUTHENTICATED ROUTES ONLY) -->
+  <div id="mobile-bottom-nav" class="hidden !fixed bottom-0 left-0 right-0 bg-dark border-t border-brand px-1 py-2 z-40 md:!hidden">
     <div class="flex justify-around items-center h-16">
       <!-- Roster -->
       <button onclick="switchDirectorTab('roster'); window.scrollTo(0,0);" class="mobile-nav-btn flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-all group" data-tab="roster">
