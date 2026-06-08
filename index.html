@@ -66,7 +66,7 @@
 
   <script>
     const STATE = {
-      activeView: 'home',
+      activeView: 'home', // Start on public landing page (no nav shown)
       directorTab: 'onboarding',
       userRole: 'DIRECTOR',
       clubSlug: 'np-elite',
@@ -74,6 +74,7 @@
       activeDivisions: ['9U', '11U'],
       showPublicLink: true,
       mobileMenuOpen: false,
+      isAuthenticated: false, // Track auth state for nav visibility
       players: [],
       events: [],
       members: [],
@@ -169,6 +170,18 @@
       const targetPanel = document.getElementById(`view-${STATE.activeView}`);
       if (targetPanel) targetPanel.classList.remove('hidden');
 
+      // === AUTHENTICATED ROUTE LOGIC ===
+      // Show mobile bottom nav ONLY on authenticated routes (director, player)
+      const authenticatedRoutes = ['director', 'player'];
+      const mobileBottomNav = document.getElementById('mobile-bottom-nav');
+      if (mobileBottomNav) {
+        if (authenticatedRoutes.includes(STATE.activeView)) {
+          mobileBottomNav.classList.remove('hidden');
+        } else {
+          mobileBottomNav.classList.add('hidden');
+        }
+      }
+
       if (STATE.activeView === 'director') {
         renderDirectorDashboard();
         // Auto-route from onboarding to roster if setup is complete
@@ -185,7 +198,6 @@
       }
 
       closeMobileMenu();
-      detectMobileView();
       window.scrollTo(0,0);
     }
 
@@ -939,6 +951,7 @@
           otpRequested = false;
           document.getElementById('otp-field-container').classList.add('hidden');
           document.getElementById('auth-submit-btn').innerText = "Send Verification Code";
+          STATE.isAuthenticated = true; // Set auth flag
           if(STATE.userRole === 'DIRECTOR') routeTo('director');
           else routeTo('player');
         }
@@ -954,6 +967,7 @@
           document.getElementById('signup-submit-btn').innerText = "Generate Free Workspace";
           STATE.clubSlug = document.getElementById('signup-slug').value || 'my-league';
           STATE.userRole = 'DIRECTOR';
+          STATE.isAuthenticated = true; // Set auth flag
           routeTo('director');
         }
       }
@@ -1063,6 +1077,7 @@
         document.getElementById('coppa-disclaimer-card').classList.add('hidden');
 
         alert('Roster entry authenticated. The athlete and parent nodes are now active.');
+        STATE.isAuthenticated = true; // Set auth flag
         routeTo('director');
       }
     }
