@@ -30,7 +30,9 @@
 <style>
   body { font-family: 'Barlow', sans-serif; background-color: #FFFFFF; color: #080808; }
   .grid-bg {
-    background-image: linear-gradient(rgba(8,8,8,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(8,8,8,0.015) 1px, transparent 1px);
+    background-color: #ffffff;
+    background-image: linear-gradient(rgba(8,8,8,0.015) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(8,8,8,0.015) 1px, transparent 1px);
     background-size: 30px 30px;
   }
   .brutal-clip {
@@ -603,22 +605,8 @@
       const hamburger = document.getElementById('hamburger-btn');
       const mobileMenu = document.getElementById('mobile-menu-drawer');
 
-      if (hamburger) {
-        hamburger.classList.toggle('active');
-      }
-
-      if (mobileMenu) {
-        if (STATE.mobileMenuOpen) {
-          mobileMenu.classList.remove('hidden');
-          mobileMenu.classList.add('mobile-menu-enter');
-        } else {
-          mobileMenu.classList.add('mobile-menu-exit');
-          setTimeout(() => {
-            mobileMenu.classList.add('hidden');
-            mobileMenu.classList.remove('mobile-menu-exit');
-          }, 300);
-        }
-      }
+      if (hamburger) hamburger.classList.toggle('active');
+      if (mobileMenu) mobileMenu.classList.toggle('hidden');
     }
 
     function closeMobileMenu() {
@@ -626,17 +614,8 @@
       const hamburger = document.getElementById('hamburger-btn');
       const mobileMenu = document.getElementById('mobile-menu-drawer');
 
-      if (hamburger) {
-        hamburger.classList.remove('active');
-      }
-
-      if (mobileMenu) {
-        mobileMenu.classList.add('mobile-menu-exit');
-        setTimeout(() => {
-          mobileMenu.classList.add('hidden');
-          mobileMenu.classList.remove('mobile-menu-exit');
-        }, 300);
-      }
+      if (hamburger) hamburger.classList.remove('active');
+      if (mobileMenu) mobileMenu.classList.add('hidden');
     }
 
     function updateDOM() {
@@ -1078,7 +1057,7 @@
   </nav>
 
   <!-- MOBILE MENU DRAWER -->
-  <div id="mobile-menu-drawer" class="hidden fixed top-14 left-0 right-0 bg-white border-b border-borderLight z-40 md:hidden mobile-menu-enter">
+  <div id="mobile-menu-drawer" class="hidden fixed top-14 left-0 right-0 bg-white border-b border-borderLight z-40 md:!hidden">
     <div class="flex flex-col divide-y divide-borderLight max-h-[calc(100vh-56px)] overflow-y-auto">
       <a onclick="routeTo('home'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Home</a>
       <a onclick="scrollToSection('features-block'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Features</a>
@@ -1119,7 +1098,7 @@
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-24">
           <div class="font-mono text-sm text-dark font-black uppercase tracking-widest mb-4">— [ PLATFORM FEATURES ] —</div>
-          <h2 class="font-display text-6xl font-black text-dark uppercase tracking-tighter">Core Capabilities</h2>
+          <h2 class="font-display text-6xl font-black text-dark uppercase">Core Capabilities</h2>
           <p class="font-body text-lg text-gray-600 mt-4">Everything you need to operate your program effectively</p>
         </div>
 
@@ -1260,74 +1239,78 @@
     <div id="pricing-block" class="bg-white py-32 px-4">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-24">
-          <div class="font-mono text-sm text-dark font-black uppercase tracking-widest mb-4">— [ PRICING PLANS ] —</div>
-          <h2 class="font-display text-6xl font-black text-dark uppercase tracking-tighter">Simple League Pricing</h2>
+          <div class="font-mono text-sm text-dark font-black uppercase mb-4">— [ PRICING PLANS ] —</div>
+          <h2 class="font-display text-6xl font-black text-dark uppercase">Simple League Pricing</h2>
           <p class="font-body text-lg text-gray-600 mt-4">Choose the right size for your program or club</p>
         </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="border border-borderDark p-5 flex flex-col justify-between bg-white">
-          <div>
-            <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">Plan 01</div>
-            <h3 class="font-display text-xl font-black text-dark uppercase">Try It Free</h3>
-            <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$0 <span class="text-xs font-mono text-gray-400 font-normal">/ Forever</span></div>
-            <p class="font-body text-xs text-gray-400 mb-4">Great for test-driving features or small local setups.</p>
-            <ul class="space-y-2 font-body text-xs text-gray-400 border-t border-gray-700 pt-3">
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> Up to 3 players total</li>
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> Locked spots (no swapping)</li>
-              <li class="flex items-center gap-1.5 font-semibold">Standard roster limit</li>
-            </ul>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- PLAN 01: FREE -->
+          <div class="border border-borderDark p-5 flex flex-col justify-between bg-white brutal-clip">
+            <div>
+              <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">Plan 01</div>
+              <h3 class="font-display text-xl font-black text-dark uppercase">Try It Free</h3>
+              <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$0 <span class="text-xs font-mono text-gray-400 font-normal">/ Forever</span></div>
+              <p class="font-body text-xs text-gray-500 mb-4">Great for test-driving features or small local setups.</p>
+              <ul class="space-y-2 font-body text-xs text-gray-500 border-t border-borderLight pt-3">
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Up to 3 players total</li>
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Locked spots (no swapping)</li>
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Standard roster limit</li>
+              </ul>
+            </div>
+            <button onclick="changeSubscriptionTier('FREE')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors brutal-clip">[ Select Plan ]</button>
           </div>
-          <button onclick="changeSubscriptionTier('FREE')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors">[ Select Plan ]</button>
-        </div>
 
-        <div class="border border-borderDark p-5 flex flex-col justify-between bg-white">
-          <div>
-            <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">Plan 02</div>
-            <h3 class="font-display text-xl font-black text-dark uppercase">Small Club</h3>
-            <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$249 <span class="text-xs font-mono text-gray-400 font-normal">/ Month</span></div>
-            <p class="font-body text-xs text-gray-400 mb-4">Perfect for growing individual teams or small groups.</p>
-            <ul class="space-y-2 font-body text-xs text-gray-400 border-t border-gray-700 pt-3">
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> 1 to 24 active players</li>
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> Multi-sport stat forms</li>
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> Balance & fee manager</li>
-            </ul>
+          <!-- PLAN 02: SMALL CLUB -->
+          <div class="border border-borderDark p-5 flex flex-col justify-between bg-white brutal-clip">
+            <div>
+              <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">Plan 02</div>
+              <h3 class="font-display text-xl font-black text-dark uppercase">Small Club</h3>
+              <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$249 <span class="text-xs font-mono text-gray-400 font-normal">/ Month</span></div>
+              <p class="font-body text-xs text-gray-500 mb-4">Perfect for growing individual teams or small groups.</p>
+              <ul class="space-y-2 font-body text-xs text-gray-500 border-t border-borderLight pt-3">
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> 1 to 24 active players</li>
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Multi-sport stat forms</li>
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Balance & fee manager</li>
+              </ul>
+            </div>
+            <button onclick="changeSubscriptionTier('TIER_1')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors brutal-clip">[ Select Plan ]</button>
           </div>
-          <button onclick="changeSubscriptionTier('TIER_1')" class="mt-6 w-full border border-gray-700 py-2 font-mono text-[11px] uppercase font-bold text-white hover:bg-white hover:text-[#080808] transition-colors">[ Select Plan ]</button>
-        </div>
 
-        <div class="border-2 border-dark p-5 flex flex-col justify-between bg-white relative">
-          <div class="absolute -top-3 right-4 bg-dark text-white font-mono text-[9px] font-bold px-2 py-0.5">MOST POPULAR</div>
-          <div>
-            <div class="font-mono text-[9px] text-[#F59E0B] font-bold uppercase mb-1">Plan 03</div>
-            <h3 class="font-display text-xl font-black text-dark uppercase">Mid-Size Club</h3>
-            <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$399 <span class="text-xs font-mono text-gray-400 font-normal">/ Month</span></div>
-            <p class="font-body text-xs text-gray-400 mb-4">Designed for larger travel leagues and travel programs.</p>
-            <ul class="space-y-2 font-body text-xs text-gray-400 border-t border-gray-700 pt-3">
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> 25 to 49 active players</li>
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> Calendar integrations</li>
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> Custom position stats</li>
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> Group texting alerts</li>
-            </ul>
+          <!-- PLAN 03: MID-SIZE (FEATURED) -->
+          <div class="border-2 border-dark p-5 flex flex-col justify-between bg-white brutal-clip relative">
+            <div class="absolute -top-3 right-4 bg-dark text-white font-mono text-[9px] font-bold px-2 py-0.5">MOST POPULAR</div>
+            <div>
+              <div class="font-mono text-[9px] text-brand font-bold uppercase mb-1">Plan 03</div>
+              <h3 class="font-display text-xl font-black text-dark uppercase">Mid-Size Club</h3>
+              <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$399 <span class="text-xs font-mono text-gray-400 font-normal">/ Month</span></div>
+              <p class="font-body text-xs text-gray-500 mb-4">Designed for larger travel leagues and travel programs.</p>
+              <ul class="space-y-2 font-body text-xs text-gray-500 border-t border-borderLight pt-3">
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> 25 to 49 active players</li>
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Calendar integrations</li>
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Custom position stats</li>
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Group texting alerts</li>
+              </ul>
+            </div>
+            <button onclick="changeSubscriptionTier('TIER_2')" class="mt-6 w-full bg-dark text-white py-2 font-mono text-[11px] uppercase font-bold hover:bg-brand hover:text-dark transition-all brutal-clip">[ Select Plan ]</button>
           </div>
-          <button onclick="changeSubscriptionTier('TIER_2')" class="mt-6 w-full bg-dark text-white py-2 font-mono text-[11px] uppercase font-bold hover:bg-brand hover:text-dark transition-all brutal-clip">[ Select Plan ]</button>
-        </div>
 
-        <div class="border border-borderDark p-5 flex flex-col justify-between bg-white">
-          <div>
-            <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">Plan 04</div>
-            <h3 class="font-display text-xl font-black text-dark uppercase">Large Organization</h3>
-            <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$499 <span class="text-xs font-mono text-gray-400 font-normal">/ Month</span></div>
-            <p class="font-body text-xs text-gray-400 mb-4">For complete multi-sport organizations and major leagues.</p>
-            <ul class="space-y-2 font-body text-xs text-gray-400 border-t border-gray-700 pt-3">
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> 50 to 99 active players</li>
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> Advanced dashboard access</li>
-              <li class="flex items-center gap-1.5"><span class="text-[#F59E0B]">■</span> Priority support line</li>
-            </ul>
+          <!-- PLAN 04: LARGE ORG -->
+          <div class="border border-borderDark p-5 flex flex-col justify-between bg-white brutal-clip">
+            <div>
+              <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">Plan 04</div>
+              <h3 class="font-display text-xl font-black text-dark uppercase">Large Organization</h3>
+              <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$499 <span class="text-xs font-mono text-gray-400 font-normal">/ Month</span></div>
+              <p class="font-body text-xs text-gray-500 mb-4">For complete multi-sport organizations and major leagues.</p>
+              <ul class="space-y-2 font-body text-xs text-gray-500 border-t border-borderLight pt-3">
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> 50 to 99 active players</li>
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Advanced dashboard access</li>
+                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Priority support line</li>
+              </ul>
+            </div>
+            <button onclick="changeSubscriptionTier('TIER_3')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors brutal-clip">[ Select Plan ]</button>
           </div>
-          <button onclick="changeSubscriptionTier('TIER_3')" class="mt-6 w-full border border-gray-700 py-2 font-mono text-[11px] uppercase font-bold text-white hover:bg-white hover:text-[#080808] transition-colors">[ Select Plan ]</button>
         </div>
-      </div>
       </div>
     </div>
   </div>
