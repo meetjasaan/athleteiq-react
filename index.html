@@ -1038,11 +1038,11 @@
 
     <!-- DESKTOP NAVIGATION -->
     <div class="hidden md:flex items-center gap-4 font-mono text-[11px] uppercase font-bold text-gray-500 overflow-x-auto whitespace-nowrap no-scrollbar py-1 pr-2">
-      <a onclick="routeTo('home')" class="hover:text-dark cursor-pointer transition-colors">Home</a>
-      <a onclick="scrollToSection('features-block')" class="hover:text-dark cursor-pointer transition-colors">Features</a>
-      <a onclick="scrollToSection('pricing-block')" class="hover:text-dark cursor-pointer transition-colors">Pricing</a>
-      <a onclick="routeTo('login')" class="hover:text-dark cursor-pointer transition-colors">Sign In</a>
-      <a onclick="routeTo('signup')" class="text-brand hover:text-dark cursor-pointer transition-colors font-extrabold">[ Get Started ]</a>
+      <a onclick="routeTo('home'); return false;" class="hover:text-dark cursor-pointer transition-colors">Home</a>
+      <a onclick="scrollToSection('features-block'); return false;" class="hover:text-dark cursor-pointer transition-colors">Features</a>
+      <a onclick="scrollToSection('pricing-block'); return false;" class="hover:text-dark cursor-pointer transition-colors">Pricing</a>
+      <a onclick="routeTo('login'); return false;" class="hover:text-dark cursor-pointer transition-colors">Sign In</a>
+      <a onclick="routeTo('signup'); return false;" class="text-brand hover:text-dark cursor-pointer transition-colors font-extrabold">[ Get Started ]</a>
     </div>
 
     <!-- MOBILE HAMBURGER & BUTTON -->
@@ -1059,10 +1059,10 @@
   <!-- MOBILE MENU DRAWER -->
   <div id="mobile-menu-drawer" class="hidden fixed top-14 left-0 right-0 bg-white border-b border-borderLight z-40 md:!hidden">
     <div class="flex flex-col divide-y divide-borderLight max-h-[calc(100vh-56px)] overflow-y-auto">
-      <a onclick="routeTo('home'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Home</a>
-      <a onclick="scrollToSection('features-block'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Features</a>
-      <a onclick="scrollToSection('pricing-block'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Pricing</a>
-      <a onclick="routeTo('login'); closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Sign In</a>
+      <a onclick="routeTo('home'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Home</a>
+      <a onclick="scrollToSection('features-block'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Features</a>
+      <a onclick="scrollToSection('pricing-block'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Pricing</a>
+      <a onclick="routeTo('login'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Sign In</a>
     </div>
   </div>
 
