@@ -1204,6 +1204,138 @@
           <button onclick="changeSubscriptionTier('TIER_3')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors">[ Select Plan ]</button>
         </div>
       </div>
+
+      <!-- FEATURE SHOWCASE SECTIONS -->
+      <div class="space-y-24 py-12">
+
+        <!-- FEATURE 1: SCHEDULES (Text Left / Dashboard Right) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="order-2 md:order-1">
+            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 01</span>
+            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Schedule everything in real time.</h2>
+            <p class="font-body text-base text-gray-600 leading-relaxed">Publish practices, games, and tournaments instantly. Sync events to parent calendars in one click. No more missed notifications.</p>
+          </div>
+          <div class="order-1 md:order-2 border-2 border-dark p-6 bg-clinical overflow-hidden brutal-clip">
+            <div class="font-mono text-[10px] text-brand font-bold uppercase mb-4">Schedule Feed</div>
+            <div class="space-y-2">
+              <div class="border-l-2 border-brand bg-white p-3 text-xs">
+                <div class="font-bold text-dark">Morning Practice [PRACTICE]</div>
+                <div class="text-gray-400 text-[10px] mt-1">Court 2 | 7:00 AM - 8:30 AM</div>
+                <div class="flex gap-1 mt-2"><span class="bg-gray-200 text-gray-700 text-[9px] px-1.5 font-bold">9U</span><span class="bg-gray-200 text-gray-700 text-[9px] px-1.5 font-bold">11U</span></div>
+              </div>
+              <div class="border-l-2 border-brand bg-white p-3 text-xs">
+                <div class="font-bold text-dark">Championship Qualifier [GAME]</div>
+                <div class="text-gray-400 text-[10px] mt-1">Main Gym | 5:00 PM - 7:00 PM</div>
+                <div class="flex gap-1 mt-2"><span class="bg-gray-200 text-gray-700 text-[9px] px-1.5 font-bold">11U</span></div>
+              </div>
+              <div class="border-l-2 border-brand bg-white p-3 text-xs">
+                <div class="font-bold text-dark">Spring Tournament [TOURNAMENT]</div>
+                <div class="text-gray-400 text-[10px] mt-1">Sports Complex | 8:00 AM - 6:00 PM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FEATURE 2: MESSAGING (Dashboard Left / Text Right) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="border-2 border-dark p-6 bg-clinical overflow-hidden brutal-clip">
+            <div class="grid grid-cols-3 gap-4">
+              <div class="col-span-1 border-r border-borderLight">
+                <div class="font-mono text-[10px] text-brand font-bold uppercase mb-3">Messages</div>
+                <div class="space-y-1">
+                  <div class="p-2 bg-white border-l-4 border-brand text-xs">
+                    <div class="font-bold text-dark text-[11px]">All Parents</div>
+                    <div class="text-gray-400 text-[9px] truncate">Practice moved...</div>
+                  </div>
+                  <div class="p-2 hover:bg-white text-xs cursor-pointer">
+                    <div class="text-dark font-bold text-[11px]">Coaches</div>
+                    <div class="text-gray-400 text-[9px] truncate">Schedule updated</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-2">
+                <div class="font-mono text-[10px] text-gray-400 font-bold uppercase mb-3">Conversation</div>
+                <div class="space-y-2">
+                  <div class="bg-clinical p-2 rounded text-xs text-gray-600 max-w-xs">Practice moved to Thursday at 5 PM</div>
+                  <div class="bg-brand/20 p-2 rounded text-xs text-dark max-w-xs ml-auto">Thanks for the update!</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 02</span>
+            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Cut through the noise.</h2>
+            <p class="font-body text-base text-gray-600 leading-relaxed">Send urgent updates and payment notifications directly to mobile devices. Skip the cluttered email inbox. Guaranteed delivery in seconds.</p>
+          </div>
+        </div>
+
+        <!-- FEATURE 3: ROSTER (Text Left / Dashboard Right) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="order-2 md:order-1">
+            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 03</span>
+            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Your program, fully organized.</h2>
+            <p class="font-body text-base text-gray-600 leading-relaxed">Manage player info, positions, and contact details in one central directory. Edit profiles, track stats, and manage team assignments instantly.</p>
+          </div>
+          <div class="order-1 md:order-2 border-2 border-dark p-6 bg-white overflow-hidden brutal-clip">
+            <div class="font-mono text-[10px] text-brand font-bold uppercase mb-4">Roster Directory</div>
+            <div class="space-y-2 text-xs">
+              <div class="border border-borderLight p-3 flex justify-between items-center">
+                <div class="font-mono flex-1">
+                  <strong class="text-sm font-display uppercase tracking-tight text-dark block">Noah Dabney</strong>
+                  <span class="text-gray-400 text-[10px]">Jersey #23 | Point Guard</span>
+                  <span class="text-gray-400 text-[10px] block mt-0.5">Age 9 | 9U</span>
+                </div>
+                <button class="border border-dark hover:bg-dark hover:text-white px-2 py-1 font-bold text-[10px] uppercase transition-all">Edit</button>
+              </div>
+              <div class="border border-borderLight p-3 flex justify-between items-center">
+                <div class="font-mono flex-1">
+                  <strong class="text-sm font-display uppercase tracking-tight text-dark block">Marcus Johnson</strong>
+                  <span class="text-gray-400 text-[10px]">Jersey #12 | Shooting Guard</span>
+                  <span class="text-gray-400 text-[10px] block mt-0.5">Age 9 | 9U</span>
+                </div>
+                <button class="border border-dark hover:bg-dark hover:text-white px-2 py-1 font-bold text-[10px] uppercase transition-all">Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FEATURE 4: FINANCIALS (Dashboard Left / Text Right) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="border-2 border-dark p-6 bg-white overflow-hidden brutal-clip">
+            <div class="space-y-3">
+              <div class="border border-borderDark p-4 bg-clinical">
+                <span class="font-mono text-[10px] text-gray-400 uppercase block font-bold">Total Outstanding</span>
+                <div class="font-display text-4xl font-black text-dark mt-1">$2,847.00</div>
+              </div>
+              <div>
+                <h3 class="font-display text-lg font-bold uppercase text-dark mb-2">Player Billing</h3>
+                <div class="space-y-2 text-xs">
+                  <div class="border border-borderLight p-3 flex justify-between items-center">
+                    <div>
+                      <div class="font-bold text-dark">Noah Dabney</div>
+                      <div class="text-gray-400 text-[10px]">Base: $399.00</div>
+                    </div>
+                    <div class="text-right font-mono font-bold">$399.00</div>
+                  </div>
+                  <div class="border border-borderLight p-3 flex justify-between items-center">
+                    <div>
+                      <div class="font-bold text-dark">Marcus Johnson</div>
+                      <div class="text-gray-400 text-[10px]">Adjusted: $349.00</div>
+                    </div>
+                    <div class="text-right font-mono font-bold">$349.00</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 04</span>
+            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Billing made invisible.</h2>
+            <p class="font-body text-base text-gray-600 leading-relaxed">Automate subscriptions and manage custom billing adjustments without the headache. Track outstanding balances and payment status in real-time.</p>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
