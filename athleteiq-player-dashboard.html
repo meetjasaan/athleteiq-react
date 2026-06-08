@@ -1861,6 +1861,17 @@
   }
 
   function loadFromLocalStorage() {
+    // Check if athlete came from login page
+    const athleteSession = localStorage.getItem('athleteiq_athlete_session');
+    if (athleteSession) {
+      const session = JSON.parse(athleteSession);
+      APP_STATE.playerProfile.firstName = session.firstName;
+      APP_STATE.playerProfile.lastName = session.lastName;
+      APP_STATE.playerProfile.email = session.email;
+      APP_STATE.isLoggedIn = true;
+      localStorage.removeItem('athleteiq_athlete_session'); // Clear after reading
+    }
+
     const saved = localStorage.getItem('athleteiq_player_state');
     if (saved) {
       const loaded = JSON.parse(saved);
