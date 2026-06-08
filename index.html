@@ -28,28 +28,9 @@
   }
 </script>
 <style>
-  body {
-    font-family: 'Barlow', sans-serif;
-    background-color: #FFFFFF;
-    color: #080808;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-  }
-  .route-panel {
-    display: flex !important;
-    flex-direction: column;
-    flex: 1;
-  }
-  .route-panel.hidden {
-    display: none !important;
-  }
+  body { font-family: 'Barlow', sans-serif; background-color: #FFFFFF; color: #080808; }
   .grid-bg {
-    background-color: #ffffff;
-    background-image: linear-gradient(rgba(8,8,8,0.015) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(8,8,8,0.015) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(8,8,8,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(8,8,8,0.015) 1px, transparent 1px);
     background-size: 30px 30px;
   }
   .brutal-clip {
@@ -57,548 +38,28 @@
   }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  .hamburger-line { transition: all 0.3s ease; }
-  .hamburger.active .line1 { transform: rotate(45deg) translate(8px, 8px); }
-  .hamburger.active .line2 { opacity: 0; }
-  .hamburger.active .line3 { transform: rotate(-45deg) translate(7px, -7px); }
-  .mobile-menu-enter { animation: slideIn 0.3s ease forwards; }
-  .mobile-menu-exit { animation: slideOut 0.3s ease forwards; }
-  @keyframes slideIn {
-    from { transform: translateX(-100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-  @keyframes slideOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(-100%); opacity: 0; }
-  }
-  /* Mobile nav active state */
-  .mobile-nav-btn.active {
-    color: #F59E0B;
-    opacity: 1;
-  }
-  .mobile-nav-btn.active svg {
-    color: #F59E0B;
-  }
-
-  /* PLAYER DASHBOARD STYLES */
-  .player-dashboard-container {
-    display: none;
-    min-height: 100vh;
-    background-color: #FFFFFF;
-  }
-
-  .player-dashboard-container.active {
-    display: flex;
-  }
-
-  .player-sidebar {
-    width: 250px;
-    background-color: #F9F9F9;
-    border-right: 1px solid #E0E0E0;
-    padding: 24px 0;
-    position: fixed;
-    height: 100vh;
-    overflow-y: auto;
-    z-index: 100;
-  }
-
-  .player-sidebar-header {
-    padding: 0 20px 20px 20px;
-    border-bottom: 1px solid #E0E0E0;
-    margin-bottom: 20px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .player-nav-list {
-    list-style: none;
-  }
-
-  .player-nav-item {
-    padding: 12px 20px;
-    cursor: pointer;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    transition: all 0.2s ease;
-    border-left: 3px solid transparent;
-    color: #888888;
-  }
-
-  .player-nav-item:hover {
-    background-color: #F1F1F1;
-  }
-
-  .player-nav-item.active {
-    color: #080808;
-    background-color: #FFFFFF;
-    border-left-color: #D97706;
-    font-weight: 700;
-  }
-
-  .player-main-content {
-    margin-left: 250px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: #FFFFFF;
-    padding: 32px;
-  }
-
-  .player-view-panel {
-    display: none;
-  }
-
-  .player-view-panel.active {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .player-profile-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 24px;
-    margin-bottom: 32px;
-    padding: 32px;
-    background-color: #F9F9F9;
-    border: 1px solid #E0E0E0;
-    border-left: 3px solid #D97706;
-  }
-
-  .player-avatar {
-    width: 80px;
-    height: 80px;
-    background-color: #D97706;
-    color: #080808;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 32px;
-    flex-shrink: 0;
-  }
-
-  .player-profile-info {
-    flex: 1;
-  }
-
-  .player-profile-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 28px;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-  }
-
-  .player-profile-stats {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: #888888;
-    line-height: 1.6;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  .player-card {
-    border: 1px solid #E0E0E0;
-    border-left: 3px solid #D97706;
-    padding: 24px;
-    background-color: #FFFFFF;
-    transition: all 0.2s ease;
-    margin-bottom: 24px;
-  }
-
-  .player-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  }
-
-  .player-card-header {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 18px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-
-  .player-metric-card {
-    border: 1px solid #E0E0E0;
-    border-left: 3px solid #D97706;
-    padding: 24px;
-    background-color: #FFFFFF;
-    margin-bottom: 16px;
-  }
-
-  .player-metric-value {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 32px;
-    color: #080808;
-    margin-bottom: 8px;
-  }
-
-  .player-metric-time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: #888888;
-  }
-
-  .player-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    padding: 20px;
-    overflow-y: auto;
-  }
-
-  .player-modal.active {
-    display: flex;
-    align-items: flex-end;
-  }
-
-  .player-modal-content {
-    background-color: #FFFFFF;
-    width: 100%;
-    max-width: 500px;
-    margin: auto;
-    padding: 32px;
-    border: 1px solid #E0E0E0;
-    border-top: 3px solid #D97706;
-    position: relative;
-  }
-
-  .player-modal-close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: #888888;
-    transition: all 0.2s ease;
-  }
-
-  .player-modal-close:hover {
-    color: #080808;
-  }
-
-  .player-modal-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 24px;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    padding-right: 40px;
-  }
-
-  .player-form-group {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .player-form-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #888888;
-    margin-bottom: 8px;
-    letter-spacing: 0.05em;
-  }
-
-  .player-form-input,
-  .player-form-select,
-  .player-form-textarea {
-    padding: 12px 16px;
-    border: 1px solid #E0E0E0;
-    font-family: 'Barlow', sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: all 0.2s ease;
-    background-color: #FFFFFF;
-  }
-
-  .player-form-input:focus,
-  .player-form-select:focus,
-  .player-form-textarea:focus {
-    border-color: #D97706;
-    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
-  }
-
-  .player-form-textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-
-  .player-btn {
-    padding: 14px 24px;
-    border: none;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  }
-
-  .player-btn-primary {
-    background-color: #080808;
-    color: white;
-  }
-
-  .player-btn-primary:hover {
-    background-color: #D97706;
-    color: #080808;
-  }
-
-  .player-btn-secondary {
-    background-color: transparent;
-    color: #080808;
-    border: 1px solid #080808;
-  }
-
-  .player-btn-secondary:hover {
-    background-color: #F1F1F1;
-  }
-
-  .player-quick-log-bar {
-    position: fixed;
-    bottom: 0;
-    left: 250px;
-    right: 0;
-    background-color: #F9F9F9;
-    border-top: 1px solid #E0E0E0;
-    padding: 16px 32px;
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-    z-index: 50;
-  }
-
-  .player-quick-log-btn {
-    padding: 12px 20px;
-    background-color: #080808;
-    color: white;
-    border: none;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 11px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
-  }
-
-  .player-quick-log-btn:hover {
-    background-color: #D97706;
-    color: #080808;
-  }
-
-  .player-metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 24px;
-    margin-bottom: 32px;
-  }
-
-  .player-login-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #F9F9F9 0%, #F1F1F1 100%);
-    padding: 20px;
-  }
-
-  .player-login-card {
-    background-color: #FFFFFF;
-    border: 1px solid #E0E0E0;
-    padding: 48px 40px;
-    max-width: 420px;
-    width: 100%;
-  }
-
-  .player-login-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 28px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  .player-login-subtitle {
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px;
-    color: #666666;
-    margin-bottom: 32px;
-  }
-
-  @media (max-width: 900px) {
-    .player-sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-      border-bottom: 1px solid #E0E0E0;
-      border-right: none;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
-    }
-
-    .player-sidebar-header {
-      padding: 16px;
-      margin: 0;
-      border: none;
-      min-width: 150px;
-    }
-
-    .player-nav-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      flex: 1;
-    }
-
-    .player-nav-item {
-      padding: 8px 12px;
-      font-size: 10px;
-      border: none;
-      border-bottom: 2px solid transparent;
-      flex-shrink: 0;
-    }
-
-    .player-nav-item.active {
-      border-bottom: 2px solid #D97706;
-      border-left: none;
-      background-color: transparent;
-    }
-
-    .player-main-content {
-      margin-left: 0;
-      padding: 24px 16px;
-      padding-bottom: 100px;
-    }
-
-    .player-quick-log-bar {
-      left: 0;
-      padding: 12px 16px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .player-main-content {
-      padding: 16px;
-      padding-bottom: 80px;
-    }
-
-    .player-quick-log-btn {
-      padding: 10px 16px;
-      font-size: 9px;
-      flex: 0 1 calc(50% - 4px);
-    }
-
-    .player-profile-header {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 16px;
-    }
-
-    .player-avatar {
-      width: 60px;
-      height: 60px;
-      font-size: 24px;
-    }
-  }
 </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-brand selection:text-dark">
 
   <script>
     const STATE = {
-      activeView: 'home', // Start on public landing page (no nav shown)
+      activeView: 'home',
       directorTab: 'onboarding',
       userRole: 'DIRECTOR',
       clubSlug: 'np-elite',
       sports: ['BASKETBALL'],
-      activeDivisions: ['9U', '11U'],
-      showPublicLink: true,
-      mobileMenuOpen: false,
-      isAuthenticated: false, // Track auth state for nav visibility
-      players: [],
-      events: [],
-      members: [],
-      messageThreads: [],
+      players: [
+        { id: 1, name: 'Noah Dabney', jersey: '0', position: 'Point Guard', dob: '2017-03-12', teams: ['9U', '11U'], balance: 175.00, status: 'Active', parentName: 'Jasaan Dabney', parentContact: 'jasaan@mailhaus.com' },
+        { id: 2, name: 'Marcus Thompson', jersey: '23', position: 'Forward', dob: '2015-08-21', teams: ['11U'], balance: 399.00, status: 'Active', parentName: 'Sarah Thompson', parentContact: 'sarah@thompson.net' },
+        { id: 3, name: 'Isaiah Vance', jersey: '11', position: 'Guard', dob: '2016-11-04', teams: ['10U'], balance: 0.00, status: 'Active', parentName: 'David Vance', parentContact: 'david@vancecoaching.org' }
+      ],
+      events: [
+        { id: 101, title: 'Skills & Drills Practice', type: 'PRACTICE', location: 'Court 2', start: '16:00', end: '17:30', divisions: ['9U', '11U'] },
+        { id: 102, title: 'Regional Tournament Opener', type: 'GAME', location: 'Main Court', start: '11:00', end: '12:30', divisions: ['11U'] }
+      ],
       currentTier: 'FREE',
-      setup_complete: false,
-      isMobile: window.innerWidth < 768,
-      modal: { show: false, actionType: null, playerId: null, val: null },
-      financialDetailModal: { show: false, playerId: null },
-      rosterSearch: '',
-      membersSearch: '',
-      messagingState: {
-        selectedThreadId: null,
-        showArchived: false,
-        displayLimit: 10
-      },
-      rosterEditModal: {
-        show: false,
-        playerId: null,
-        formData: {}
-      },
-      membersEditModal: {
-        show: false,
-        memberId: null,
-        isNew: false,
-        formData: {}
-      },
-      programSettings: {
-        baseSubscriptionPrice: 0,
-        billingAdjustments: {} // { playerId: { basePrice, adjustedPrice, discount, notes, timestamp } }
-      },
-      // PLAYER DASHBOARD STATE
-      playerDashboard: {
-        currentView: 'dashboard',
-        isLoggedIn: false,
-        playerProfile: {
-          firstName: '',
-          lastName: '',
-          email: '',
-          age: 9,
-          height: "4'8\"",
-          weight: 72,
-          position: 'Point Guard',
-          sport: 'Basketball',
-          wingspan: 66,
-          verticalJump: 18,
-          mileTime: '8:45',
-          proAgilityShuttle: 12.5
-        },
-        logs: {
-          training: [],
-          shooting: [],
-          nutrition: [],
-          sleep: [],
-          recovery: []
-        }
-      }
+      modal: { show: false, actionType: null, playerId: null, val: null }
     };
 
     function getTierCap(tier) {
@@ -609,63 +70,13 @@
       return 3;
     }
 
-    function getTierName(tier) {
-      if (tier === 'FREE') return 'Try It Free';
-      if (tier === 'TIER_1') return 'Small Club';
-      if (tier === 'TIER_2') return 'Mid-Size Club';
-      if (tier === 'TIER_3') return 'Large Organization';
-      return 'Try It Free';
-    }
-
-    function toggleMobileMenu() {
-      STATE.mobileMenuOpen = !STATE.mobileMenuOpen;
-      const hamburger = document.getElementById('hamburger-btn');
-      const mobileMenu = document.getElementById('mobile-menu-drawer');
-
-      if (hamburger) hamburger.classList.toggle('active');
-      if (mobileMenu) mobileMenu.classList.toggle('hidden');
-    }
-
-    function closeMobileMenu() {
-      STATE.mobileMenuOpen = false;
-      const hamburger = document.getElementById('hamburger-btn');
-      const mobileMenu = document.getElementById('mobile-menu-drawer');
-
-      if (hamburger) hamburger.classList.remove('active');
-      if (mobileMenu) mobileMenu.classList.add('hidden');
-    }
-
     function updateDOM() {
-      console.log('updateDOM called - activeView:', STATE.activeView);
       document.querySelectorAll('.route-panel').forEach(panel => panel.classList.add('hidden'));
       const targetPanel = document.getElementById(`view-${STATE.activeView}`);
-      console.log('Target panel:', targetPanel, 'ID:', `view-${STATE.activeView}`);
-      if (targetPanel) {
-        targetPanel.classList.remove('hidden');
-        console.log('Removed hidden class from', `view-${STATE.activeView}`);
-      } else {
-        console.log('ERROR: Could not find element with ID:', `view-${STATE.activeView}`);
-      }
-
-      // === AUTHENTICATED ROUTE LOGIC ===
-      // Show mobile bottom nav ONLY on authenticated routes (director, player)
-      const authenticatedRoutes = ['director', 'player'];
-      const mobileBottomNav = document.getElementById('mobile-bottom-nav');
-      if (mobileBottomNav) {
-        if (authenticatedRoutes.includes(STATE.activeView)) {
-          mobileBottomNav.classList.remove('hidden');
-        } else {
-          mobileBottomNav.classList.add('hidden');
-        }
-      }
+      if (targetPanel) targetPanel.classList.remove('hidden');
 
       if (STATE.activeView === 'director') {
         renderDirectorDashboard();
-        // Auto-route from onboarding to roster if setup is complete
-        if (STATE.setup_complete && STATE.directorTab === 'onboarding') {
-          STATE.directorTab = 'roster';
-          renderDirectorDashboard();
-        }
       }
       if (STATE.activeView === 'player') {
         renderPlayerDashboard();
@@ -674,7 +85,6 @@
         initPublicRegistrationView();
       }
 
-      closeMobileMenu();
       window.scrollTo(0,0);
     }
 
@@ -682,14 +92,8 @@
       window.location.hash = view;
     }
 
-    function navigateTo(view) {
-      STATE.activeView = view;
-      updateDOM();
-    }
-
     window.addEventListener('hashchange', () => {
       const view = window.location.hash.replace('#', '') || 'home';
-      console.log('HASHCHANGE FIRED - view:', view);
       STATE.activeView = view;
       updateDOM();
     });
@@ -721,343 +125,6 @@
         if (el) el.scrollIntoView({ behavior: 'smooth' });
       }
     }
-
-    function openPlanModal() {
-      const modal = document.getElementById('plan-upgrade-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-      }
-    }
-
-    function closePlanModal() {
-      const modal = document.getElementById('plan-upgrade-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    }
-
-    function openFinancialDetailModal(playerId) {
-      STATE.financialDetailModal.show = true;
-      STATE.financialDetailModal.playerId = playerId;
-      const modal = document.getElementById('financial-detail-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        renderFinancialDetail(playerId);
-      }
-    }
-
-    function closeFinancialDetailModal() {
-      STATE.financialDetailModal.show = false;
-      STATE.financialDetailModal.playerId = null;
-      const modal = document.getElementById('financial-detail-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    }
-
-    function openAdjustFeeModal(playerId) {
-      const player = STATE.players.find(p => p.id === playerId);
-      if (!player) return;
-
-      const modal = document.getElementById('adjust-fee-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.getElementById('adjust-fee-player-name').innerText = player.name;
-        document.getElementById('adjust-fee-current').innerText = `$${player.balance.toFixed(2)}`;
-        document.getElementById('adjust-fee-input').value = player.balance;
-        document.getElementById('adjust-fee-input').dataset.playerId = playerId;
-      }
-    }
-
-    function closeAdjustFeeModal() {
-      const modal = document.getElementById('adjust-fee-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    }
-
-    function submitAdjustFee() {
-      const input = document.getElementById('adjust-fee-input');
-      const newBalance = parseFloat(input.value);
-      const playerId = parseInt(input.dataset.playerId);
-
-      if (isNaN(newBalance) || newBalance < 0) {
-        alert('Please enter a valid balance amount');
-        return;
-      }
-
-      const player = STATE.players.find(p => p.id === playerId);
-      if (player) {
-        player.balance = newBalance;
-        closeAdjustFeeModal();
-        renderFinancialDetail(playerId);
-        renderDirectorDashboard();
-        alert(`Fee adjusted to $${newBalance.toFixed(2)}`);
-      }
-    }
-
-    // === PROGRAM BILLING MANAGEMENT ===
-    function updateProgramPrice() {
-      const input = document.getElementById('program-base-price');
-      const price = parseFloat(input.value);
-
-      if (isNaN(price) || price < 0) {
-        alert('Please enter a valid price');
-        return;
-      }
-
-      STATE.programSettings.baseSubscriptionPrice = price;
-      input.value = `$${price.toFixed(2)}`;
-      alert(`Base subscription price set to $${price.toFixed(2)}`);
-    }
-
-    function openAdjustBillingModal(playerId) {
-      const player = STATE.players.find(p => p.id === playerId);
-      if (!player) return;
-
-      const adjustment = STATE.programSettings.billingAdjustments[playerId] || {};
-      const basePrice = adjustment.basePrice || STATE.programSettings.baseSubscriptionPrice;
-      const adjustedPrice = adjustment.adjustedPrice || basePrice;
-
-      const modal = document.getElementById('adjust-billing-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.getElementById('adjust-billing-player-name').innerText = player.name;
-        document.getElementById('adjust-billing-base').innerText = `$${basePrice.toFixed(2)}`;
-        document.getElementById('adjust-billing-amount').value = adjustedPrice;
-        document.getElementById('adjust-billing-discount').value = (basePrice - adjustedPrice).toFixed(2);
-        document.getElementById('adjust-billing-notes').value = adjustment.notes || '';
-        document.getElementById('adjust-billing-amount').dataset.playerId = playerId;
-      }
-    }
-
-    function closeAdjustBillingModal() {
-      const modal = document.getElementById('adjust-billing-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    }
-
-    function submitAdjustBilling() {
-      const input = document.getElementById('adjust-billing-amount');
-      const playerId = parseInt(input.dataset.playerId);
-      const adjustedPrice = parseFloat(input.value);
-      const notes = document.getElementById('adjust-billing-notes').value.trim();
-
-      if (isNaN(adjustedPrice) || adjustedPrice < 0) {
-        alert('Please enter a valid amount');
-        return;
-      }
-
-      const basePrice = STATE.programSettings.baseSubscriptionPrice;
-      const discount = basePrice - adjustedPrice;
-
-      STATE.programSettings.billingAdjustments[playerId] = {
-        basePrice: basePrice,
-        adjustedPrice: adjustedPrice,
-        discount: discount,
-        notes: notes,
-        timestamp: new Date().toISOString()
-      };
-
-      closeAdjustBillingModal();
-      renderFinancialsTabLedger();
-      alert(`Billing adjusted: Base $${basePrice.toFixed(2)} → $${adjustedPrice.toFixed(2)} (${discount > 0 ? 'Discount' : 'Premium'} of $${Math.abs(discount).toFixed(2)})`);
-    }
-
-    function markPlayerAsPaid(playerId) {
-      const player = STATE.players.find(p => p.id === playerId);
-      if (player) {
-        player.balance = 0;
-        player.paidStatus = 'Paid in Full';
-        renderFinancialDetail(playerId);
-        renderDirectorDashboard();
-      }
-    }
-
-    function openAdminStubModal() {
-      const modal = document.getElementById('admin-stub-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        // Populate age group dropdown
-        const select = document.getElementById('stub-player-division');
-        if (select) {
-          select.innerHTML = '';
-          STATE.activeDivisions.forEach(d => {
-            const opt = document.createElement('option');
-            opt.value = d;
-            opt.innerText = d;
-            select.appendChild(opt);
-          });
-        }
-      }
-    }
-
-    function closeAdminStubModal() {
-      const modal = document.getElementById('admin-stub-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        // Clear form
-        document.getElementById('stub-player-name').value = '';
-        document.getElementById('stub-player-jersey').value = '';
-        document.getElementById('stub-player-pos').value = '';
-      }
-    }
-
-    function createAdminStub(e) {
-      e.preventDefault();
-      const capLimit = getTierCap(STATE.currentTier);
-      if (STATE.players.length >= capLimit) {
-        alert('Roster limit reached. Upgrade your plan to add more players.');
-        return;
-      }
-
-      const name = document.getElementById('stub-player-name').value.trim();
-      const jersey = document.getElementById('stub-player-jersey').value.trim();
-      const pos = document.getElementById('stub-player-pos').value.trim();
-      const div = document.getElementById('stub-player-division').value;
-
-      if (!name) {
-        alert('Player name is required.');
-        return;
-      }
-
-      const newId = STATE.players.length ? Math.max(...STATE.players.map(p => p.id)) + 1 : 1;
-
-      // Create player in Roster
-      STATE.players.push({
-        id: newId,
-        name: name,
-        jersey: jersey || Math.floor(Math.random() * 99).toString(),
-        position: pos || 'Unassigned',
-        dob: '',
-        teams: [div],
-        balance: 0,
-        status: 'Administrative Pending',
-        parentName: '',
-        parentEmail: '',
-        parentPhone: '',
-        paidStatus: 'Not Set'
-      });
-
-      // Auto-sync: Create corresponding member entry as "Athlete"
-      const memberId = STATE.members.length ? Math.max(...STATE.members.map(m => m.id)) + 1 : 1;
-      STATE.members.push({
-        id: memberId,
-        name: name,
-        role: 'Athlete',
-        email: `athlete-${newId}@athleteiqapp.com`,
-        phone: '',
-        assignedTeams: [div]
-      });
-
-      closeAdminStubModal();
-      updateMessagingRecipients();
-      renderDirectorDashboard();
-      alert(`${name} added to roster as an admin player. They can complete their profile once they sign up.`);
-    }
-    // === SESSION STATE PERSISTENCE ===
-    function saveState() {
-      try {
-        sessionStorage.setItem('athleteiqState', JSON.stringify(STATE));
-      } catch(e) {
-        console.warn('SessionStorage save failed:', e);
-      }
-    }
-
-    function loadState() {
-      try {
-        const saved = sessionStorage.getItem('athleteiqState');
-        if (saved) {
-          const loaded = JSON.parse(saved);
-          Object.assign(STATE, loaded);
-          console.log('State loaded from session');
-        }
-      } catch(e) {
-        console.warn('SessionStorage load failed:', e);
-      }
-    }
-
-    // Auto-save state when important data changes
-    const origCreateAdminStub = createAdminStub;
-    window.createAdminStub = function(e) {
-      origCreateAdminStub.call(this, e);
-      saveState();
-    };
-
-    // === MOBILE RESPONSIVE LOGIC ===
-    function detectMobileView() {
-      STATE.isMobile = window.innerWidth < 768;
-      updateMobileLayout();
-    }
-
-    function updateMobileLayout() {
-      const sidebar = document.getElementById('sidebar');
-      const mobileNavBar = document.getElementById('mobile-bottom-nav');
-      const desktopNav = document.getElementById('desktop-sidebar');
-
-      if (STATE.isMobile) {
-        // Show mobile bottom nav, hide desktop sidebar
-        if (mobileNavBar) mobileNavBar.classList.remove('hidden');
-        if (desktopNav) desktopNav.classList.add('hidden');
-        if (sidebar) sidebar.classList.add('hidden');
-      } else {
-        // Show desktop sidebar, hide mobile bottom nav
-        if (mobileNavBar) mobileNavBar.classList.add('hidden');
-        if (desktopNav) desktopNav.classList.remove('hidden');
-        if (sidebar) sidebar.classList.remove('hidden');
-      }
-    }
-
-    // === SETUP COMPLETION LOGIC ===
-    function completeSetup() {
-      STATE.setup_complete = true;
-      localStorage.setItem('athleteiq_setup_complete', 'true');
-      STATE.directorTab = 'roster'; // Default to roster after setup
-      renderDirectorDashboard();
-      updateDOMForSetupComplete();
-    }
-
-    function updateDOMForSetupComplete() {
-      // Update active tab styling
-      document.querySelectorAll('[id^="tab-"], [id^="mobile-tab-"]').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      const rosterBtn = document.getElementById('tab-roster') || document.getElementById('mobile-tab-roster');
-      if (rosterBtn) {
-        rosterBtn.classList.add('text-dark', 'bg-white', 'shadow-sm', 'border-l-4', 'border-brand', 'font-black');
-      }
-    }
-
-    function loadSetupState() {
-      const savedSetup = localStorage.getItem('athleteiq_setup_complete');
-      if (savedSetup === 'true') {
-        STATE.setup_complete = true;
-        STATE.directorTab = 'roster'; // Default tab after setup
-      }
-    }
-
-    // Listen for window resize
-    window.addEventListener('resize', () => {
-      detectMobileView();
-    });
-
-    // Load setup state on page load
-    window.addEventListener('DOMContentLoaded', () => {
-      loadSetupState();
-      detectMobileView();
-      updateDOM();
-    });
   </script>
 
   <!-- NAVIGATION BAR -->
@@ -1066,276 +133,131 @@
       ATHLETEIQ
     </div>
 
-    <!-- DESKTOP NAVIGATION -->
-    <div class="hidden md:flex items-center gap-4 font-mono text-[11px] uppercase font-bold text-gray-500 overflow-x-auto whitespace-nowrap no-scrollbar py-1 pr-2">
-      <a onclick="routeTo('home'); return false;" class="hover:text-dark cursor-pointer transition-colors">Home</a>
-      <a onclick="scrollToSection('features-block'); return false;" class="hover:text-dark cursor-pointer transition-colors">Features</a>
-      <a onclick="scrollToSection('pricing-block'); return false;" class="hover:text-dark cursor-pointer transition-colors">Pricing</a>
-      <a href="#login" class="hover:text-dark cursor-pointer transition-colors">Sign In</a>
-      <a href="#signup" class="text-brand hover:text-dark cursor-pointer transition-colors font-extrabold">[ Get Started ]</a>
-    </div>
-
-    <!-- MOBILE HAMBURGER & BUTTON -->
-    <div class="md:hidden flex items-center gap-2">
-      <a href="#signup" class="bg-dark text-white font-display font-extrabold text-sm px-4 py-2 flex items-center justify-center brutal-clip hover:bg-brand hover:text-dark transition-all">Sign Up</a>
-      <button id="hamburger-btn" onclick="toggleMobileMenu()" class="flex flex-col gap-1.5 w-6 h-6 justify-center hamburger">
-        <span class="line1 hamburger-line w-full h-0.5 bg-dark block"></span>
-        <span class="line2 hamburger-line w-full h-0.5 bg-dark block"></span>
-        <span class="line3 hamburger-line w-full h-0.5 bg-dark block"></span>
-      </button>
+    <div class="flex items-center gap-4 font-mono text-[11px] uppercase font-bold text-gray-500 overflow-x-auto whitespace-nowrap no-scrollbar py-1 pr-2">
+      <a onclick="routeTo('home')" class="hover:text-dark cursor-pointer transition-colors">Home</a>
+      <a onclick="scrollToSection('features-block')" class="hover:text-dark cursor-pointer transition-colors">Features</a>
+      <a onclick="scrollToSection('pricing-block')" class="hover:text-dark cursor-pointer transition-colors">Pricing</a>
+      <a onclick="routeTo('public-register')" class="hover:text-dark cursor-pointer transition-colors text-amber-600 font-bold">[ Public Roster Link ]</a>
+      <a onclick="routeTo('login')" class="hover:text-dark cursor-pointer transition-colors">Sign In</a>
+      <a onclick="routeTo('signup')" class="text-brand hover:text-dark cursor-pointer transition-colors font-extrabold">[ Sign Up Free ]</a>
     </div>
   </nav>
 
-  <!-- MOBILE MENU DRAWER -->
-  <div id="mobile-menu-drawer" class="hidden fixed top-14 left-0 right-0 bg-white border-b border-borderLight z-40 md:!hidden">
-    <div class="flex flex-col divide-y divide-borderLight max-h-[calc(100vh-56px)] overflow-y-auto">
-      <a onclick="routeTo('home'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Home</a>
-      <a onclick="scrollToSection('features-block'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Features</a>
-      <a onclick="scrollToSection('pricing-block'); closeMobileMenu(); return false;" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Pricing</a>
-      <a href="#login" onclick="closeMobileMenu();" class="px-4 py-3 font-mono text-sm font-bold text-dark hover:bg-clinical transition-colors">Sign In</a>
-    </div>
-  </div>
-
   <!-- HOME VIEW -->
   <div id="view-home" class="route-panel pt-14 flex-1">
-    <!-- HERO SECTION: WHITE BACKGROUND WITH TECHNICAL GRID -->
-    <div class="relative bg-white py-32 px-4 text-center overflow-hidden grid-bg">
-      <div class="relative z-10">
-        <span class="font-mono text-[11px] text-dark uppercase tracking-widest font-bold block mb-3">Built for Youth Leagues & Teams</span>
+    <div class="grid-bg relative border-b border-borderLight bg-white py-20 px-4 text-center">
+      <span class="font-mono text-[11px] text-brand uppercase tracking-widest font-bold block mb-3">// BUILT FOR YOUTH LEAGUES & TEAMS</span>
       <h1 class="font-display text-4xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-dark max-w-4xl mx-auto mb-6">
         Player Stats & Team Schedules,<br>Simplified.
       </h1>
-      <p class="font-body text-gray-600 text-base md:text-lg max-w-2xl mx-auto mb-8 text-balance">
+      <p class="font-body text-gray-500 text-base md:text-lg max-w-2xl mx-auto mb-8 text-balance">
         Track rosters, log game statistics, manage upcoming schedules, and communicate directly with parents—all from one clean mobile dashboard.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <a href="#signup" class="inline-block w-full sm:w-auto bg-dark text-white font-display text-base tracking-wider uppercase font-black px-8 py-3.5 brutal-clip hover:bg-brand hover:text-dark transition-all duration-200 text-center">
-          Get Started →
-        </a>
+        <button onclick="routeTo('signup')" class="w-full sm:w-auto bg-dark text-white font-display text-base tracking-wider uppercase font-black px-8 py-3.5 brutal-clip hover:bg-brand hover:text-dark transition-all duration-200">
+          Open Account Portal →
+        </button>
         <button onclick="scrollToSection('features-block')" class="w-full sm:w-auto border-2 border-dark text-dark font-display text-base tracking-wider uppercase font-black px-8 py-3 brutal-clip hover:bg-clinical2 transition-all duration-200">
           Explore Features
         </button>
       </div>
+    </div>
+
+    <div id="features-block" class="py-16 px-4 max-w-7xl mx-auto bg-white border-b border-borderLight">
+      <div class="border-l-4 border-brand pl-4 mb-12">
+        <h2 class="font-display text-3xl font-extrabold uppercase tracking-tight text-dark">Platform Core Features</h2>
+        <p class="font-mono text-xs text-gray-400">Everything you need to operate your program effectively</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-borderLight border border-borderLight">
+        <div class="p-6 md:p-8 bg-white">
+          <h3 class="font-display text-lg font-bold uppercase text-dark mb-2">Track Player Stats</h3>
+          <p class="font-body text-xs text-gray-500 leading-relaxed">
+            Log raw individual game box scores across multiple sports like Basketball, Football, Baseball, and Volleyball. Keep historical records of performance parameters over time.
+          </p>
+        </div>
+        <div class="p-6 md:p-8 bg-white">
+          <h3 class="font-display text-lg font-bold uppercase text-dark mb-2">Centralized Schedules</h3>
+          <p class="font-body text-xs text-gray-500 leading-relaxed">
+            Publish practices, compliant league games, and tournament windows in real time. Parents can instantly submit RSVP attendance status and export events directly onto calendar layers.
+          </p>
+        </div>
+        <div class="p-6 md:p-8 bg-white">
+          <h3 class="font-display text-lg font-bold uppercase text-dark mb-2">Direct Parent Texting</h3>
+          <p class="font-body text-xs text-gray-500 leading-relaxed">
+            Dispatch urgent updates, schedule corrections, or payment notifications directly to parent mobile devices using clear text strings, skipping cluttered email applications entirely.
+          </p>
+        </div>
       </div>
     </div>
 
-    <!-- FEATURES SECTION: WHITE BACKGROUND WITH MARKERS -->
-    <div id="features-block" class="bg-white px-4 py-32">
-      <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-24">
-          <div class="font-mono text-sm text-dark font-black uppercase tracking-widest mb-4">— [ PLATFORM FEATURES ] —</div>
-          <h2 class="font-display text-6xl font-black text-dark uppercase">Core Capabilities</h2>
-          <p class="font-body text-lg text-gray-600 mt-4">Everything you need to operate your program effectively</p>
-        </div>
-
-      <!-- FEATURE SHOWCASE SECTIONS -->
-      <div class="space-y-24">
-
-        <!-- FEATURE 1: SCHEDULES (Text Left / Dashboard Right) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div class="order-2 md:order-1">
-            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 01</span>
-            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Schedule everything in real time.</h2>
-            <p class="font-body text-base text-gray-600 leading-relaxed">Publish practices, games, and tournaments instantly. Sync events to parent calendars in one click. No more missed notifications.</p>
-          </div>
-          <div class="order-1 md:order-2 border-2 border-dark p-6 bg-white overflow-hidden brutal-clip">
-            <div class="font-mono text-[10px] text-brand font-bold uppercase mb-4">Schedule Feed</div>
-            <div class="space-y-2">
-              <div class="border-l-2 border-brand bg-white p-3 text-xs">
-                <div class="font-bold text-dark">Morning Practice [PRACTICE]</div>
-                <div class="text-gray-400 text-[10px] mt-1">Court 2 | 7:00 AM - 8:30 AM</div>
-                <div class="flex gap-1 mt-2"><span class="bg-gray-200 text-gray-700 text-[9px] px-1.5 font-bold">9U</span><span class="bg-gray-200 text-gray-700 text-[9px] px-1.5 font-bold">11U</span></div>
-              </div>
-              <div class="border-l-2 border-brand bg-white p-3 text-xs">
-                <div class="font-bold text-dark">Championship Qualifier [GAME]</div>
-                <div class="text-gray-400 text-[10px] mt-1">Main Gym | 5:00 PM - 7:00 PM</div>
-                <div class="flex gap-1 mt-2"><span class="bg-gray-200 text-gray-700 text-[9px] px-1.5 font-bold">11U</span></div>
-              </div>
-              <div class="border-l-2 border-brand bg-white p-3 text-xs">
-                <div class="font-bold text-dark">Spring Tournament [TOURNAMENT]</div>
-                <div class="text-gray-400 text-[10px] mt-1">Sports Complex | 8:00 AM - 6:00 PM</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FEATURE 2: MESSAGING (Dashboard Left / Text Right) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div class="border-2 border-dark p-6 bg-white overflow-hidden brutal-clip">
-            <div class="grid grid-cols-3 gap-4">
-              <div class="col-span-1 border-r border-borderLight">
-                <div class="font-mono text-[10px] text-brand font-bold uppercase mb-3">Messages</div>
-                <div class="space-y-1">
-                  <div class="p-2 bg-white border-l-4 border-brand text-xs">
-                    <div class="font-bold text-dark text-[11px]">All Parents</div>
-                    <div class="text-gray-400 text-[9px] truncate">Practice moved...</div>
-                  </div>
-                  <div class="p-2 hover:bg-white text-xs cursor-pointer">
-                    <div class="text-dark font-bold text-[11px]">Coaches</div>
-                    <div class="text-gray-400 text-[9px] truncate">Schedule updated</div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-span-2">
-                <div class="font-mono text-[10px] text-gray-400 font-bold uppercase mb-3">Conversation</div>
-                <div class="space-y-2">
-                  <div class="bg-gray-100 p-2 rounded text-xs text-gray-700 max-w-xs">Practice moved to Thursday at 5 PM</div>
-                  <div class="bg-brand/20 p-2 rounded text-xs text-dark max-w-xs ml-auto">Thanks for the update!</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 02</span>
-            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Cut through the noise.</h2>
-            <p class="font-body text-base text-gray-600 leading-relaxed">Send urgent updates and payment notifications directly to mobile devices. Skip the cluttered email inbox. Guaranteed delivery in seconds.</p>
-          </div>
-        </div>
-
-        <!-- FEATURE 3: ROSTER (Text Left / Dashboard Right) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div class="order-2 md:order-1">
-            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 03</span>
-            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Your program, fully organized.</h2>
-            <p class="font-body text-base text-gray-600 leading-relaxed">Manage player info, positions, and contact details in one central directory. Edit profiles, track stats, and manage team assignments instantly.</p>
-          </div>
-          <div class="order-1 md:order-2 border-2 border-dark p-6 bg-white overflow-hidden brutal-clip">
-            <div class="font-mono text-[10px] text-brand font-bold uppercase mb-4">Roster Directory</div>
-            <div class="space-y-2 text-xs">
-              <div class="border border-borderLight p-3 flex justify-between items-center">
-                <div class="font-mono flex-1">
-                  <strong class="text-sm font-display uppercase tracking-tight text-dark block">Noah Dabney</strong>
-                  <span class="text-gray-400 text-[10px]">Jersey #23 | Point Guard</span>
-                  <span class="text-gray-400 text-[10px] block mt-0.5">Age 9 | 9U</span>
-                </div>
-                <button class="border border-dark hover:bg-dark hover:text-white px-2 py-1 font-bold text-[10px] uppercase transition-all">Edit</button>
-              </div>
-              <div class="border border-borderLight p-3 flex justify-between items-center">
-                <div class="font-mono flex-1">
-                  <strong class="text-sm font-display uppercase tracking-tight text-dark block">Marcus Johnson</strong>
-                  <span class="text-gray-400 text-[10px]">Jersey #12 | Shooting Guard</span>
-                  <span class="text-gray-400 text-[10px] block mt-0.5">Age 9 | 9U</span>
-                </div>
-                <button class="border border-dark hover:bg-dark hover:text-white px-2 py-1 font-bold text-[10px] uppercase transition-all">Edit</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FEATURE 4: FINANCIALS (Dashboard Left / Text Right) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div class="border-2 border-dark p-6 bg-white overflow-hidden brutal-clip">
-            <div class="space-y-3">
-              <div class="border border-borderDark p-4 bg-gray-100">
-                <span class="font-mono text-[10px] text-gray-400 uppercase block font-bold">Total Outstanding</span>
-                <div class="font-display text-4xl font-black text-dark mt-1">$2,847.00</div>
-              </div>
-              <div>
-                <h3 class="font-display text-lg font-bold uppercase text-dark mb-2">Player Billing</h3>
-                <div class="space-y-2 text-xs">
-                  <div class="border border-borderLight p-3 flex justify-between items-center">
-                    <div>
-                      <div class="font-bold text-dark">Noah Dabney</div>
-                      <div class="text-gray-400 text-[10px]">Base: $399.00</div>
-                    </div>
-                    <div class="text-right font-mono font-bold">$399.00</div>
-                  </div>
-                  <div class="border border-borderLight p-3 flex justify-between items-center">
-                    <div>
-                      <div class="font-bold text-dark">Marcus Johnson</div>
-                      <div class="text-gray-400 text-[10px]">Adjusted: $349.00</div>
-                    </div>
-                    <div class="text-right font-mono font-bold">$349.00</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 04</span>
-            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Billing made invisible.</h2>
-            <p class="font-body text-base text-gray-600 leading-relaxed">Automate subscriptions and manage custom billing adjustments without the headache. Track outstanding balances and payment status in real-time.</p>
-          </div>
-        </div>
-
+    <div id="pricing-block" class="py-16 px-4 max-w-7xl mx-auto bg-white">
+      <div class="border-l-4 border-brand pl-4 mb-10">
+        <h2 class="font-display text-3xl font-extrabold uppercase tracking-tight text-dark">Simple League Pricing</h2>
+        <p class="font-mono text-xs text-gray-400">Choose the right size for your program or club</p>
       </div>
-    </div>
 
-    <!-- PRICING SECTION: WHITE BACKGROUND -->
-    <div id="pricing-block" class="bg-white py-32 px-4">
-      <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-24">
-          <div class="font-mono text-sm text-dark font-black uppercase mb-4">— [ PRICING PLANS ] —</div>
-          <h2 class="font-display text-6xl font-black text-dark uppercase">Simple League Pricing</h2>
-          <p class="font-body text-lg text-gray-600 mt-4">Choose the right size for your program or club</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="border border-borderDark p-5 flex flex-col justify-between bg-white">
+          <div>
+            <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">PLAN 01</div>
+            <h3 class="font-display text-xl font-black text-dark uppercase">Try It Free</h3>
+            <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$0 <span class="text-xs font-mono text-gray-400 font-normal">/ FOREVER</span></div>
+            <p class="font-body text-xs text-gray-500 mb-4">Great for test-driving features or small local setups.</p>
+            <ul class="space-y-2 font-body text-xs text-gray-600 border-t border-borderLight pt-3">
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Up to 3 players total</li>
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Locked spots (no swapping)</li>
+              <li class="flex items-center gap-1.5 font-semibold">Standard roster limit</li>
+            </ul>
+          </div>
+          <button onclick="changeSubscriptionTier('FREE')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors">[ Select Plan ]</button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <!-- PLAN 01: FREE -->
-          <div class="border border-borderDark p-5 flex flex-col justify-between bg-white brutal-clip">
-            <div>
-              <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">Plan 01</div>
-              <h3 class="font-display text-xl font-black text-dark uppercase">Try It Free</h3>
-              <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$0 <span class="text-xs font-mono text-gray-400 font-normal">/ Forever</span></div>
-              <p class="font-body text-xs text-gray-500 mb-4">Great for test-driving features or small local setups.</p>
-              <ul class="space-y-2 font-body text-xs text-gray-500 border-t border-borderLight pt-3">
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Up to 3 players total</li>
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Locked spots (no swapping)</li>
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Standard roster limit</li>
-              </ul>
-            </div>
-            <button onclick="changeSubscriptionTier('FREE')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors brutal-clip">[ Select Plan ]</button>
+        <div class="border border-borderDark p-5 flex flex-col justify-between bg-white">
+          <div>
+            <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">PLAN 02</div>
+            <h3 class="font-display text-xl font-black text-dark uppercase">Small Club</h3>
+            <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$249 <span class="text-xs font-mono text-gray-400 font-normal">/ MONTH</span></div>
+            <p class="font-body text-xs text-gray-500 mb-4">Perfect for growing individual teams or small groups.</p>
+            <ul class="space-y-2 font-body text-xs text-gray-600 border-t border-borderLight pt-3">
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> 1 to 24 active players</li>
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Multi-sport stat forms</li>
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Balance & fee manager</li>
+            </ul>
           </div>
+          <button onclick="changeSubscriptionTier('TIER_1')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors">[ Select Plan ]</button>
+        </div>
 
-          <!-- PLAN 02: SMALL CLUB -->
-          <div class="border border-borderDark p-5 flex flex-col justify-between bg-white brutal-clip">
-            <div>
-              <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">Plan 02</div>
-              <h3 class="font-display text-xl font-black text-dark uppercase">Small Club</h3>
-              <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$249 <span class="text-xs font-mono text-gray-400 font-normal">/ Month</span></div>
-              <p class="font-body text-xs text-gray-500 mb-4">Perfect for growing individual teams or small groups.</p>
-              <ul class="space-y-2 font-body text-xs text-gray-500 border-t border-borderLight pt-3">
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> 1 to 24 active players</li>
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Multi-sport stat forms</li>
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Balance & fee manager</li>
-              </ul>
-            </div>
-            <button onclick="changeSubscriptionTier('TIER_1')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors brutal-clip">[ Select Plan ]</button>
+        <div class="border-2 border-dark p-5 flex flex-col justify-between bg-clinical relative">
+          <div class="absolute -top-3 right-4 bg-dark text-white font-mono text-[9px] font-bold px-2 py-0.5">MOST POPULAR</div>
+          <div>
+            <div class="font-mono text-[9px] text-brand font-bold uppercase mb-1">PLAN 03</div>
+            <h3 class="font-display text-xl font-black text-dark uppercase">Mid-Size Club</h3>
+            <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$399 <span class="text-xs font-mono text-gray-400 font-normal">/ MONTH</span></div>
+            <p class="font-body text-xs text-gray-500 mb-4">Designed for larger travel leagues and travel programs.</p>
+            <ul class="space-y-2 font-body text-xs text-gray-600 border-t border-borderLight pt-3">
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> 25 to 49 active players</li>
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Calendar integrations</li>
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Custom position stats</li>
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Group texting alerts</li>
+            </ul>
           </div>
+          <button onclick="changeSubscriptionTier('TIER_2')" class="mt-6 w-full bg-dark text-white py-2 font-mono text-[11px] uppercase font-bold hover:bg-brand hover:text-dark transition-all brutal-clip">[ Select Plan ]</button>
+        </div>
 
-          <!-- PLAN 03: MID-SIZE (FEATURED) -->
-          <div class="border-2 border-dark p-5 flex flex-col justify-between bg-white brutal-clip relative pt-8">
-            <div class="absolute top-2 right-4 bg-dark text-white font-mono text-[9px] font-bold px-2 py-0.5">MOST POPULAR</div>
-            <div>
-              <div class="font-mono text-[9px] text-brand font-bold uppercase mb-1">Plan 03</div>
-              <h3 class="font-display text-xl font-black text-dark uppercase">Mid-Size Club</h3>
-              <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$399 <span class="text-xs font-mono text-gray-400 font-normal">/ Month</span></div>
-              <p class="font-body text-xs text-gray-500 mb-4">Designed for larger travel leagues and travel programs.</p>
-              <ul class="space-y-2 font-body text-xs text-gray-500 border-t border-borderLight pt-3">
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> 25 to 49 active players</li>
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Calendar integrations</li>
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Custom position stats</li>
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Group texting alerts</li>
-              </ul>
-            </div>
-            <button onclick="changeSubscriptionTier('TIER_2')" class="mt-6 w-full bg-dark text-white py-2 font-mono text-[11px] uppercase font-bold hover:bg-brand hover:text-dark transition-all brutal-clip">[ Select Plan ]</button>
+        <div class="border border-borderDark p-5 flex flex-col justify-between bg-white">
+          <div>
+            <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">PLAN 04</div>
+            <h3 class="font-display text-xl font-black text-dark uppercase">Large Organization</h3>
+            <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$499 <span class="text-xs font-mono text-gray-400 font-normal">/ MONTH</span></div>
+            <p class="font-body text-xs text-gray-500 mb-4">For complete multi-sport organizations and major leagues.</p>
+            <ul class="space-y-2 font-body text-xs text-gray-600 border-t border-borderLight pt-3">
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> 50 to 99 active players</li>
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Advanced dashboard access</li>
+              <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Priority support line</li>
+            </ul>
           </div>
-
-          <!-- PLAN 04: LARGE ORG -->
-          <div class="border border-borderDark p-5 flex flex-col justify-between bg-white brutal-clip">
-            <div>
-              <div class="font-mono text-[9px] text-gray-400 font-bold uppercase mb-1">Plan 04</div>
-              <h3 class="font-display text-xl font-black text-dark uppercase">Large Organization</h3>
-              <div class="font-display text-3xl font-black text-dark mt-3 mb-1">$499 <span class="text-xs font-mono text-gray-400 font-normal">/ Month</span></div>
-              <p class="font-body text-xs text-gray-500 mb-4">For complete multi-sport organizations and major leagues.</p>
-              <ul class="space-y-2 font-body text-xs text-gray-500 border-t border-borderLight pt-3">
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> 50 to 99 active players</li>
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Advanced dashboard access</li>
-                <li class="flex items-center gap-1.5"><span class="text-brand">■</span> Priority support line</li>
-              </ul>
-            </div>
-            <button onclick="changeSubscriptionTier('TIER_3')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors brutal-clip">[ Select Plan ]</button>
-          </div>
+          <button onclick="changeSubscriptionTier('TIER_3')" class="mt-6 w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors">[ Select Plan ]</button>
         </div>
       </div>
     </div>
@@ -1345,7 +267,7 @@
   <div id="view-login" class="route-panel pt-14 flex-1 hidden bg-clinical">
     <div class="max-w-md w-full mx-auto my-12 p-6 bg-white border border-borderLight shadow-sm brutal-clip">
       <div class="mb-6 text-center">
-        <span class="font-mono text-[10px] text-brand font-bold uppercase tracking-wider">Access Secure Portal</span>
+        <span class="font-mono text-[10px] text-brand font-bold uppercase tracking-wider">// ACCESS SECURE PORTAL</span>
         <h2 class="font-display text-2xl font-black uppercase text-dark mt-1">Sign In</h2>
       </div>
 
@@ -1358,13 +280,21 @@
         </button>
       </div>
 
-      <!-- DIRECTOR LOGIN FORM -->
-      <form id="director-login-form" onsubmit="handleAuthentication(event, 'login')" class="space-y-4">
+      <form onsubmit="handleAuthentication(event, 'login')" class="space-y-4">
         <div>
           <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Email or Phone Number</label>
           <input type="text" id="login-identifier" placeholder="director@leaguename.com" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-sm outline-none focus:border-brand">
         </div>
 
+        <div id="login-sport-selection-block" class="border-t border-dashed border-borderDark pt-4 mt-2">
+          <label class="block font-mono text-[10px] text-brand uppercase font-bold mb-2">Select Your Sports</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="toggleOnboardingSport('BASKETBALL')" id="sport-BASKETBALL" class="border-2 border-brand bg-brand/5 text-dark font-display font-bold text-sm py-1.5 tracking-wide text-center">BASKETBALL</button>
+            <button type="button" onclick="toggleOnboardingSport('BASEBALL')" id="sport-BASEBALL" class="border border-borderDark text-gray-400 font-display font-bold text-sm py-1.5 tracking-wide text-center">BASEBALL</button>
+            <button type="button" onclick="toggleOnboardingSport('FOOTBALL')" id="sport-FOOTBALL" class="border border-borderDark text-gray-400 font-display font-bold text-sm py-1.5 tracking-wide text-center">FOOTBALL</button>
+            <button type="button" onclick="toggleOnboardingSport('VOLLEYBALL')" id="sport-VOLLEYBALL" class="border border-borderDark text-gray-400 font-display font-bold text-sm py-1.5 tracking-wide text-center">VOLLEYBALL</button>
+          </div>
+        </div>
 
         <div id="otp-field-container" class="hidden space-y-1 pt-2">
           <label class="block font-mono text-[10px] text-red-600 uppercase font-bold">Enter 6-Digit Code Sent to Your Device</label>
@@ -1372,24 +302,7 @@
         </div>
 
         <button type="submit" id="auth-submit-btn" class="w-full bg-dark text-white font-display text-base font-black tracking-wider uppercase py-3 brutal-clip hover:bg-brand hover:text-dark transition-all mt-4">
-          Send Verification Code
-        </button>
-      </form>
-
-      <!-- PLAYER DASHBOARD LOGIN FORM -->
-      <form id="athlete-login-form" class="hidden space-y-4" onsubmit="handlePlayerLogin(event)">
-        <div>
-          <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Email or Phone Number</label>
-          <input type="text" id="player-identifier" class="w-full bg-clinical border border-borderDark px-3 py-2 text-sm outline-none focus:border-brand" required placeholder="player@example.com">
-        </div>
-
-        <div id="player-otp-field-container" class="hidden space-y-1 pt-2">
-          <label class="block font-mono text-[10px] text-red-600 uppercase font-bold">Enter 6-Digit Code Sent to Your Device</label>
-          <input type="text" id="player-otp-input" placeholder="000000" maxlength="6" class="w-full tracking-[0.5em] text-center bg-yellow-50/50 border border-brand px-3 py-2 font-mono font-bold text-base outline-none">
-        </div>
-
-        <button type="submit" id="player-auth-submit-btn" class="w-full bg-brand text-dark font-display text-base font-black tracking-wider uppercase py-3 brutal-clip hover:bg-dark hover:text-brand transition-all mt-4">
-          Send Verification Code
+          Send Verification Code →
         </button>
       </form>
     </div>
@@ -1399,7 +312,7 @@
   <div id="view-signup" class="route-panel pt-14 flex-1 hidden bg-clinical">
     <div class="max-w-md w-full mx-auto my-12 p-6 bg-white border border-borderLight shadow-sm brutal-clip">
       <div class="mb-6 text-center">
-        <span class="font-mono text-[10px] text-brand font-bold uppercase tracking-wider">Create New Workspace</span>
+        <span class="font-mono text-[10px] text-brand font-bold uppercase tracking-wider">// CREATE NEW WORKSPACE</span>
         <h2 class="font-display text-2xl font-black uppercase text-dark mt-1">Register Program</h2>
       </div>
 
@@ -1426,28 +339,22 @@
         </div>
 
         <button type="submit" id="signup-submit-btn" class="w-full bg-dark text-white font-display text-base font-black tracking-wider uppercase py-3 brutal-clip hover:bg-brand hover:text-dark transition-all mt-4">
-          Get Started
+          Generate Free Workspace →
         </button>
       </form>
     </div>
   </div>
 
-  <!-- PUBLIC PARENT REGISTRATION PATH (COPPA SAFEGUARDS INTEGRATED) -->
+  <!-- PUBLIC PARENT REGISTRATION PATH -->
   <div id="view-public-register" class="route-panel pt-14 flex-1 hidden bg-clinical grid-bg">
     <div class="max-w-xl w-full mx-auto my-10 p-6 bg-white border border-dark shadow-sm brutal-clip">
       <div class="mb-6 border-b border-dashed border-borderLight pb-4 text-center">
-        <span class="font-mono text-[10px] text-brand font-bold uppercase tracking-widest block">Public Invitation Node</span>
-        <h2 class="font-display text-2xl md:text-3xl font-black uppercase text-dark mt-1" id="pub-org-headline">NP Elite Player Registration</h2>
+        <span class="font-mono text-[10px] text-brand font-bold uppercase tracking-widest block">// PUBLIC INVITATION NODE</span>
+        <h2 class="font-display text-2xl md:text-3xl font-black uppercase text-dark mt-1" id="pub-org-headline">NP ELITE PLAYER REGISTRATION</h2>
         <p class="font-body text-xs text-gray-400 mt-1">Please provide parent account credentials and athlete metric configurations below.</p>
       </div>
 
-      <div id="public-cap-warning" class="bg-red-50 border-2 border-red-600 text-red-900 p-4 font-mono text-xs mb-5 brutal-clip hidden">
-        <strong class="block uppercase">Roster Node Full</strong>
-        <p class="text-gray-600 mt-0.5">This league has reached its operational registration capacity limits. Please contact your organization director to clear roster slots.</p>
-      </div>
-
       <form id="public-registration-form" onsubmit="handlePublicParentRegistration(event)" class="space-y-5">
-
         <div class="space-y-3">
           <div class="font-mono text-[11px] font-bold text-dark border-b border-borderLight pb-1 uppercase tracking-wider">1. Parent / Legal Guardian Credentials</div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1481,7 +388,7 @@
               <input type="text" id="pub-athlete-pos" required placeholder="Ex: Point Guard" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
             </div>
             <div>
-              <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Age Group</label>
+              <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Target Age Group Division</label>
               <select id="pub-athlete-division" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs font-mono outline-none focus:border-brand"></select>
             </div>
           </div>
@@ -1494,7 +401,7 @@
               <strong class="uppercase font-bold tracking-tight block mb-0.5">COPPA Verification & Parental Consent Required</strong>
               Because this athlete is under 13 years of age, AthleteIQ operates under strict compliance rules. By checking the verification loop below, you explicitly affirm that you are the verified legal parent or structural guardian of this minor, and you authorize the collection of physical tracking metrics, attendance logs, and game box scores within the private workspace panel.
               <label class="mt-2.5 flex items-center gap-2 cursor-pointer font-bold text-dark">
-                <input type="checkbox" id="coppa-checkbox" class="accent-brand"> I Explicitly Authorize Compliant Data Recording
+                <input type="checkbox" id="coppa-checkbox" class="accent-brand"> I EXPLICITLY AUTHORIZE COMPLIANT DATA RECORDING
               </label>
             </div>
           </div>
@@ -1506,30 +413,39 @@
         </div>
 
         <button type="submit" id="pub-submit-btn" class="w-full bg-dark text-white font-display text-base font-black tracking-wider uppercase py-3.5 brutal-clip hover:bg-brand hover:text-dark transition-all">
-          Authorize Roster Entry & Verify
+          Authorize Roster Entry & Verify →
         </button>
       </form>
     </div>
   </div>
 
+  <!-- DIRECTOR DASHBOARD VIEW -->
+  <div id="view-director" class="route-panel pt-14 flex-1 hidden"></div>
+
+  <!-- PLAYER DASHBOARD VIEW -->
+  <div id="view-player" class="route-panel pt-14 flex-1 hidden"></div>
+
   <script>
+    const DIVISION_NODES = ['8U', '9U', '10U', '11U', '12U', '13U', '14U', '15U', '16U', '17U'];
+    let selectedDivisionsForEvent = ['9U'];
+
     function setLoginRole(role) {
       STATE.userRole = role;
       const dirBtn = document.getElementById('toggle-director');
       const parBtn = document.getElementById('toggle-parent');
-      const directorForm = document.getElementById('director-login-form');
-      const athleteForm = document.getElementById('athlete-login-form');
+      const inputEl = document.getElementById('login-identifier');
+      const sportBlock = document.getElementById('login-sport-selection-block');
 
       if(role === 'DIRECTOR') {
         dirBtn.className = "w-1/2 text-center py-2 font-mono text-[11px] uppercase font-bold transition-all text-dark bg-white shadow-sm border border-borderLight";
         parBtn.className = "w-1/2 text-center py-2 font-mono text-[11px] uppercase font-bold transition-all text-gray-400";
-        if (directorForm) directorForm.classList.remove('hidden');
-        if (athleteForm) athleteForm.classList.add('hidden');
+        inputEl.placeholder = "director@leaguename.com";
+        sportBlock.classList.remove('hidden');
       } else {
         parBtn.className = "w-1/2 text-center py-2 font-mono text-[11px] uppercase font-bold transition-all text-dark bg-white shadow-sm border border-borderLight";
         dirBtn.className = "w-1/2 text-center py-2 font-mono text-[11px] uppercase font-bold transition-all text-gray-400";
-        if (directorForm) directorForm.classList.add('hidden');
-        if (athleteForm) athleteForm.classList.remove('hidden');
+        inputEl.placeholder = "parent@myemail.com";
+        sportBlock.classList.add('hidden');
       }
     }
 
@@ -1562,13 +478,12 @@
         if(!otpRequested) {
           otpRequested = true;
           document.getElementById('otp-field-container').classList.remove('hidden');
-          document.getElementById('auth-submit-btn').innerText = "Verify & Sign In";
+          document.getElementById('auth-submit-btn').innerText = "Verify & Sign In →";
           alert(`Verification passkey sent to ${document.getElementById('login-identifier').value}`);
         } else {
           otpRequested = false;
           document.getElementById('otp-field-container').classList.add('hidden');
-          document.getElementById('auth-submit-btn').innerText = "Send Verification Code";
-          STATE.isAuthenticated = true; // Set auth flag
+          document.getElementById('auth-submit-btn').innerText = "Send Verification Code →";
           if(STATE.userRole === 'DIRECTOR') routeTo('director');
           else routeTo('player');
         }
@@ -1576,15 +491,14 @@
         if(!signupOtpRequested) {
           signupOtpRequested = true;
           document.getElementById('otp-signup-container').classList.remove('hidden');
-          document.getElementById('signup-submit-btn').innerText = "Confirm Access Passcode";
+          document.getElementById('signup-submit-btn').innerText = "Confirm Access Passcode →";
           alert(`Workspace activation code dispatched to ${document.getElementById('signup-contact').value}`);
         } else {
           signupOtpRequested = false;
           document.getElementById('otp-signup-container').classList.add('hidden');
-          document.getElementById('signup-submit-btn').innerText = "Generate Free Workspace";
+          document.getElementById('signup-submit-btn').innerText = "Generate Free Workspace →";
           STATE.clubSlug = document.getElementById('signup-slug').value || 'my-league';
           STATE.userRole = 'DIRECTOR';
-          STATE.isAuthenticated = true; // Set auth flag
           routeTo('director');
         }
       }
@@ -1609,32 +523,127 @@
       }
     }
 
-    // PLAYER DASHBOARD LOGIN
-    let playerOtpRequested = false;
+    function renderDirectorDashboard() {
+      const dirPanel = document.getElementById('view-director');
+      if(!dirPanel) return;
 
-    function handlePlayerLogin(e) {
-      e.preventDefault();
-      if(!playerOtpRequested) {
-        playerOtpRequested = true;
-        document.getElementById('player-otp-field-container').classList.remove('hidden');
-        document.getElementById('player-auth-submit-btn').innerText = "Verify & Sign In";
-        alert(`Verification passkey sent to ${document.getElementById('player-identifier').value}`);
-      } else {
-        playerOtpRequested = false;
-        document.getElementById('player-otp-field-container').classList.add('hidden');
-        document.getElementById('player-auth-submit-btn').innerText = "Send Verification Code";
-        // Route to standalone player dashboard
-        window.location.href = 'player-dashboard.html';
-      }
+      const capLimit = getTierCap(STATE.currentTier);
+      const isFull = STATE.players.length >= capLimit;
+
+      let html = `
+        <div class="pt-14 flex-1 bg-clinical">
+          <div class="max-w-7xl mx-auto p-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div class="border border-borderDark p-4 brutal-clip bg-white">
+                <div class="font-mono text-[10px] text-gray-500 uppercase font-bold">Active Players</div>
+                <div class="font-display text-3xl font-black text-dark mt-1">${STATE.players.length}/${capLimit}</div>
+              </div>
+              <div class="border border-borderDark p-4 brutal-clip bg-white">
+                <div class="font-mono text-[10px] text-gray-500 uppercase font-bold">Roster Balance</div>
+                <div class="font-display text-3xl font-black text-dark mt-1">$${STATE.players.reduce((s,p) => s + p.balance, 0).toFixed(2)}</div>
+              </div>
+              <div class="border border-borderDark p-4 brutal-clip bg-white">
+                <div class="font-mono text-[10px] text-gray-500 uppercase font-bold">Current Plan</div>
+                <div class="font-display text-xl font-black text-dark mt-1 uppercase">${STATE.currentTier}</div>
+              </div>
+              <div class="border border-borderDark p-4 brutal-clip bg-white">
+                <div class="font-mono text-[10px] text-gray-500 uppercase font-bold">Upcoming Events</div>
+                <div class="font-display text-3xl font-black text-dark mt-1">${STATE.events.length}</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div class="border border-borderDark brutal-clip bg-white">
+                <div class="border-b border-borderDark p-4 font-display font-bold text-dark uppercase tracking-wide">Roster (${STATE.players.length}/${capLimit})</div>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm font-body">
+                    <tr class="border-b border-borderLight bg-clinical2">
+                      <th class="text-left p-3 font-bold text-xs text-gray-600">Name</th>
+                      <th class="text-left p-3 font-bold text-xs text-gray-600">Position</th>
+                      <th class="text-left p-3 font-bold text-xs text-gray-600">Team</th>
+                      <th class="text-right p-3 font-bold text-xs text-gray-600">Balance</th>
+                    </tr>
+                    ${STATE.players.map(p => '<tr class="border-b border-borderLight hover:bg-clinical2 transition"><td class="p-3 text-dark font-semibold">' + p.name + '</td><td class="p-3 text-gray-600">' + p.position + '</td><td class="p-3 text-gray-600">' + p.teams.join(', ') + '</td><td class="p-3 text-right font-mono text-dark">$' + p.balance.toFixed(2) + '</td></tr>').join('')}
+                  </table>
+                </div>
+              </div>
+
+              <div class="border border-borderDark brutal-clip bg-white">
+                <div class="border-b border-borderDark p-4 font-display font-bold text-dark uppercase tracking-wide">Upcoming Events (${STATE.events.length})</div>
+                <div class="space-y-3 p-4">
+                  ${STATE.events.length === 0 ? '<p class="text-sm text-gray-400">No events scheduled</p>' : STATE.events.map(e => '<div class="border border-borderLight p-3 bg-clinical2 brutal-clip"><div class="font-bold text-dark">' + e.title + '</div><div class="font-mono text-xs text-gray-600 mt-1">' + e.type + ' • ' + e.location + '</div><div class="font-mono text-xs text-brand mt-1">' + e.start + ' – ' + e.end + '</div></div>').join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="border border-borderDark brutal-clip bg-white">
+              <div class="border-b border-borderDark p-4 font-display font-bold text-dark uppercase tracking-wide">Plan Information</div>
+              <div class="p-6 space-y-3 text-sm">
+                <p class="text-gray-600"><strong>Capacity:</strong> ${capLimit} players maximum</p>
+                <p class="text-gray-600"><strong>Current:</strong> ${STATE.players.length} players (${Math.round(STATE.players.length / capLimit * 100)}% full)</p>
+                <button onclick="routeTo('home')" class="mt-4 bg-dark text-white font-display text-base font-black tracking-wider uppercase py-2 px-4 brutal-clip hover:bg-brand hover:text-dark transition-all">
+                  Change Plan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      dirPanel.innerHTML = html;
+    }
+
+    function renderPlayerDashboard() {
+      const playerPanel = document.getElementById('view-player');
+      if(!playerPanel) return;
+
+      let html = `
+        <div class="pt-14 flex-1 bg-white">
+          <div class="max-w-4xl mx-auto p-6">
+            <div class="border border-borderDark brutal-clip bg-clinical mb-6 p-6">
+              <div class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2">Player Profile</div>
+              <h1 class="font-display text-3xl font-black text-dark uppercase">Noah Dabney</h1>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                <div>
+                  <div class="font-mono text-[9px] text-gray-500 uppercase font-bold">Jersey #</div>
+                  <div class="font-display text-2xl font-black text-dark">0</div>
+                </div>
+                <div>
+                  <div class="font-mono text-[9px] text-gray-500 uppercase font-bold">Position</div>
+                  <div class="font-display text-lg font-black text-dark">Point Guard</div>
+                </div>
+                <div>
+                  <div class="font-mono text-[9px] text-gray-500 uppercase font-bold">Status</div>
+                  <div class="font-display text-lg font-black text-brand">Active</div>
+                </div>
+                <div>
+                  <div class="font-mono text-[9px] text-gray-500 uppercase font-bold">Teams</div>
+                  <div class="font-display text-lg font-black text-dark">9U, 11U</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="border border-borderDark brutal-clip bg-white p-6">
+                <h2 class="font-display font-bold text-dark uppercase tracking-wide mb-4">Upcoming Events</h2>
+                ${STATE.events.length === 0 ? '<p class="text-sm text-gray-400">No events scheduled</p>' : STATE.events.map(e => '<div class="border border-borderLight p-4 mb-3 brutal-clip"><div class="font-bold text-dark">' + e.title + '</div><div class="grid grid-cols-3 gap-2 mt-2 text-xs"><div><span class="text-gray-500">Type:</span> <span class="font-mono text-brand">' + e.type + '</span></div><div><span class="text-gray-500">Time:</span> <span class="font-mono">' + e.start + '–' + e.end + '</span></div><div><span class="text-gray-500">Location:</span> <span class="font-mono">' + e.location + '</span></div></div></div>').join('')}
+              </div>
+
+              <button onclick="routeTo('home')" class="w-full bg-dark text-white font-display text-base font-black tracking-wider uppercase py-3 brutal-clip hover:bg-brand hover:text-dark transition-all">
+                Back to Home
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      playerPanel.innerHTML = html;
     }
 
     function initPublicRegistrationView() {
-      document.getElementById('pub-org-headline').innerText = `${STATE.clubSlug.toUpperCase()} Player Registration`;
+      document.getElementById('pub-org-headline').innerText = `${STATE.clubSlug.toUpperCase()} PLAYER REGISTRATION`;
       const capLimit = getTierCap(STATE.currentTier);
       const isLocked = STATE.players.length >= capLimit;
 
       document.getElementById('public-cap-warning').classList.toggle('hidden', !isLocked);
-      const formEl = document.getElementById('public-registration-form');
       const sBtn = document.getElementById('pub-submit-btn');
 
       if(isLocked) {
@@ -1651,7 +660,7 @@
         DIVISION_NODES.forEach(d => {
           const opt = document.createElement('option');
           opt.value = d;
-          opt.innerText = d;
+          opt.innerText = `${d} DIVISION`;
           dropdown.appendChild(opt);
         });
       }
@@ -1673,12 +682,12 @@
       if(!publicOtpRequested) {
         publicOtpRequested = true;
         document.getElementById('pub-otp-verification-block').classList.remove('hidden');
-        document.getElementById('pub-submit-btn').innerText = "Confirm Code & Complete Entry";
+        document.getElementById('pub-submit-btn').innerText = "Confirm Code & Complete Entry →";
         alert(`Verification routing code issued to ${document.getElementById('pub-parent-contact').value}`);
       } else {
         publicOtpRequested = false;
         document.getElementById('pub-otp-verification-block').classList.add('hidden');
-        document.getElementById('pub-submit-btn').innerText = "Authorize Roster Entry & Verify";
+        document.getElementById('pub-submit-btn').innerText = "Authorize Roster Entry & Verify →";
 
         const pName = document.getElementById('pub-parent-name').value.trim();
         const pContact = document.getElementById('pub-parent-contact').value.trim();
@@ -1699,9 +708,7 @@
           balance: 399.00,
           status: 'Active',
           parentName: pName,
-          parentEmail: pContact.includes('@') ? pContact : '',
-          parentPhone: pContact.includes('@') ? '' : pContact,
-          paidStatus: 'Pending'
+          parentContact: pContact
         });
 
         document.getElementById('pub-parent-name').value = '';
@@ -1713,1894 +720,14 @@
         document.getElementById('coppa-disclaimer-card').classList.add('hidden');
 
         alert('Roster entry authenticated. The athlete and parent nodes are now active.');
-        STATE.isAuthenticated = true; // Set auth flag
         routeTo('director');
       }
     }
   </script>
 
-  <!-- DIRECTOR DASHBOARD VIEW -->
-  <div id="view-director" class="route-panel pt-14 flex-1 hidden bg-white">
-    <div class="border-b border-borderLight bg-clinical px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-xs">
-      <div class="flex items-center gap-2">
-        <div class="h-2 w-2 rounded-full bg-green-500"></div>
-        <div class="font-mono text-dark font-bold uppercase">Club Dashboard Live: <span id="slug-badge" class="text-brand"></span></div>
-      </div>
-      <button onclick="openPlanModal()" class="font-mono text-[10px] font-bold text-gray-500 bg-white border border-borderLight px-2 py-0.5 hover:bg-clinical transition-colors cursor-pointer">
-        Current Plan: <span id="tier-badge-ui" class="text-dark border-b border-brand pb-0.5">Free</span>
-      </button>
-    </div>
-
-    <div class="flex flex-col lg:flex-row min-h-[calc(100vh-88px)]">
-      <!-- SIDEBAR PANEL (HIDDEN ON MOBILE) -->
-      <div id="desktop-sidebar" class="hidden lg:flex w-full lg:w-64 bg-clinical border-r border-borderLight flex-col shrink-0">
-        <div class="p-4 border-b border-borderLight">
-          <div class="text-dark font-display text-base font-black uppercase tracking-tight">ATHLETEIQ WORKSPACE</div>
-        </div>
-        <nav class="p-2 space-y-1 flex-1 font-mono text-xs font-bold uppercase tracking-wider">
-          <button onclick="switchDirectorTab('onboarding'); closeMobileMenu();" id="tab-onboarding" class="w-full text-left px-3 py-2.5 transition-all flex items-center justify-between">
-            <span>Onboarding & Plan</span>
-          </button>
-          <button onclick="switchDirectorTab('programs'); closeMobileMenu();" id="tab-programs" class="w-full text-left px-3 py-2.5 transition-all flex items-center justify-between">
-            <span>Programs (Age Groups)</span>
-          </button>
-          <button onclick="switchDirectorTab('schedule'); closeMobileMenu();" id="tab-schedule" class="w-full text-left px-3 py-2.5 transition-all flex items-center justify-between">
-            <span>Schedule</span>
-          </button>
-          <button onclick="switchDirectorTab('messaging'); closeMobileMenu();" id="tab-messaging" class="w-full text-left px-3 py-2.5 transition-all flex items-center justify-between">
-            <span>Messaging</span>
-          </button>
-          <button onclick="switchDirectorTab('members'); closeMobileMenu();" id="tab-members" class="w-full text-left px-3 py-2.5 transition-all flex items-center justify-between">
-            <span>Members</span>
-          </button>
-          <button onclick="switchDirectorTab('roster'); closeMobileMenu();" id="tab-roster" class="w-full text-left px-3 py-2.5 transition-all flex items-center justify-between">
-            <span>Roster</span><span id="tab-roster-cap-indicator" class="text-[10px] font-normal tracking-tight"></span>
-          </button>
-          <button onclick="switchDirectorTab('financials'); closeMobileMenu();" id="tab-financials" class="w-full text-left px-3 py-2.5 transition-all flex items-center justify-between">
-            <span>Financials</span>
-          </button>
-        </nav>
-      </div>
-
-      <!-- MOBILE SIDEBAR OVERLAY -->
-      <div id="mobile-sidebar" class="hidden fixed top-14 left-0 w-64 h-[calc(100vh-56px)] bg-clinical border-r border-borderLight z-30 lg:hidden flex flex-col overflow-y-auto">
-        <div class="p-4 border-b border-borderLight">
-          <div class="text-dark font-display text-base font-black uppercase tracking-tight">ATHLETEIQ WORKSPACE</div>
-        </div>
-        <nav class="p-2 space-y-1 flex-1 font-mono text-xs font-bold uppercase tracking-wider">
-          <button onclick="switchDirectorTab('onboarding'); closeMobileMenu();" id="mobile-tab-onboarding" class="w-full text-left px-3 py-2.5 transition-all text-dark">Onboarding & Plan</button>
-          <button onclick="switchDirectorTab('programs'); closeMobileMenu();" id="mobile-tab-programs" class="w-full text-left px-3 py-2.5 transition-all text-gray-400">Programs (Age Groups)</button>
-          <button onclick="switchDirectorTab('schedule'); closeMobileMenu();" id="mobile-tab-schedule" class="w-full text-left px-3 py-2.5 transition-all text-gray-400">Schedule</button>
-          <button onclick="switchDirectorTab('messaging'); closeMobileMenu();" id="mobile-tab-messaging" class="w-full text-left px-3 py-2.5 transition-all text-gray-400">Messaging</button>
-          <button onclick="switchDirectorTab('members'); closeMobileMenu();" id="mobile-tab-members" class="w-full text-left px-3 py-2.5 transition-all text-gray-400">Members</button>
-          <button onclick="switchDirectorTab('roster'); closeMobileMenu();" id="mobile-tab-roster" class="w-full text-left px-3 py-2.5 transition-all text-gray-400">Roster</button>
-          <button onclick="switchDirectorTab('financials'); closeMobileMenu();" id="mobile-tab-financials" class="w-full text-left px-3 py-2.5 transition-all text-gray-400">Financials</button>
-        </nav>
-      </div>
-
-      <!-- MAIN CONTENT VIEWPORT -->
-      <div class="flex-1 p-4 lg:p-6 bg-white overflow-x-hidden">
-
-        <!-- ONBOARDING TAB -->
-        <div id="dir-content-onboarding" class="dir-tab-panel hidden space-y-6">
-          <div class="border border-borderDark p-5 bg-clinical">
-            <h3 class="font-display text-xl font-black text-dark uppercase mb-1">Setup Checklist</h3>
-            <p class="font-body text-xs text-gray-500 mb-4">Get your program ready to go.</p>
-            <div class="w-full bg-white border border-borderLight h-4 p-0.5">
-              <div class="bg-brand h-full w-3/4"></div>
-            </div>
-            <div class="flex justify-between font-mono text-[10px] text-gray-400 mt-2">
-              <span>Prototype Deployment Status: 75%</span>
-              <span>3/4 Modules Configured</span>
-            </div>
-          </div>
-          <div class="border border-borderLight divide-y divide-borderLight text-xs font-mono">
-            <div class="p-3 flex items-center justify-between bg-white">
-              <span class="font-bold text-dark">Account Setup Complete</span>
-              <span class="text-gray-400">Ready to go</span>
-            </div>
-            <div class="p-3 flex items-center justify-between bg-white">
-              <span class="font-bold text-dark">Age Groups Configured</span>
-              <span class="text-gray-400">10 Groups Available</span>
-            </div>
-            <div class="p-3 flex items-center justify-between bg-white">
-              <span class="font-bold text-dark">Players Added</span>
-              <span class="text-gray-400" id="demo-count">0 Players Total</span>
-            </div>
-            <div class="p-3 flex items-center justify-between bg-yellow-50/50">
-              <div class="font-bold text-amber-800">
-                Public Signup Link
-                <span class="block font-normal text-gray-500 text-[10px] mt-0.5">Share this with parents to let them sign up their athletes.</span>
-              </div>
-              <button onclick="routeTo('public-register')" class="text-dark border border-dark px-2 py-0.5 bg-white text-[10px] font-bold shrink-0 hover:bg-dark hover:text-white transition-colors">Launch Public Link</button>
-            </div>
-          </div>
-
-          <!-- SETUP COMPLETE CTA -->
-          <div class="border border-brand bg-brand/5 p-6 brutal-clip flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-              <h3 class="font-display text-lg font-black text-dark uppercase">Ready to manage your program?</h3>
-              <p class="font-body text-xs text-gray-500 mt-1">You can always come back to this checklist. Let's get to work!</p>
-            </div>
-            <button onclick="completeSetup()" class="w-full sm:w-auto bg-dark text-white px-6 py-3 font-display font-black text-sm uppercase hover:bg-brand hover:text-dark transition-all brutal-clip shrink-0">
-              Go to Dashboard →
-            </button>
-          </div>
-        </div>
-
-        <!-- PROGRAMS TAB -->
-        <div id="dir-content-programs" class="dir-tab-panel hidden space-y-6">
-          <div class="border border-borderDark p-5 bg-white">
-            <div class="flex justify-between items-center mb-4">
-              <div>
-                <h3 class="font-display text-xl font-black text-dark uppercase mb-2">Age Groups</h3>
-                <p class="font-body text-xs text-gray-500">Manage tracking targets and multi-sport tournament tiers mapped inside your organization.</p>
-              </div>
-              <button onclick="addDivision()" class="text-dark border border-dark px-3 py-1.5 bg-white text-[10px] font-bold hover:bg-dark hover:text-white transition-colors shrink-0">+ Add Age Group</button>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-3" id="programs-matrix-container"></div>
-          </div>
-          <div class="border border-borderLight p-4 bg-clinical">
-            <h4 class="font-mono text-xs font-bold text-dark uppercase mb-2">Sport Policies Available</h4>
-            <div class="flex flex-wrap gap-2 text-xs font-mono">
-              <span class="px-2 py-1 bg-white border border-borderLight text-dark">Basketball (Primary)</span>
-              <span class="px-2 py-1 bg-white border border-borderLight text-gray-400">Baseball (Inactive)</span>
-              <span class="px-2 py-1 bg-white border border-borderLight text-gray-400">Football (Inactive)</span>
-              <span class="px-2 py-1 bg-white border border-borderLight text-gray-400">Volleyball (Inactive)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- SCHEDULE TAB -->
-        <div id="dir-content-schedule" class="dir-tab-panel hidden space-y-6">
-          <div class="border border-borderDark p-5 bg-white">
-            <h3 class="font-display text-xl font-black text-dark uppercase mb-4">Create Event or Game</h3>
-            <form onsubmit="handleCreateEvent(event)" class="space-y-4">
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div class="sm:col-span-2">
-                  <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Event or Opponent Title</label>
-                  <input type="text" id="evt-title" required placeholder="Ex: Championship Qualifier Game" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                </div>
-                <div>
-                  <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Event Type</label>
-                  <select id="evt-type" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs font-mono outline-none focus:border-brand">
-                    <option value="PRACTICE">Practice</option>
-                    <option value="GAME">Game</option>
-                    <option value="TOURNAMENT">Tournament</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1.5">Age Groups (Select Multiple)</label>
-                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="division-badge-matrix"></div>
-              </div>
-
-              <div>
-                <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1.5">Recurring Schedule</label>
-                <select id="evt-recurring" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs font-mono outline-none focus:border-brand">
-                  <option value="none">One-Time Event</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="biweekly">Bi-Weekly</option>
-                  <option value="monthly">Monthly</option>
-                </select>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Court / Location</label>
-                  <input type="text" id="evt-loc" required placeholder="Ex: Court 2 / Main Gym" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                </div>
-                <div>
-                  <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Start Time</label>
-                  <input type="time" id="evt-start" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                </div>
-                <div>
-                  <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">End Time</label>
-                  <input type="time" id="evt-end" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                </div>
-              </div>
-              <button type="submit" class="w-full bg-dark text-white font-display text-sm tracking-wide uppercase font-black py-2.5 brutal-clip hover:bg-brand hover:text-dark transition-all">
-                Publish Event & Notify Parents
-              </button>
-            </form>
-          </div>
-          <div class="border border-borderLight p-4 bg-white">
-            <h4 class="font-mono text-xs font-bold text-dark uppercase mb-3">Live Schedule Feed</h4>
-            <div id="schedule-feed-list" class="space-y-2"></div>
-          </div>
-        </div>
-
-        <!-- MESSAGING TAB -->
-        <div id="dir-content-messaging" class="dir-tab-panel hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <!-- THREADS LIST -->
-          <div class="lg:col-span-1 border border-borderDark bg-white p-4">
-            <div class="mb-4 pb-3 border-b border-borderLight flex justify-between items-center">
-              <h4 class="font-display text-lg font-bold text-dark uppercase">Messages</h4>
-              <button onclick="toggleShowArchived()" class="text-[10px] font-mono text-brand hover:text-dark transition-colors">
-                Archive
-              </button>
-            </div>
-            <div id="messaging-threads-list" class="space-y-1 max-h-96 overflow-y-auto"></div>
-            <button onclick="loadMoreMessages()" class="w-full text-[10px] text-gray-500 hover:text-dark mt-3 py-2 border-t border-borderLight transition-colors">
-              Show More
-            </button>
-          </div>
-
-          <!-- MESSAGE COMPOSE & DETAIL -->
-          <div class="lg:col-span-2 space-y-4">
-            <!-- Compose Section -->
-            <div class="border border-borderDark p-5 bg-white">
-              <h4 class="font-mono text-[10px] text-brand font-bold uppercase mb-3">Send New Message</h4>
-              <div class="space-y-3">
-                <div>
-                  <label class="block font-mono text-[9px] text-gray-400 uppercase font-bold mb-1">Recipients</label>
-                  <select id="messaging-recipient-select" class="w-full bg-clinical border border-borderLight p-2 text-xs font-mono outline-none focus:border-brand">
-                    <option value="all">All Members</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block font-mono text-[9px] text-gray-400 uppercase font-bold mb-1">Message</label>
-                  <textarea id="new-message-text" placeholder="Type your message..." rows="4" class="w-full bg-clinical border border-borderLight p-2 text-xs font-body outline-none focus:border-brand resize-none"></textarea>
-                </div>
-                <button onclick="sendNewMessage()" class="w-full bg-dark text-white py-2 font-display font-bold text-sm uppercase hover:bg-brand hover:text-dark transition-all brutal-clip">
-                  Send Message Blast
-                </button>
-              </div>
-            </div>
-
-            <!-- Message Detail -->
-            <div class="border border-borderDark p-5 bg-white">
-              <h4 class="font-mono text-[10px] text-gray-500 font-bold uppercase mb-3">Thread Detail</h4>
-              <div id="messaging-detail-panel" class="text-xs text-gray-400 text-center py-6">Select a thread to view</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- MEMBERS TAB -->
-        <div id="dir-content-members" class="dir-tab-panel hidden space-y-4">
-          <div class="border border-borderDark p-4 bg-white">
-            <div class="mb-3 pb-2 border-b border-borderLight flex justify-between items-center flex-wrap gap-2">
-              <h3 class="font-display text-xl font-black text-dark uppercase">Members Directory</h3>
-              <div class="flex gap-2">
-                <input type="text" id="members-search" placeholder="Search by name or email..." onkeyup="filterMembers()" class="px-3 py-1.5 border border-borderLight bg-clinical font-mono text-xs rounded outline-none focus:border-brand w-48">
-                <button onclick="openNewMemberModal()" class="bg-dark text-white px-4 py-1.5 text-xs font-bold hover:bg-brand hover:text-dark transition-all">
-                  + Add Member
-                </button>
-              </div>
-            </div>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left font-mono text-xs border border-borderLight">
-                <thead>
-                  <tr class="bg-clinical border-b border-borderLight font-bold text-gray-500 text-[10px]">
-                    <th class="p-2.5">Member Name</th>
-                    <th class="p-2.5">Role Type</th>
-                    <th class="p-2.5">Assigned Teams</th>
-                    <th class="p-2.5">Email</th>
-                    <th class="p-2.5">Phone Number</th>
-                    <th class="p-2.5 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-borderLight text-gray-700" id="members-table-body"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <!-- EDIT/ADD MEMBER MODAL -->
-        <div id="edit-member-modal" class="hidden fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
-          <div class="bg-white max-w-md w-full p-6 border border-dark brutal-clip">
-            <div class="mb-4 pb-3 border-b border-borderLight">
-              <h3 id="edit-member-modal-title" class="font-display text-xl font-black text-dark uppercase">Edit Member</h3>
-              <p id="edit-member-modal-name" class="font-body text-xs text-gray-500 mt-1"></p>
-            </div>
-
-            <form onsubmit="event.preventDefault(); submitEditMember();" class="space-y-3">
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Full Name *</label>
-                <input type="text" id="edit-member-name" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Role *</label>
-                <select id="edit-member-role" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                  <option value="">— Select Role —</option>
-                  <option value="Coach">Coach / Staff</option>
-                  <option value="Parent">Parent / Guardian</option>
-                  <option value="Assistant">Assistant Coach</option>
-                  <option value="Admin">Administrator</option>
-                  <option value="Athlete">Athlete</option>
-                </select>
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Email *</label>
-                <input type="email" id="edit-member-email" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Phone Number</label>
-                <input type="tel" id="edit-member-phone" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-2">Assigned Teams</label>
-                <div id="edit-member-teams" class="space-y-1"></div>
-              </div>
-
-              <div class="flex gap-2 pt-4 border-t border-borderLight">
-                <button type="button" onclick="closeEditMemberModal()" class="flex-1 border border-dark text-dark px-3 py-2 text-xs font-bold hover:bg-dark hover:text-white transition-all">
-                  Cancel
-                </button>
-                <button type="submit" class="flex-1 bg-dark text-white px-3 py-2 text-xs font-bold hover:bg-brand hover:text-dark transition-all brutal-clip">
-                  Save Member
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- ADD MEMBER MODAL (Legacy - now handled by edit-member-modal) -->
-        <div id="add-member-modal" class="hidden fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
-          <div class="bg-white max-w-md w-full p-6 border border-dark brutal-clip">
-            <div class="mb-4 pb-3 border-b border-borderLight">
-              <h3 class="font-display text-xl font-black text-dark uppercase">Add Team Member</h3>
-              <p class="font-body text-xs text-gray-500 mt-1">Add a staff member, parent, or coach to your directory</p>
-            </div>
-
-            <form id="add-member-form" onsubmit="submitAddMember(event)" class="space-y-3">
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Full Name *</label>
-                <input type="text" id="new-member-name" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Role *</label>
-                <select id="new-member-role" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                  <option value="">— Select Role —</option>
-                  <option value="Coach">Coach / Staff</option>
-                  <option value="Parent">Parent / Guardian</option>
-                  <option value="Assistant">Assistant Coach</option>
-                  <option value="Admin">Administrator</option>
-                </select>
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Email *</label>
-                <input type="email" id="new-member-email" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Phone Number</label>
-                <input type="tel" id="new-member-phone" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-2">Assigned Teams</label>
-                <div id="new-member-teams" class="space-y-1"></div>
-              </div>
-
-              <div class="flex gap-2 pt-4 border-t border-borderLight">
-                <button type="button" onclick="closeAddMemberModal()" class="flex-1 border border-dark text-dark px-3 py-2 text-xs font-bold hover:bg-dark hover:text-white transition-all">
-                  Cancel
-                </button>
-                <button type="submit" class="flex-1 bg-dark text-white px-3 py-2 text-xs font-bold hover:bg-brand hover:text-dark transition-all brutal-clip">
-                  Add Member
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- ROSTER TAB -->
-        <div id="dir-content-roster" class="dir-tab-panel hidden space-y-6">
-          <div class="grid grid-cols-2 gap-3 max-w-md">
-            <div class="border border-borderDark p-3 bg-white">
-              <span class="font-mono text-[10px] text-gray-400 uppercase block">Active Players</span>
-              <div id="stat-active-count" class="font-display text-3xl font-black text-dark mt-0.5">0</div>
-            </div>
-            <div class="border border-borderDark p-3 bg-white">
-              <span class="font-mono text-[10px] text-gray-400 uppercase block">Roster Limit</span>
-              <div id="stat-bracket-cap" class="font-display text-3xl font-black text-red-700 mt-0.5">0</div>
-            </div>
-          </div>
-
-          <div class="border border-borderDark p-5 bg-white">
-            <div class="flex justify-between items-center mb-4 pb-2 border-b border-dashed border-borderLight flex-wrap gap-2">
-              <h3 class="font-display text-lg font-bold uppercase text-dark">Add New Player</h3>
-              <input type="text" id="roster-search" placeholder="Search roster..." onkeyup="filterRoster()" class="px-3 py-1.5 border border-borderLight bg-clinical font-mono text-[10px] rounded outline-none focus:border-brand w-40">
-            </div>
-
-            <div id="bracket-cap-warning" class="bg-red-50 border-2 border-red-600 text-red-900 p-4 font-mono text-xs mb-5 brutal-clip hidden">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div>
-                  <strong class="block text-sm uppercase tracking-tight">Roster Limit Reached</strong>
-                  <p class="text-gray-600 mt-0.5">You've reached your maximum allowed player spots for your account plan tier.</p>
-                </div>
-                <button type="button" onclick="openPlanModal()" class="bg-red-600 hover:bg-dark text-white font-display text-xs uppercase font-black px-4 py-2 brutal-clip tracking-wider transition-colors shrink-0">
-                  Upgrade Account Tier
-                </button>
-              </div>
-            </div>
-
-            <form id="add-player-form" onsubmit="createNewAthlete(event)" class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end mb-6">
-              <div class="sm:col-span-2">
-                <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Player Full Name</label>
-                <input type="text" id="new-p-name" required placeholder="Ex: Noah Dabney" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-              </div>
-              <div class="flex flex-col gap-3 sm:flex-row sm:col-span-1">
-                <div class="w-full">
-                  <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Date of Birth</label>
-                  <input type="date" id="new-p-dob" required class="w-full bg-clinical border border-borderDark px-3 py-2 font-mono text-xs outline-none focus:border-brand">
-                </div>
-                <button type="submit" id="new-p-btn" class="w-full sm:w-auto shrink-0 bg-dark text-white font-display text-xs uppercase font-black tracking-wider px-4 py-2.5 hover:bg-brand hover:text-dark transition-all brutal-clip">
-                  Save Player
-                </button>
-              </div>
-            </form>
-
-            <div class="pt-4 border-t border-dashed border-borderLight">
-              <button type="button" onclick="openAdminStubModal()" class="text-dark border border-dark px-3 py-1.5 bg-white text-[10px] font-bold hover:bg-dark hover:text-white transition-colors">
-                + Add Player
-              </button>
-              <p class="text-[9px] text-gray-400 mt-1">Add players without parent info yet. Complete their profile when they sign up.</p>
-            </div>
-
-            <div class="space-y-2" id="director-roster-list"></div>
-          </div>
-        </div>
-
-        <!-- EDIT PROFILE MODAL -->
-        <div id="edit-profile-modal" class="hidden fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
-          <div class="bg-white max-w-md w-full p-6 border border-dark brutal-clip">
-            <div class="mb-4 pb-3 border-b border-borderLight">
-              <h3 class="font-display text-xl font-black text-dark uppercase">Edit Player Profile</h3>
-              <p class="font-body text-xs text-gray-500 mt-1">Update player statistics and information</p>
-            </div>
-
-            <form onsubmit="submitEditProfile(event)" class="space-y-3">
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Player Name</label>
-                  <input type="text" id="edit-player-name" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                </div>
-                <div>
-                  <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Jersey #</label>
-                  <input type="text" id="edit-player-jersey" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                </div>
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Position</label>
-                <select id="edit-player-position" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                  <option value="Unassigned">Unassigned</option>
-                  <option value="Guard">Guard</option>
-                  <option value="Forward">Forward</option>
-                  <option value="Center">Center</option>
-                  <option value="Pitcher">Pitcher</option>
-                  <option value="Catcher">Catcher</option>
-                  <option value="Infield">Infield</option>
-                  <option value="Outfield">Outfield</option>
-                </select>
-              </div>
-
-              <div class="grid grid-cols-2 gap-3">
-                <div>
-                  <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Height</label>
-                  <input type="text" id="edit-player-height" placeholder="e.g., 6'2&quot;" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                </div>
-                <div>
-                  <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Weight</label>
-                  <input type="text" id="edit-player-weight" placeholder="e.g., 180 lbs" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-                </div>
-              </div>
-
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Date of Birth</label>
-                <input type="date" id="edit-player-dob" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand">
-              </div>
-
-              <div class="flex gap-2 pt-4 border-t border-borderLight">
-                <button type="button" onclick="closeEditProfileModal()" class="flex-1 border border-dark text-dark px-3 py-2 text-xs font-bold hover:bg-dark hover:text-white transition-all">
-                  Cancel
-                </button>
-                <button type="submit" class="flex-1 bg-dark text-white px-3 py-2 text-xs font-bold hover:bg-brand hover:text-dark transition-all brutal-clip">
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- FINANCIALS TAB -->
-        <div id="dir-content-financials" class="dir-tab-panel hidden space-y-6">
-          <!-- PROGRAM SETTINGS -->
-          <div class="border border-brand bg-brand/5 p-5 brutal-clip">
-            <h3 class="font-display text-lg font-bold uppercase text-dark mb-4">Program Settings</h3>
-            <div class="space-y-3">
-              <div>
-                <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-2">Base Subscription Price (for Stripe)</label>
-                <div class="flex gap-2 items-end">
-                  <input type="number" id="program-base-price" step="0.01" min="0" placeholder="0.00" class="flex-1 bg-white border border-borderDark px-3 py-2 text-sm font-mono outline-none focus:border-brand" value="399.00">
-                  <button onclick="updateProgramPrice()" class="bg-dark text-white px-4 py-2 text-xs font-bold uppercase hover:bg-brand hover:text-dark transition-all brutal-clip">
-                    Set Price
-                  </button>
-                </div>
-                <p class="text-[9px] text-gray-500 mt-2">This is the default price charged to all players. Individual players can be adjusted below.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- OUTSTANDING BALANCE -->
-          <div class="border border-borderDark p-4 bg-clinical">
-            <span class="font-mono text-[10px] text-gray-400 uppercase block">Total Outstanding Accounts Receivable</span>
-            <div id="stat-unpaid-fees" class="font-display text-4xl font-black text-dark mt-1">$0.00</div>
-          </div>
-
-          <!-- PLAYER BILLING LEDGER -->
-          <div class="border border-borderDark p-4 bg-white">
-            <h3 class="font-display text-lg font-bold uppercase text-dark mb-3">Player Billing & Adjustments</h3>
-            <div id="financials-ledger-list" class="space-y-2"></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- PLAYER DASHBOARD VIEW -->
-  <div id="view-player" class="route-panel pt-14 flex-1 hidden bg-white">
-    <div class="max-w-4xl mx-auto px-4 py-8 space-y-8">
-      <div class="border-b-2 border-dark pb-4 flex items-end justify-between flex-wrap gap-2">
-        <div>
-          <span class="font-mono text-xs text-brand font-bold uppercase">Player Metrics Dispatch</span>
-          <h2 id="player-profile-name" class="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-dark mt-1"></h2>
-        </div>
-        <div class="font-mono text-right text-xs">
-          <div class="font-bold text-gray-400">Jersey Status</div>
-          <div id="player-profile-jersey" class="text-xl font-black text-dark"></div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="border border-borderDark p-4 bg-clinical">
-          <span class="font-mono text-[10px] text-gray-400 uppercase block">Assigned Position</span>
-          <div id="player-profile-pos" class="font-display text-2xl font-bold text-dark mt-1"></div>
-        </div>
-        <div class="border border-borderDark p-4 bg-clinical">
-          <span class="font-mono text-[10px] text-gray-400 uppercase block">Roster Group Divisions</span>
-          <div id="player-profile-teams" class="font-display text-2xl font-bold text-dark mt-1"></div>
-        </div>
-        <div class="border border-borderDark p-4 bg-clinical">
-          <span class="font-mono text-[10px] text-gray-400 uppercase block">Outstanding Statement Balance</span>
-          <div id="player-profile-balance" class="font-display text-2xl font-bold mt-1"></div>
-        </div>
-      </div>
-
-      <div class="border border-borderDark p-5 bg-white">
-        <h3 class="font-display text-xl font-black text-dark uppercase mb-4">Assigned Team Events Queue</h3>
-        <div id="player-events-feed" class="space-y-2"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PLAN UPGRADE MODAL -->
-  <div id="plan-upgrade-modal" class="hidden fixed inset-0 bg-dark/80 backdrop-blur-sm justify-center items-center z-50 p-4">
-    <div class="bg-white border-2 border-dark p-6 max-w-md w-full brutal-clip shadow-xl">
-      <h3 class="font-display text-xl font-black uppercase text-dark mb-2">Upgrade Your Plan</h3>
-      <p class="font-body text-xs text-gray-600 mb-5">
-        You've reached the player limit on your current plan. Upgrade to add more players and unlock additional features.
-      </p>
-      <div class="space-y-2 mb-6">
-        <button onclick="changeSubscriptionTier('TIER_1'); closePlanModal();" class="w-full text-left p-3 border border-borderLight hover:bg-clinical transition-colors font-mono text-xs">
-          <div class="font-bold text-dark">Small Club — $249/month</div>
-          <div class="text-gray-500 text-[10px]">Up to 24 players</div>
-        </button>
-        <button onclick="changeSubscriptionTier('TIER_2'); closePlanModal();" class="w-full text-left p-3 border-2 border-brand bg-brand/5 hover:bg-brand/10 transition-colors font-mono text-xs">
-          <div class="font-bold text-dark">Mid-Size Club — $399/month</div>
-          <div class="text-gray-500 text-[10px]">Up to 49 players (Most Popular)</div>
-        </button>
-        <button onclick="changeSubscriptionTier('TIER_3'); closePlanModal();" class="w-full text-left p-3 border border-borderLight hover:bg-clinical transition-colors font-mono text-xs">
-          <div class="font-bold text-dark">Large Organization — $499/month</div>
-          <div class="text-gray-500 text-[10px]">Up to 99 players</div>
-        </button>
-      </div>
-      <button onclick="closePlanModal()" class="w-full border border-dark py-2 font-mono text-[11px] uppercase font-bold text-dark hover:bg-dark hover:text-white transition-colors">
-        Close
-      </button>
-    </div>
-  </div>
-
-  <!-- FINANCIAL DETAIL MODAL -->
-  <div id="financial-detail-modal" class="hidden fixed inset-0 bg-dark/80 backdrop-blur-sm justify-center items-center z-50 p-4">
-    <div class="bg-white border-2 border-dark p-6 max-w-lg w-full brutal-clip shadow-xl max-h-[80vh] overflow-y-auto">
-      <div class="flex justify-between items-center mb-4 pb-3 border-b border-borderLight">
-        <h3 class="font-display text-lg font-black uppercase text-dark">Player Financial Details</h3>
-        <button onclick="closeFinancialDetailModal()" class="text-gray-400 hover:text-dark text-2xl">×</button>
-      </div>
-
-      <div id="financial-detail-content" class="space-y-4">
-      </div>
-
-      <div class="flex gap-2 justify-end mt-6 pt-4 border-t border-borderLight">
-        <button onclick="closeFinancialDetailModal()" class="border border-borderDark px-4 py-1.5 font-mono text-xs uppercase font-bold text-gray-500 hover:text-dark transition-colors">
-          Close
-        </button>
-        <button id="adjust-fee-btn" onclick="openAdjustFeeModal(STATE.financialDetailModal.playerId)" class="bg-brand text-dark px-4 py-1.5 font-display text-xs tracking-wider font-bold uppercase brutal-clip hover:bg-dark hover:text-brand transition-all">
-          Adjust Fee
-        </button>
-        <button id="mark-paid-btn" class="bg-green-600 text-white px-4 py-1.5 font-display text-xs tracking-wider font-bold uppercase brutal-clip hover:bg-green-700 transition-all">
-          Mark as Paid
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADMIN ROSTER STUB MODAL -->
-  <div id="admin-stub-modal" class="hidden fixed inset-0 bg-dark/80 backdrop-blur-sm justify-center items-center z-50 p-4">
-    <div class="bg-white border-2 border-dark p-6 max-w-md w-full brutal-clip shadow-xl">
-      <h3 class="font-display text-lg font-black uppercase text-dark mb-4">Add Player</h3>
-      <form onsubmit="createAdminStub(event)" class="space-y-3">
-        <div>
-          <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Player Full Name</label>
-          <input type="text" id="stub-player-name" required placeholder="Noah Dabney" class="w-full border border-borderLight bg-clinical px-3 py-2 text-xs outline-none focus:border-brand">
-        </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Jersey #</label>
-            <input type="text" id="stub-player-jersey" placeholder="0-99" class="w-full border border-borderLight bg-clinical px-3 py-2 text-xs outline-none focus:border-brand">
-          </div>
-          <div>
-            <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Position</label>
-            <input type="text" id="stub-player-pos" placeholder="Guard" class="w-full border border-borderLight bg-clinical px-3 py-2 text-xs outline-none focus:border-brand">
-          </div>
-        </div>
-        <div>
-          <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Age Group</label>
-          <select id="stub-player-division" required class="w-full border border-borderLight bg-clinical px-3 py-2 text-xs outline-none focus:border-brand"></select>
-        </div>
-        <div class="bg-blue-50 border border-blue-200 p-2.5 rounded text-[9px] text-blue-900">
-          This player will be added to the roster as Administrative Pending.
-        </div>
-        <div class="flex gap-2 justify-end">
-          <button type="button" onclick="closeAdminStubModal()" class="border border-borderDark px-4 py-1.5 font-mono text-xs uppercase font-bold text-gray-500 hover:text-dark transition-colors">
-            Cancel
-          </button>
-          <button type="submit" class="bg-dark text-white px-4 py-1.5 font-display text-xs tracking-wider font-bold uppercase brutal-clip hover:bg-brand hover:text-dark transition-all">
-            Add Player
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- BALANCE OVERRIDE MODAL -->
-  <div id="destruction-modal-layer" class="fixed inset-0 bg-dark/80 backdrop-blur-sm items-center justify-center z-50 p-4 hidden">
-    <div class="bg-white border-2 border-dark p-6 max-w-md w-full brutal-clip shadow-xl">
-      <div class="flex items-start gap-3 mb-4">
-        <div>
-          <h4 class="font-display text-lg font-black uppercase tracking-tight">Manual Balance Override</h4>
-          <p class="font-mono text-[10px] text-gray-400">Direct account balance adjustment route</p>
-        </div>
-      </div>
-      <p class="font-body text-xs text-gray-600 mb-5">
-        You are overriding a balance due on this player's account. This will change the amount reflected in your league financials and player invoices.
-      </p>
-      <div class="bg-clinical border border-borderLight p-3 font-mono text-[10px] text-dark mb-5 space-y-1">
-        <div>Action: <span id="modal-lbl-action" class="font-bold text-amber-600">N/A</span></div>
-        <div>Player: <span id="modal-lbl-name" class="font-bold">N/A</span></div>
-        <div class="mt-2">
-          <label class="block font-bold mb-1">New Adjusted Value ($)</label>
-          <input type="number" id="modal-override-input" step="0.01" class="w-full bg-white border border-borderDark p-1 font-mono text-xs font-bold text-dark outline-none focus:border-brand">
-        </div>
-      </div>
-      <div class="flex gap-2 justify-end">
-        <button onclick="dismissOverrideModal()" class="border border-borderDark px-4 py-1.5 font-mono text-xs uppercase font-bold text-gray-500 hover:text-dark transition-colors">
-          Cancel
-        </button>
-        <button onclick="commitOverrideModal()" class="bg-dark text-white px-4 py-1.5 font-display text-xs tracking-wider font-bold uppercase brutal-clip hover:bg-brand hover:text-dark transition-all">
-          Apply Adjustment
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- APP RUNTIME SCRIPTS -->
-  <script>
-    const DIVISION_NODES = ['8U', '9U', '10U', '11U', '12U', '13U', '14U', '15U', '16U', '17U'];
-    let selectedDivisionsForEvent = ['9U'];
-
-    // === MESSAGING MODULE ===
-    function initMessageThreads() {
-      if (STATE.messageThreads.length === 0) {
-        STATE.messageThreads = [
-          {
-            id: 1,
-            recipientGroup: 'All Parents',
-            lastMessage: 'Practice moved to Thursday at 5 PM',
-            timestamp: new Date(Date.now() - 3600000),
-            messageCount: 5,
-            isArchived: false,
-            messages: [
-              { id: 1, sender: 'You', text: 'Practice moved to Thursday at 5 PM', timestamp: new Date(Date.now() - 3600000) },
-              { id: 2, sender: 'Parent (Smith)', text: 'Thanks for the update!', timestamp: new Date(Date.now() - 3000000) }
-            ]
-          }
-        ];
-      }
-    }
-
-    function renderMessagingThreads() {
-      const threadList = document.getElementById('messaging-threads-list');
-      if (!threadList) return;
-      threadList.innerHTML = '';
-
-      const filtered = STATE.messageThreads.filter(t => t.isArchived === STATE.messagingState.showArchived);
-
-      if (filtered.length === 0) {
-        threadList.innerHTML = `<div class="p-4 text-xs text-gray-400 text-center">${STATE.messagingState.showArchived ? 'No archived threads' : 'No active threads yet'}</div>`;
-        return;
-      }
-
-      filtered.forEach(thread => {
-        const div = document.createElement('div');
-        const isSelected = STATE.messagingState.selectedThreadId === thread.id;
-        const bgClass = isSelected ? 'bg-white border-l-4 border-brand' : 'hover:bg-clinical2 border-l-4 border-transparent';
-
-        div.className = `p-3 cursor-pointer ${bgClass} border border-borderLight transition-all`;
-        div.onclick = () => selectMessageThread(thread.id);
-
-        div.innerHTML = `
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex-1 min-w-0">
-              <div class="font-bold text-dark text-sm truncate">${thread.recipientGroup}</div>
-              <div class="text-xs text-gray-500 mt-0.5 truncate">${thread.lastMessage}</div>
-            </div>
-            <span class="text-[10px] text-gray-400 font-mono whitespace-nowrap">${new Date(thread.timestamp).toLocaleTimeString()}</span>
-          </div>
-          <div class="flex items-center justify-between mt-2">
-            <span class="text-[9px] bg-brand/10 text-brand font-bold px-2 py-0.5">${thread.messageCount} messages</span>
-          </div>
-        `;
-
-        threadList.appendChild(div);
-      });
-    }
-
-    function selectMessageThread(threadId) {
-      STATE.messagingState.selectedThreadId = threadId;
-      renderMessagingThreads();
-      renderMessagingDetail();
-    }
-
-    function renderMessagingDetail() {
-      const detailPanel = document.getElementById('messaging-detail-panel');
-      if (!detailPanel) return;
-
-      const thread = STATE.messageThreads.find(t => t.id === STATE.messagingState.selectedThreadId);
-
-      if (!thread) {
-        detailPanel.innerHTML = '<div class="text-center text-gray-400 text-xs py-8">Select a thread to view details</div>';
-        return;
-      }
-
-      let html = `<div class="space-y-2 max-h-96 overflow-y-auto mb-4">`;
-
-      if (thread.messages.length === 0) {
-        html += '<div class="text-xs text-gray-400 text-center py-6">No messages in this thread yet</div>';
-      } else {
-        thread.messages.forEach(msg => {
-          const isInbound = msg.sender !== 'You';
-          const alignClass = isInbound ? 'justify-start' : 'justify-end';
-          const bgClass = isInbound ? 'bg-clinical border border-borderLight' : 'bg-brand text-white';
-
-          html += `
-            <div class="flex ${alignClass}">
-              <div class="${bgClass} px-3 py-2 rounded max-w-xs text-sm font-body">
-                ${msg.text}
-                <div class="text-[9px] ${isInbound ? 'text-gray-500' : 'text-white/70'} mt-1">${new Date(msg.timestamp).toLocaleTimeString()}</div>
-              </div>
-            </div>
-          `;
-        });
-      }
-
-      html += `
-        </div>
-        <div class="border-t border-borderLight pt-3 flex gap-2">
-          <input type="text" id="messaging-reply-input" placeholder="Type your response..." class="flex-1 px-3 py-2 border border-borderLight bg-white text-xs outline-none focus:border-brand">
-          <button onclick="sendMessageReply(${thread.id})" class="bg-dark text-white px-4 py-2 text-xs font-bold hover:bg-brand hover:text-dark transition-colors">Send</button>
-        </div>
-        <div class="mt-2 flex gap-2">
-          <button onclick="toggleThreadArchive(${thread.id})" class="text-[10px] text-gray-500 hover:text-dark transition-colors">${thread.isArchived ? '✓ Restore' : '📦 Archive'}</button>
-        </div>
-      `;
-
-      detailPanel.innerHTML = html;
-    }
-
-    function sendMessageReply(threadId) {
-      const input = document.getElementById('messaging-reply-input');
-      if (!input || !input.value.trim()) return;
-
-      const thread = STATE.messageThreads.find(t => t.id === threadId);
-      if (!thread) return;
-
-      thread.messages.push({
-        id: thread.messages.length + 1,
-        sender: 'You',
-        text: input.value,
-        timestamp: new Date()
-      });
-
-      thread.lastMessage = input.value;
-      thread.timestamp = new Date();
-      thread.messageCount++;
-
-      input.value = '';
-      renderMessagingDetail();
-      renderMessagingThreads();
-    }
-
-    function toggleThreadArchive(threadId) {
-      const thread = STATE.messageThreads.find(t => t.id === threadId);
-      if (thread) {
-        thread.isArchived = !thread.isArchived;
-        STATE.messagingState.selectedThreadId = null;
-        renderMessagingThreads();
-        renderMessagingDetail();
-      }
-    }
-
-    function toggleShowArchived() {
-      STATE.messagingState.showArchived = !STATE.messagingState.showArchived;
-      STATE.messagingState.selectedThreadId = null;
-      renderMessagingThreads();
-      renderMessagingDetail();
-    }
-
-    function loadMoreMessages() {
-      STATE.messagingState.displayLimit += 10;
-      renderMessagingThreads();
-    }
-
-    function sendNewMessage() {
-      const recipientSelect = document.getElementById('messaging-recipient-select');
-      const messageText = document.getElementById('new-message-text');
-
-      if (!messageText || !messageText.value.trim()) {
-        alert('Please enter a message');
-        return;
-      }
-
-      const newThread = {
-        id: STATE.messageThreads.length ? Math.max(...STATE.messageThreads.map(t => t.id)) + 1 : 1,
-        recipientGroup: recipientSelect.selectedOptions[0].text,
-        lastMessage: messageText.value.substring(0, 50),
-        timestamp: new Date(),
-        messageCount: 1,
-        isArchived: false,
-        messages: [
-          { id: 1, sender: 'You', text: messageText.value, timestamp: new Date() }
-        ]
-      };
-
-      STATE.messageThreads.unshift(newThread);
-      messageText.value = '';
-      renderMessagingThreads();
-      alert('Message sent to ' + recipientSelect.selectedOptions[0].text);
-    }
-
-    // === MEMBERS MODULE ===
-    function renderMembersDirectory() {
-      const tbody = document.getElementById('members-table-body');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      const filtered = STATE.members.filter(m =>
-        m.name.toLowerCase().includes(STATE.membersSearch) ||
-        m.email.toLowerCase().includes(STATE.membersSearch)
-      );
-
-      if (filtered.length === 0 && STATE.members.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-xs text-gray-400">No members yet. Add your first member to get started.</td></tr>';
-        return;
-      }
-
-      if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-xs text-gray-400">No members match your search</td></tr>';
-        return;
-      }
-
-      filtered.forEach(m => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td class="p-2.5 font-bold text-dark">${m.name}</td>
-          <td class="p-2.5 text-xs text-gray-600">${m.role}</td>
-          <td class="p-2.5 text-xs text-gray-600">${m.assignedTeams && m.assignedTeams.length > 0 ? m.assignedTeams.join(', ') : 'All Teams'}</td>
-          <td class="p-2.5 text-xs text-gray-500">${m.email}</td>
-          <td class="p-2.5 text-xs text-gray-500">${m.phone || '—'}</td>
-          <td class="p-2.5 text-right">
-            <button type="button" onclick="openEditMemberModal(${m.id})" class="border border-dark hover:bg-dark hover:text-white px-2 py-1 font-bold text-[10px] uppercase transition-all brutal-clip">
-              Edit
-            </button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function openAddMemberModal() {
-      const modal = document.getElementById('add-member-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-
-        // Populate team checkboxes
-        const teamsContainer = document.getElementById('new-member-teams');
-        if (teamsContainer) {
-          teamsContainer.innerHTML = '';
-          STATE.activeDivisions.forEach(div => {
-            const label = document.createElement('label');
-            label.className = 'flex items-center gap-2 text-xs';
-            label.innerHTML = `
-              <input type="checkbox" value="${div}" class="w-4 h-4 border border-borderDark">
-              <span>${div}</span>
-            `;
-            teamsContainer.appendChild(label);
-          });
-        }
-      }
-    }
-
-    function closeAddMemberModal() {
-      const modal = document.getElementById('add-member-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        const form = document.getElementById('add-member-form');
-        if (form) form.reset();
-      }
-    }
-
-    function submitAddMember(e) {
-      e.preventDefault();
-
-      const name = document.getElementById('new-member-name').value.trim();
-      const role = document.getElementById('new-member-role').value;
-      const email = document.getElementById('new-member-email').value.trim();
-      const phone = document.getElementById('new-member-phone').value.trim();
-      const teams = Array.from(document.querySelectorAll('#new-member-teams input:checked')).map(cb => cb.value);
-
-      if (!name || !role || !email) {
-        alert('Name, role, and email are required');
-        return;
-      }
-
-      const newMember = {
-        id: STATE.members.length ? Math.max(...STATE.members.map(m => m.id)) + 1 : 1,
-        name,
-        role,
-        email,
-        phone,
-        assignedTeams: teams
-      };
-
-      STATE.members.push(newMember);
-
-      renderMembersDirectory();
-      updateMessagingRecipients();
-      closeAddMemberModal();
-      alert(`${name} has been added to the members directory.`);
-    }
-
-    function updateMessagingRecipients() {
-      const recipientSelect = document.getElementById('messaging-recipient-select');
-      if (!recipientSelect) return;
-
-      const currentValue = recipientSelect.value;
-      recipientSelect.innerHTML = '<option value="all">All Members</option>';
-
-      const roles = [...new Set(STATE.members.map(m => m.role))];
-      roles.forEach(role => {
-        const count = STATE.members.filter(m => m.role === role).length;
-        const opt = document.createElement('option');
-        opt.value = role;
-        opt.textContent = `${role} (${count})`;
-        recipientSelect.appendChild(opt);
-      });
-
-      recipientSelect.value = currentValue || 'all';
-    }
-
-    function openEditMemberModal(memberId) {
-      const member = STATE.members.find(m => m.id === memberId);
-      if (!member) return;
-
-      STATE.membersEditModal.show = true;
-      STATE.membersEditModal.memberId = memberId;
-      STATE.membersEditModal.isNew = false;
-      STATE.membersEditModal.formData = { ...member };
-
-      const modal = document.getElementById('edit-member-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        populateEditMemberForm(member);
-      }
-    }
-
-    function openNewMemberModal() {
-      STATE.membersEditModal.show = true;
-      STATE.membersEditModal.memberId = null;
-      STATE.membersEditModal.isNew = true;
-      STATE.membersEditModal.formData = {};
-
-      const modal = document.getElementById('edit-member-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        document.getElementById('edit-member-modal-title').innerText = 'Add New Member';
-        document.getElementById('edit-member-name').value = '';
-        document.getElementById('edit-member-role').value = '';
-        document.getElementById('edit-member-email').value = '';
-        document.getElementById('edit-member-phone').value = '';
-        document.getElementById('edit-member-modal-name').innerText = 'New Member';
-      }
-    }
-
-    function closeEditMemberModal() {
-      STATE.membersEditModal.show = false;
-      STATE.membersEditModal.memberId = null;
-      STATE.membersEditModal.formData = {};
-
-      const modal = document.getElementById('edit-member-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    }
-
-    function populateEditMemberForm(member) {
-      document.getElementById('edit-member-modal-title').innerText = 'Edit Member';
-      document.getElementById('edit-member-modal-name').innerText = member.name;
-      document.getElementById('edit-member-name').value = member.name || '';
-      document.getElementById('edit-member-role').value = member.role || '';
-      document.getElementById('edit-member-email').value = member.email || '';
-      document.getElementById('edit-member-phone').value = member.phone || '';
-
-      // Populate team checkboxes
-      const teamsContainer = document.getElementById('edit-member-teams');
-      if (teamsContainer) {
-        teamsContainer.innerHTML = '';
-        STATE.activeDivisions.forEach(div => {
-          const label = document.createElement('label');
-          label.className = 'flex items-center gap-2 text-xs';
-          const isChecked = member.assignedTeams && member.assignedTeams.includes(div);
-          label.innerHTML = `
-            <input type="checkbox" value="${div}" class="w-4 h-4 border border-borderDark" ${isChecked ? 'checked' : ''}>
-            <span>${div}</span>
-          `;
-          teamsContainer.appendChild(label);
-        });
-      }
-    }
-
-    function submitEditMember() {
-      const name = document.getElementById('edit-member-name').value.trim();
-      const role = document.getElementById('edit-member-role').value;
-      const email = document.getElementById('edit-member-email').value.trim();
-      const phone = document.getElementById('edit-member-phone').value.trim();
-      const teams = Array.from(document.querySelectorAll('#edit-member-teams input:checked')).map(cb => cb.value);
-
-      if (!name || !role || !email) {
-        alert('Name, role, and email are required');
-        return;
-      }
-
-      if (STATE.membersEditModal.isNew) {
-        // Add new member
-        const newId = STATE.members.length ? Math.max(...STATE.members.map(m => m.id)) + 1 : 1;
-        STATE.members.push({
-          id: newId,
-          name,
-          role,
-          email,
-          phone,
-          assignedTeams: teams
-        });
-        alert(`${name} has been added to the members directory.`);
-      } else {
-        // Edit existing member
-        const member = STATE.members.find(m => m.id === STATE.membersEditModal.memberId);
-        if (member) {
-          member.name = name;
-          member.role = role;
-          member.email = email;
-          member.phone = phone;
-          member.assignedTeams = teams;
-          alert(`${name}'s information has been updated.`);
-        }
-      }
-
-      closeEditMemberModal();
-      renderMembersDirectory();
-      updateMessagingRecipients();
-    }
-
-    // === ROSTER MODULE ===
-    function openEditProfileModal(playerId) {
-      const player = STATE.players.find(p => p.id === playerId);
-      if (!player) return;
-
-      STATE.rosterEditModal.show = true;
-      STATE.rosterEditModal.playerId = playerId;
-      STATE.rosterEditModal.formData = { ...player };
-
-      const modal = document.getElementById('edit-profile-modal');
-      if (modal) {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        populateEditProfileForm(player);
-      }
-    }
-
-    function closeEditProfileModal() {
-      STATE.rosterEditModal.show = false;
-      STATE.rosterEditModal.playerId = null;
-      STATE.rosterEditModal.formData = {};
-
-      const modal = document.getElementById('edit-profile-modal');
-      if (modal) {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }
-    }
-
-    function populateEditProfileForm(player) {
-      const nameInput = document.getElementById('edit-player-name');
-      const jerseyInput = document.getElementById('edit-player-jersey');
-      const positionInput = document.getElementById('edit-player-position');
-      const heightInput = document.getElementById('edit-player-height');
-      const weightInput = document.getElementById('edit-player-weight');
-      const dobInput = document.getElementById('edit-player-dob');
-
-      if (nameInput) nameInput.value = player.name || '';
-      if (jerseyInput) jerseyInput.value = player.jersey || '';
-      if (positionInput) positionInput.value = player.position || 'Unassigned';
-      if (heightInput) heightInput.value = player.height || '';
-      if (weightInput) weightInput.value = player.weight || '';
-      if (dobInput) dobInput.value = player.dob || '';
-    }
-
-    function submitEditProfile(e) {
-      e.preventDefault();
-
-      const playerId = STATE.rosterEditModal.playerId;
-      const player = STATE.players.find(p => p.id === playerId);
-      if (!player) return;
-
-      player.name = document.getElementById('edit-player-name').value.trim();
-      player.jersey = document.getElementById('edit-player-jersey').value.trim();
-      player.position = document.getElementById('edit-player-position').value;
-      player.height = document.getElementById('edit-player-height').value.trim();
-      player.weight = document.getElementById('edit-player-weight').value.trim();
-      player.dob = document.getElementById('edit-player-dob').value;
-
-      renderRosterTabList();
-      closeEditProfileModal();
-      alert(`${player.name}'s profile has been updated.`);
-    }
-
-    function switchDirectorTab(tabId) {
-      STATE.directorTab = tabId;
-      document.querySelectorAll('.dir-tab-panel').forEach(p => p.classList.add('hidden'));
-      const activePanel = document.getElementById(`dir-content-${tabId}`);
-      if (activePanel) activePanel.classList.remove('hidden');
-
-      document.querySelectorAll('[id^="tab-"]').forEach(btn => {
-        btn.className = "w-full text-left px-3 py-2.5 transition-all flex items-center justify-between text-gray-400 hover:text-dark hover:bg-white/50";
-      });
-      const activeBtn = document.getElementById(`tab-${tabId}`);
-      if (activeBtn) {
-        activeBtn.className = "w-full text-left px-3 py-2.5 transition-all flex items-center justify-between text-dark bg-white shadow-sm border-l-4 border-brand font-black";
-      }
-
-      document.querySelectorAll('[id^="mobile-tab-"]').forEach(btn => {
-        btn.className = "w-full text-left px-3 py-2.5 transition-all text-gray-400";
-      });
-      const activeMobileBtn = document.getElementById(`mobile-tab-${tabId}`);
-      if (activeMobileBtn) {
-        activeMobileBtn.className = "w-full text-left px-3 py-2.5 transition-all text-dark font-black bg-white/50";
-      }
-
-      // Update mobile bottom nav active state
-      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      const activeMobileNavBtn = document.querySelector(`.mobile-nav-btn[data-tab="${tabId}"]`);
-      if (activeMobileNavBtn) {
-        activeMobileNavBtn.classList.add('active');
-      }
-
-      const mobileNav = document.getElementById('mobile-sidebar');
-      if (mobileNav && window.innerWidth < 1024) {
-        mobileNav.classList.add('hidden');
-      }
-    }
-
-    function addDivision() {
-      const newDiv = prompt('Enter new division name (e.g., 18U, 19U):');
-      if (newDiv && !DIVISION_NODES.includes(newDiv)) {
-        DIVISION_NODES.push(newDiv);
-        STATE.activeDivisions.push(newDiv);
-        renderProgramsTabMatrix();
-        refreshEventMatrixUI();
-        alert(`Division "${newDiv}" has been added.`);
-      }
-    }
-
-    function filterRoster() {
-      STATE.rosterSearch = document.getElementById('roster-search').value.toLowerCase();
-      renderRosterTabList();
-    }
-
-    function filterMembers() {
-      STATE.membersSearch = document.getElementById('members-search').value.toLowerCase();
-      renderMembersDirectory();
-    }
-
-    function renderDirectorDashboard() {
-      document.getElementById('slug-badge').innerText = `[${STATE.clubSlug.toUpperCase()}]`;
-      document.getElementById('tier-badge-ui').innerText = getTierName(STATE.currentTier);
-      document.getElementById('demo-count').innerText = `${STATE.players.length} Players Total`;
-
-      const capLimit = getTierCap(STATE.currentTier);
-
-      document.getElementById('stat-active-count').innerText = STATE.players.length;
-      document.getElementById('stat-bracket-cap').innerText = capLimit;
-
-      const indicator = document.getElementById('tab-roster-cap-indicator');
-      if (indicator) {
-        indicator.innerText = `[${STATE.players.length}/${capLimit}]`;
-        if (STATE.players.length >= capLimit) {
-          indicator.className = "text-[10px] font-bold text-red-600 tracking-tight";
-        } else {
-          indicator.className = "text-[10px] font-normal text-gray-400 tracking-tight";
-        }
-      }
-
-      const inputFieldsLocked = STATE.players.length >= capLimit;
-      const warningBanner = document.getElementById('bracket-cap-warning');
-      if (warningBanner) {
-        warningBanner.classList.toggle('hidden', !inputFieldsLocked);
-      }
-
-      const nameInput = document.getElementById('new-p-name');
-      const dobInput = document.getElementById('new-p-dob');
-      const submitBtn = document.getElementById('new-p-btn');
-
-      if (nameInput && dobInput && submitBtn) {
-        nameInput.disabled = inputFieldsLocked;
-        dobInput.disabled = inputFieldsLocked;
-        submitBtn.disabled = inputFieldsLocked;
-        if (inputFieldsLocked) {
-          nameInput.className = "w-full bg-gray-100 cursor-not-allowed text-gray-400 border border-borderDark px-3 py-2 text-xs outline-none";
-          dobInput.className = "w-full bg-gray-100 cursor-not-allowed text-gray-400 border border-borderDark px-3 py-2 font-mono text-xs outline-none";
-          submitBtn.className = "w-full sm:w-auto shrink-0 bg-gray-300 text-gray-500 cursor-not-allowed font-display text-xs uppercase font-black tracking-wider px-4 py-2.5 brutal-clip";
-        } else {
-          nameInput.className = "w-full bg-clinical border border-borderDark px-3 py-2 text-xs outline-none focus:border-brand";
-          dobInput.className = "w-full bg-clinical border border-borderDark px-3 py-2 font-mono text-xs outline-none focus:border-brand";
-          submitBtn.className = "w-full sm:w-auto shrink-0 bg-dark text-white font-display text-xs uppercase font-black tracking-wider px-4 py-2.5 hover:bg-brand hover:text-dark transition-all brutal-clip";
-        }
-      }
-
-      initMessageThreads();
-      renderMessagingThreads();
-      renderRosterTabList();
-      renderProgramsTabMatrix();
-      renderScheduleTabFeed();
-      renderMembersDirectory();
-      renderFinancialsTabLedger();
-      updateMessagingRecipients();
-
-      // Update program settings display
-      const priceInput = document.getElementById('program-base-price');
-      if (priceInput) {
-        priceInput.value = STATE.programSettings.baseSubscriptionPrice || '0.00';
-      }
-    }
-
-    function renderRosterTabList() {
-      const container = document.getElementById('director-roster-list');
-      if(!container) return;
-      container.innerHTML = '';
-
-      const filtered = STATE.players.filter(p => p.name.toLowerCase().includes(STATE.rosterSearch));
-
-      if (filtered.length === 0 && STATE.players.length > 0) {
-        container.innerHTML = '<div class="text-xs text-gray-400 text-center py-4">No players match your search</div>';
-        return;
-      }
-
-      if (STATE.players.length === 0) {
-        container.innerHTML = '<div class="text-xs text-gray-400 text-center py-8">No players added yet. Use the form above to add your first player.</div>';
-        return;
-      }
-
-      filtered.forEach(p => {
-        const div = document.createElement('div');
-        const isStub = p.status === 'Administrative Pending';
-        const bgClass = isStub ? 'bg-blue-50' : 'bg-clinical hover:bg-white';
-        div.className = `border border-borderLight p-3 flex flex-wrap items-center justify-between gap-2 ${bgClass} text-xs`;
-
-        // Calculate age from DOB
-        let ageText = 'Age TBD';
-        if (p.dob) {
-          const birthDate = new Date(p.dob);
-          const today = new Date();
-          let age = today.getFullYear() - birthDate.getFullYear();
-          const monthDiff = today.getMonth() - birthDate.getMonth();
-          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-          }
-          ageText = `Age ${age}`;
-        }
-
-        div.innerHTML = `
-          <div class="font-mono flex-1">
-            <strong class="text-sm font-display uppercase tracking-tight text-dark block">${p.name}</strong>
-            <span class="text-gray-400 text-[10px]">Jersey #${p.jersey} | ${p.position}</span>
-            <span class="text-gray-400 text-[10px] block mt-0.5">${ageText} | ${p.teams.join(', ')}</span>
-            <div class="flex gap-1 mt-1">
-              ${isStub ? `<span class="bg-blue-600 text-white text-[9px] px-1 font-bold">ADMIN PLAYER</span>` : ''}
-            </div>
-          </div>
-          <button type="button" onclick="openEditProfileModal(${p.id})" class="border border-dark hover:bg-dark hover:text-white px-3 py-1.5 font-bold text-[10px] uppercase transition-all brutal-clip whitespace-nowrap">
-            Edit Profile
-          </button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function renderProgramsTabMatrix() {
-      const container = document.getElementById('programs-matrix-container');
-      if(!container) return;
-      container.innerHTML = '';
-
-      STATE.activeDivisions.forEach(divName => {
-        const count = STATE.players.filter(p => p.teams.includes(divName)).length;
-        const card = document.createElement('div');
-        card.className = "border border-borderLight p-3 bg-clinical text-center font-mono";
-        card.innerHTML = `
-          <div class="font-display font-black text-lg text-dark">${divName}</div>
-          <div class="text-[10px] text-gray-400 uppercase mt-0.5">${count} Active</div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function renderScheduleTabFeed() {
-      const container = document.getElementById('schedule-feed-list');
-      if(!container) return;
-      container.innerHTML = '';
-
-      if (STATE.events.length === 0) {
-        container.innerHTML = '<div class="text-xs text-gray-400 text-center py-4">No events scheduled yet</div>';
-        return;
-      }
-
-      STATE.events.forEach(evt => {
-        const matchesDivision = evt.divisions.some(d => STATE.activeDivisions.includes(d));
-        if (!matchesDivision) return;
-
-        const item = document.createElement('div');
-        item.className = "border-l-2 border-brand bg-clinical p-2.5 text-xs font-mono flex flex-wrap justify-between items-center gap-2";
-        item.innerHTML = `
-          <div>
-            <div class="font-bold text-dark">${evt.title} [${evt.type}]</div>
-            <div class="text-gray-400 text-[10px] mt-0.5">Location: ${evt.location} | ${evt.start} - ${evt.end}</div>
-            ${evt.recurring !== 'none' ? `<div class="text-gray-400 text-[10px] mt-0.5">Recurring: ${evt.recurring}</div>` : ''}
-          </div>
-          <div class="flex gap-1">${evt.divisions.map(d => `<span class="bg-gray-200 text-gray-700 text-[9px] px-1 font-bold">${d}</span>`).join('')}</div>
-        `;
-        container.appendChild(item);
-      });
-    }
-
-
-    function renderFinancialsTabLedger() {
-      const container = document.getElementById('financials-ledger-list');
-      const totalDisplay = document.getElementById('stat-unpaid-fees');
-      if(!container) return;
-
-      container.innerHTML = '';
-      let runningSum = 0;
-
-      if (STATE.players.length === 0) {
-        container.innerHTML = '<div class="text-xs text-gray-400 text-center py-6">No player accounts to display</div>';
-        if (totalDisplay) totalDisplay.innerText = '$0.00';
-        return;
-      }
-
-      STATE.players.forEach(p => {
-        runningSum += p.balance;
-        const adjustment = STATE.programSettings.billingAdjustments[p.id];
-        const basePrice = adjustment?.basePrice || STATE.programSettings.baseSubscriptionPrice;
-        const adjustedPrice = adjustment?.adjustedPrice || basePrice;
-        const hasAdjustment = adjustment !== undefined;
-
-        const line = document.createElement('div');
-        line.className = "p-3 bg-clinical border border-borderLight space-y-2";
-        line.innerHTML = `
-          <div class="flex justify-between items-start">
-            <div class="flex-1">
-              <span class="font-bold text-dark block text-sm">${p.name}</span>
-              <span class="text-gray-400 text-[9px]">Status: ${p.paidStatus || 'Pending'}</span>
-            </div>
-            <button type="button" onclick="openAdjustBillingModal(${p.id})" class="border border-brand text-brand px-2 py-1 text-[9px] font-bold uppercase hover:bg-brand hover:text-dark transition-all ml-2">
-              Adjust Billing
-            </button>
-          </div>
-          <div class="flex gap-4 text-xs font-mono">
-            <div>
-              <span class="text-gray-400 block">Base Price</span>
-              <span class="text-dark font-bold">$${basePrice.toFixed(2)}</span>
-            </div>
-            ${hasAdjustment ? `
-              <div>
-                <span class="text-gray-400 block">Adjusted</span>
-                <span class="text-brand font-bold">$${adjustedPrice.toFixed(2)}</span>
-              </div>
-              <div>
-                <span class="text-gray-400 block">${adjustment.discount > 0 ? 'Discount' : 'Premium'}</span>
-                <span class="${adjustment.discount > 0 ? 'text-green-600' : 'text-red-600'} font-bold">$${Math.abs(adjustment.discount).toFixed(2)}</span>
-              </div>
-            ` : ''}
-          </div>
-        `;
-        container.appendChild(line);
-      });
-
-      if(totalDisplay) {
-        totalDisplay.innerText = runningSum === 0 ? '$0.00' : `$${runningSum.toFixed(2)}`;
-      }
-    }
-
-    function renderFinancialDetail(playerId) {
-      const player = STATE.players.find(p => p.id === playerId);
-      if (!player) return;
-
-      const content = document.getElementById('financial-detail-content');
-      if (!content) return;
-
-      content.innerHTML = `
-        <div class="space-y-3">
-          <div class="bg-clinical p-3 rounded">
-            <div class="font-mono text-[10px] text-gray-500 uppercase mb-1">Player Name</div>
-            <div class="font-display text-lg font-bold text-dark">${player.name}</div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div class="bg-clinical p-3 rounded">
-              <div class="font-mono text-[10px] text-gray-500 uppercase mb-1">Parent</div>
-              <div class="font-mono text-xs text-dark">${player.parentName}</div>
-            </div>
-            <div class="bg-clinical p-3 rounded">
-              <div class="font-mono text-[10px] text-gray-500 uppercase mb-1">Status</div>
-              <div class="font-mono text-xs text-dark">${player.paidStatus || 'Pending'}</div>
-            </div>
-          </div>
-
-          <div class="bg-clinical p-3 rounded">
-            <div class="font-mono text-[10px] text-gray-500 uppercase mb-2">Current Balance</div>
-            <input type="number" id="edit-balance" value="${player.balance}" step="0.01" class="w-full border border-borderLight px-2 py-1 font-mono text-sm outline-none focus:border-brand">
-            <button onclick="saveBalanceEdit(${playerId})" class="mt-2 w-full bg-dark text-white px-2 py-1 font-mono text-[10px] uppercase font-bold hover:bg-brand hover:text-dark transition-all">
-              Save Changes
-            </button>
-          </div>
-
-          <div class="bg-yellow-50 border border-yellow-200 p-3 rounded font-mono text-[10px]">
-            <div class="font-bold text-yellow-900 mb-1">Payment History</div>
-            <div class="text-yellow-800 text-[9px]">Initial balance: $399.00<br>Last updated: Today</div>
-          </div>
-        </div>
-      `;
-
-      const markPaidBtn = document.getElementById('mark-paid-btn');
-      if (markPaidBtn) {
-        markPaidBtn.onclick = () => markPlayerAsPaid(playerId);
-      }
-    }
-
-    function saveBalanceEdit(playerId) {
-      const newBalance = parseFloat(document.getElementById('edit-balance').value);
-      if (isNaN(newBalance) || newBalance < 0) {
-        alert('Please enter a valid balance amount');
-        return;
-      }
-
-      const player = STATE.players.find(p => p.id === playerId);
-      if (player) {
-        player.balance = newBalance;
-        renderFinancialDetail(playerId);
-        renderDirectorDashboard();
-      }
-    }
-
-    function createNewAthlete(e) {
-      e.preventDefault();
-      const capLimit = getTierCap(STATE.currentTier);
-      if (STATE.players.length >= capLimit) return;
-
-      const nameField = document.getElementById('new-p-name');
-      const dobField = document.getElementById('new-p-dob');
-      if (!nameField || !dobField) return;
-
-      const newId = STATE.players.length ? Math.max(...STATE.players.map(p => p.id)) + 1 : 1;
-      const targetDivisions = [DIVISION_NODES[Math.floor(Math.random() * DIVISION_NODES.length)]];
-      const playerName = nameField.value.trim();
-
-      // Create player in Roster
-      STATE.players.push({
-        id: newId,
-        name: playerName,
-        jersey: Math.floor(Math.random() * 99).toString(),
-        position: 'Utility Guard',
-        dob: dobField.value,
-        teams: targetDivisions,
-        balance: 399.00,
-        status: 'Active',
-        parentName: 'Internal Administrative Addition',
-        parentEmail: 'admin-override@athleteiqapp.com',
-        parentPhone: '',
-        paidStatus: 'Pending'
-      });
-
-      // Auto-sync: Create corresponding member entry as "Athlete"
-      const memberId = STATE.members.length ? Math.max(...STATE.members.map(m => m.id)) + 1 : 1;
-      STATE.members.push({
-        id: memberId,
-        name: playerName,
-        role: 'Athlete',
-        email: `athlete-${newId}@athleteiqapp.com`,
-        phone: '',
-        assignedTeams: targetDivisions
-      });
-
-      nameField.value = '';
-      dobField.value = '';
-      updateMessagingRecipients();
-      renderDirectorDashboard();
-    }
-
-    function refreshEventMatrixUI() {
-      const mContainer = document.getElementById('division-badge-matrix');
-      if(!mContainer) return;
-      mContainer.innerHTML = '';
-
-      DIVISION_NODES.forEach(divName => {
-        const isSelected = selectedDivisionsForEvent.includes(divName);
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.onclick = () => {
-          const idx = selectedDivisionsForEvent.indexOf(divName);
-          if (idx > -1) {
-            selectedDivisionsForEvent.splice(idx, 1);
-          } else {
-            selectedDivisionsForEvent.push(divName);
-          }
-          refreshEventMatrixUI();
-        };
-        btn.className = isSelected
-          ? "bg-dark text-white font-mono text-[10px] font-bold px-2 py-1 border border-dark"
-          : "bg-white text-gray-400 font-mono text-[10px] px-2 py-1 border border-borderDark hover:text-dark hover:border-dark";
-        btn.innerText = divName;
-        mContainer.appendChild(btn);
-      });
-    }
-
-    function handleCreateEvent(e) {
-      e.preventDefault();
-      const titleEl = document.getElementById('evt-title');
-      const typeEl = document.getElementById('evt-type');
-      const locEl = document.getElementById('evt-loc');
-      const startEl = document.getElementById('evt-start');
-      const endEl = document.getElementById('evt-end');
-      const recurringEl = document.getElementById('evt-recurring');
-
-      if(!titleEl || !selectedDivisionsForEvent.length) {
-        alert('Please specify an event title and select at least one division target.');
-        return;
-      }
-
-      const newEvt = {
-        id: Date.now(),
-        title: titleEl.value.trim(),
-        type: typeEl.value,
-        location: locEl.value.trim(),
-        start: startEl.value,
-        end: endEl.value,
-        divisions: [...selectedDivisionsForEvent],
-        recurring: recurringEl.value
-      };
-
-      STATE.events.push(newEvt);
-      titleEl.value = '';
-      locEl.value = '';
-      startEl.value = '';
-      endEl.value = '';
-      selectedDivisionsForEvent = ['9U'];
-
-      refreshEventMatrixUI();
-      renderDirectorDashboard();
-      alert('Event published successfully. Recipient tracking matrices processed.');
-    }
-
-    function launchOverrideModal(pId, pName, currentBal) {
-      STATE.modal.show = true;
-      STATE.modal.playerId = pId;
-      document.getElementById('modal-lbl-action').innerText = "Balance Manipulation Node";
-      document.getElementById('modal-lbl-name').innerText = pName;
-      document.getElementById('modal-override-input').value = currentBal;
-      document.getElementById('destruction-modal-layer').classList.remove('hidden');
-      document.getElementById('destruction-modal-layer').classList.add('flex');
-    }
-
-    function dismissOverrideModal() {
-      STATE.modal.show = false;
-      STATE.modal.playerId = null;
-      document.getElementById('destruction-modal-layer').classList.add('hidden');
-      document.getElementById('destruction-modal-layer').classList.remove('flex');
-    }
-
-    function commitOverrideModal() {
-      const inputVal = parseFloat(document.getElementById('modal-override-input').value);
-      if(isNaN(inputVal) || inputVal < 0) {
-        alert('Please assign a valid numerical statement amount.');
-        return;
-      }
-
-      const player = STATE.players.find(p => p.id === STATE.modal.playerId);
-      if(player) {
-        player.balance = inputVal;
-      }
-      dismissOverrideModal();
-      renderDirectorDashboard();
-    }
-
-    function renderPlayerDashboard() {
-      if (STATE.players.length === 0) {
-        document.getElementById('player-profile-name').innerText = 'No Players';
-        return;
-      }
-
-      const targetAthlete = STATE.players[STATE.players.length - 1] || STATE.players[0];
-
-      document.getElementById('player-profile-name').innerText = targetAthlete.name;
-      document.getElementById('player-profile-jersey').innerText = `#${targetAthlete.jersey}`;
-      document.getElementById('player-profile-pos').innerText = targetAthlete.position.toUpperCase();
-      document.getElementById('player-profile-teams').innerText = targetAthlete.teams.join(' & ');
-      document.getElementById('player-profile-balance').innerText = targetAthlete.balance === 0 ? '$0.00' : `$${targetAthlete.balance.toFixed(2)}`;
-
-      if(targetAthlete.balance > 0) {
-        document.getElementById('player-profile-balance').className = "font-display text-2xl font-bold text-red-700 mt-1";
-      } else {
-        document.getElementById('player-profile-balance').className = "font-display text-2xl font-bold text-gray-500 mt-1";
-      }
-
-      const feedContainer = document.getElementById('player-events-feed');
-      if(!feedContainer) return;
-      feedContainer.innerHTML = '';
-
-      const parentEvents = STATE.events.filter(evt =>
-        evt.divisions.some(d => targetAthlete.teams.includes(d))
-      );
-
-      if(!parentEvents.length) {
-        feedContainer.innerHTML = `<div class="font-mono text-xs text-gray-400 p-2 text-center">No Upcoming Events Logged for Assigned Division Brackets</div>`;
-        return;
-      }
-
-      parentEvents.forEach(evt => {
-        const div = document.createElement('div');
-        div.className = "p-3 border border-borderLight bg-clinical font-mono text-xs flex justify-between items-center flex-wrap gap-2";
-        div.innerHTML = `
-          <div>
-            <strong class="text-dark block font-bold uppercase">${evt.title} (${evt.type})</strong>
-            <span class="text-gray-400 text-[10px]">Facility Location: ${evt.location}</span>
-          </div>
-          <div class="text-right text-[11px] font-bold text-dark">
-            ${evt.start} - ${evt.end}
-          </div>
-        `;
-        feedContainer.appendChild(div);
-      });
-    }
-
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 1024) {
-        const mobileNav = document.getElementById('mobile-sidebar');
-        if (mobileNav) mobileNav.classList.add('hidden');
-        closeMobileMenu();
-      }
-    });
-
-    switchDirectorTab('onboarding');
-    refreshEventMatrixUI();
-  </script>
-
-  <!-- ADJUST BILLING MODAL (Financials) -->
-  <div id="adjust-billing-modal" class="hidden fixed inset-0 bg-dark/80 backdrop-blur-sm justify-center items-center z-50 p-4">
-    <div class="bg-white border-2 border-dark p-6 max-w-sm w-full brutal-clip shadow-xl">
-      <div class="mb-4 pb-3 border-b border-borderLight">
-        <h3 class="font-display text-lg font-black uppercase text-dark">Adjust Player Billing</h3>
-      </div>
-
-      <div class="space-y-4">
-        <div>
-          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Player Name</label>
-          <div id="adjust-billing-player-name" class="font-display text-lg font-black text-dark"></div>
-        </div>
-
-        <div>
-          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Base Price</label>
-          <div id="adjust-billing-base" class="font-mono text-xl font-bold text-gray-600 mb-3">$0.00</div>
-        </div>
-
-        <div>
-          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Adjusted Amount *</label>
-          <input type="number" id="adjust-billing-amount" step="0.01" min="0" class="w-full bg-clinical border border-borderDark px-3 py-2 text-base font-mono outline-none focus:border-brand" placeholder="0.00">
-        </div>
-
-        <div>
-          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Discount/Premium</label>
-          <input type="number" id="adjust-billing-discount" step="0.01" readonly class="w-full bg-gray-100 border border-borderDark px-3 py-2 text-base font-mono" placeholder="0.00">
-          <span class="text-[9px] text-gray-400 mt-1 block">(Auto-calculated from base price)</span>
-        </div>
-
-        <div>
-          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Notes (Optional)</label>
-          <textarea id="adjust-billing-notes" placeholder="e.g., 'Early payment discount' or 'Family plan adjustment'" rows="2" class="w-full bg-clinical border border-borderDark px-3 py-2 text-xs font-body outline-none focus:border-brand resize-none"></textarea>
-        </div>
-      </div>
-
-      <div class="flex gap-2 justify-end mt-6 pt-4 border-t border-borderLight">
-        <button onclick="closeAdjustBillingModal()" class="border border-borderDark px-4 py-1.5 font-mono text-xs uppercase font-bold text-gray-500 hover:text-dark transition-colors">
-          Cancel
-        </button>
-        <button onclick="submitAdjustBilling()" class="bg-brand text-dark px-4 py-1.5 font-display text-xs tracking-wider font-bold uppercase brutal-clip hover:bg-dark hover:text-brand transition-all">
-          Save Adjustment
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ADJUST FEE MODAL -->
-  <div id="adjust-fee-modal" class="hidden fixed inset-0 bg-dark/80 backdrop-blur-sm justify-center items-center z-50 p-4">
-    <div class="bg-white border-2 border-dark p-6 max-w-sm w-full brutal-clip shadow-xl">
-      <div class="mb-4 pb-3 border-b border-borderLight">
-        <h3 class="font-display text-lg font-black uppercase text-dark">Adjust Player Fee</h3>
-      </div>
-
-      <div class="space-y-4">
-        <div>
-          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Player Name</label>
-          <div id="adjust-fee-player-name" class="font-display text-lg font-black text-dark"></div>
-        </div>
-
-        <div>
-          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">Current Balance</label>
-          <div class="font-mono text-2xl font-bold text-brand" id="adjust-fee-current">$0.00</div>
-        </div>
-
-        <div>
-          <label class="block font-mono text-[9px] text-gray-500 uppercase font-bold mb-1">New Balance Amount *</label>
-          <input type="number" id="adjust-fee-input" step="0.01" min="0" class="w-full bg-clinical border border-borderDark px-3 py-2 text-base font-mono outline-none focus:border-brand" placeholder="0.00">
-        </div>
-      </div>
-
-      <div class="flex gap-2 justify-end mt-6 pt-4 border-t border-borderLight">
-        <button onclick="closeAdjustFeeModal()" class="border border-borderDark px-4 py-1.5 font-mono text-xs uppercase font-bold text-gray-500 hover:text-dark transition-colors">
-          Cancel
-        </button>
-        <button onclick="submitAdjustFee()" class="bg-brand text-dark px-4 py-1.5 font-display text-xs tracking-wider font-bold uppercase brutal-clip hover:bg-dark hover:text-brand transition-all">
-          Update Balance
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MOBILE BOTTOM NAVIGATION BAR (AUTHENTICATED ROUTES ONLY) -->
-  <div id="mobile-bottom-nav" class="hidden !fixed bottom-0 left-0 right-0 bg-dark border-t border-brand px-1 py-2 z-40 md:!hidden">
-    <div class="flex justify-around items-center h-16">
-      <!-- Roster -->
-      <button onclick="switchDirectorTab('roster'); window.scrollTo(0,0);" class="mobile-nav-btn flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-all group" data-tab="roster">
-        <svg class="w-5 h-5 mb-1 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-        </svg>
-        <span>Roster</span>
-      </button>
-
-      <!-- Messages -->
-      <button onclick="switchDirectorTab('messaging'); window.scrollTo(0,0);" class="mobile-nav-btn flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-all group" data-tab="messaging">
-        <svg class="w-5 h-5 mb-1 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <span>Messages</span>
-      </button>
-
-      <!-- Members -->
-      <button onclick="switchDirectorTab('members'); window.scrollTo(0,0);" class="mobile-nav-btn flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-all group" data-tab="members">
-        <svg class="w-5 h-5 mb-1 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-        <span>Members</span>
-      </button>
-
-      <!-- Schedule -->
-      <button onclick="switchDirectorTab('schedule'); window.scrollTo(0,0);" class="mobile-nav-btn flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-all group" data-tab="schedule">
-        <svg class="w-5 h-5 mb-1 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-          <line x1="16" y1="2" x2="16" y2="6"></line>
-          <line x1="8" y1="2" x2="8" y2="6"></line>
-          <line x1="3" y1="10" x2="21" y2="10"></line>
-        </svg>
-        <span>Schedule</span>
-      </button>
-
-      <!-- Finances -->
-      <button onclick="switchDirectorTab('financials'); window.scrollTo(0,0);" class="mobile-nav-btn flex flex-col items-center justify-center w-16 h-14 text-[10px] font-mono font-bold text-gray-400 hover:text-brand transition-all group" data-tab="financials">
-        <svg class="w-5 h-5 mb-1 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="1"></circle>
-          <path d="M12 1v6m0 6v6"></path>
-          <path d="M4.22 4.22l4.24 4.24m5.08 0l4.24-4.24"></path>
-          <path d="M1 12h6m6 0h6"></path>
-          <path d="M4.22 19.78l4.24-4.24m5.08 0l4.24 4.24"></path>
-        </svg>
-        <span>Finances</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Add bottom padding to director view to account for fixed mobile nav -->
-  <style>
-    @media (max-width: 767px) {
-      #view-director {
-        padding-bottom: 80px !important;
-      }
-    }
-    /* Force mobile nav to stay hidden except on authenticated routes */
-    #mobile-bottom-nav.hidden {
-      display: none !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
-  </style>
-
   <footer class="mt-auto border-t border-borderLight bg-clinical py-6 px-4 text-center font-mono text-[10px] text-gray-400 uppercase tracking-widest">
-    © 2026 AthleteIQ Internal Operations Hub. All Channels Secured.
+    © 2026 ATHLETEIQ INTERNAL OPERATIONS HUB. ALL CHANNELS SECURED.
   </footer>
-
-  <script>
-    // DEBUG: Verify elements exist
-    console.log('=== ATHLETEIQ ROUTING DEBUG ===');
-    const routePanels = document.querySelectorAll('.route-panel');
-    console.log(`Found ${routePanels.length} route-panel elements:`, Array.from(routePanels).map(el => ({id: el.id, hidden: el.classList.contains('hidden')})));
-    console.log('view-login element:', document.getElementById('view-login'));
-    console.log('view-signup element:', document.getElementById('view-signup'));
-    console.log('view-home element:', document.getElementById('view-home'));
-    console.log('STATE object:', typeof STATE !== 'undefined' ? STATE : 'STATE not defined');
-    window.addEventListener('load', () => {
-      console.log('Page fully loaded. Initial hash:', window.location.hash);
-      console.log('Initial STATE.activeView:', STATE.activeView);
-    });
-  </script>
 
 </body>
 </html>
