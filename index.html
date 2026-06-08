@@ -1224,7 +1224,8 @@
         </button>
       </div>
 
-      <form onsubmit="handleAuthentication(event, 'login')" class="space-y-4">
+      <!-- DIRECTOR LOGIN FORM -->
+      <form id="director-login-form" onsubmit="handleAuthentication(event, 'login')" class="space-y-4">
         <div>
           <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Email or Phone Number</label>
           <input type="text" id="login-identifier" placeholder="director@leaguename.com" required class="w-full bg-clinical border border-borderDark px-3 py-2 text-sm outline-none focus:border-brand">
@@ -1247,6 +1248,34 @@
 
         <button type="submit" id="auth-submit-btn" class="w-full bg-dark text-white font-display text-base font-black tracking-wider uppercase py-3 brutal-clip hover:bg-brand hover:text-dark transition-all mt-4">
           Send Verification Code
+        </button>
+      </form>
+
+      <!-- ATHLETE LOGIN FORM -->
+      <form id="athlete-login-form" class="hidden space-y-4" onsubmit="handleAthleteLogin(event)">
+        <div>
+          <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">First Name</label>
+          <input type="text" id="athlete-fname" class="w-full bg-clinical border border-borderDark px-3 py-2 text-sm outline-none focus:border-brand" required placeholder="Noah">
+        </div>
+
+        <div>
+          <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Last Name</label>
+          <input type="text" id="athlete-lname" class="w-full bg-clinical border border-borderDark px-3 py-2 text-sm outline-none focus:border-brand" required placeholder="Dabney">
+        </div>
+
+        <div>
+          <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Email</label>
+          <input type="email" id="athlete-email" class="w-full bg-clinical border border-borderDark px-3 py-2 text-sm outline-none focus:border-brand" required placeholder="noah@example.com">
+        </div>
+
+        <div>
+          <label class="block font-mono text-[10px] text-gray-500 uppercase font-bold mb-1">Invite Code</label>
+          <input type="text" id="athlete-code" class="w-full bg-clinical border border-borderDark px-3 py-2 text-sm outline-none focus:border-brand font-mono" required placeholder="ABC123XYZ" maxlength="10">
+          <p class="text-[10px] text-gray-400 mt-2">Ask your coach for your invite code to access your player dashboard.</p>
+        </div>
+
+        <button type="submit" class="w-full bg-brand text-dark font-display text-base font-black tracking-wider uppercase py-3 brutal-clip hover:bg-dark hover:text-brand transition-all mt-4">
+          Enter Athlete Dashboard
         </button>
       </form>
     </div>
@@ -1374,19 +1403,19 @@
       STATE.userRole = role;
       const dirBtn = document.getElementById('toggle-director');
       const parBtn = document.getElementById('toggle-parent');
-      const inputEl = document.getElementById('login-identifier');
-      const sportBlock = document.getElementById('login-sport-selection-block');
+      const directorForm = document.getElementById('director-login-form');
+      const athleteForm = document.getElementById('athlete-login-form');
 
       if(role === 'DIRECTOR') {
         dirBtn.className = "w-1/2 text-center py-2 font-mono text-[11px] uppercase font-bold transition-all text-dark bg-white shadow-sm border border-borderLight";
         parBtn.className = "w-1/2 text-center py-2 font-mono text-[11px] uppercase font-bold transition-all text-gray-400";
-        inputEl.placeholder = "director@leaguename.com";
-        sportBlock.classList.remove('hidden');
+        if (directorForm) directorForm.classList.remove('hidden');
+        if (athleteForm) athleteForm.classList.add('hidden');
       } else {
         parBtn.className = "w-1/2 text-center py-2 font-mono text-[11px] uppercase font-bold transition-all text-dark bg-white shadow-sm border border-borderLight";
         dirBtn.className = "w-1/2 text-center py-2 font-mono text-[11px] uppercase font-bold transition-all text-gray-400";
-        inputEl.placeholder = "parent@myemail.com";
-        sportBlock.classList.add('hidden');
+        if (directorForm) directorForm.classList.add('hidden');
+        if (athleteForm) athleteForm.classList.remove('hidden');
       }
     }
 
@@ -1464,6 +1493,34 @@
       } else {
         disclaimer.classList.add('hidden');
       }
+    }
+
+    // ATHLETE DASHBOARD LOGIN
+    const VALID_ATHLETE_CODES = ['SCOUT001', 'SCOUT002', 'SCOUT003', 'ABC123XYZ'];
+
+    function handleAthleteLogin(e) {
+      e.preventDefault();
+
+      const fname = document.getElementById('athlete-fname').value.trim();
+      const lname = document.getElementById('athlete-lname').value.trim();
+      const email = document.getElementById('athlete-email').value.trim();
+      const code = document.getElementById('athlete-code').value.trim().toUpperCase();
+
+      if (!VALID_ATHLETE_CODES.includes(code)) {
+        alert('Invalid invite code. Please check and try again.');
+        return;
+      }
+
+      // Store athlete session and redirect to dashboard
+      const athleteSession = {
+        firstName: fname,
+        lastName: lname,
+        email: email,
+        inviteCode: code
+      };
+
+      localStorage.setItem('athleteiq_athlete_session', JSON.stringify(athleteSession));
+      window.location.href = 'athleteiq-player-dashboard.html';
     }
 
     function initPublicRegistrationView() {
