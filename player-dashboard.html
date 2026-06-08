@@ -3,150 +3,160 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player Dashboard | AthleteIQ</title>
+  <title>Athlete Dashboard | AthleteIQ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root {
-      --brand: #F59E0B;
-      --dark: #080808;
-      --light-text: #E5E7EB;
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Barlow Condensed"', 'sans-serif'],
+            body: ['"Barlow"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: '#F59E0B',
+            dark: '#080808',
+          }
+        }
+      }
     }
-
-    body { @apply bg-[#080808] text-white; font-family: 'Barlow', sans-serif; }
-    h1, h2, h3 { font-weight: 900; letter-spacing: -0.02em; }
-
-    .sidebar-nav { @apply space-y-1; }
-    .nav-item { @apply px-4 py-3 font-mono text-xs uppercase font-bold text-gray-400 cursor-pointer transition-colors hover:text-white hover:bg-[#1a1a1a]; }
-    .nav-item.active { @apply text-[#F59E0B] bg-[#1a1a1a] border-l-2 border-[#F59E0B] pl-3; }
-
-    .module-card { @apply border border-gray-700 p-6 bg-[#0f0f0f]; }
-    .input-field { @apply bg-[#1a1a1a] border border-gray-700 text-white px-3 py-2 font-mono text-sm outline-none focus:border-[#F59E0B] transition-colors; }
-    .btn-primary { @apply bg-[#F59E0B] text-[#080808] font-mono text-xs font-bold uppercase px-4 py-2 cursor-pointer transition-all hover:bg-white; }
-    .btn-secondary { @apply border border-gray-700 text-white font-mono text-xs font-bold uppercase px-4 py-2 cursor-pointer transition-all hover:bg-[#1a1a1a]; }
-
+  </script>
+  <style>
+    body { background: #080808; color: #fff; }
+    .brutal-clip { clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px)); }
+    .module-card { @apply border border-gray-700 bg-[#0f0f0f] p-6; }
+    .input-field { @apply bg-[#1a1a1a] border border-gray-700 text-white px-3 py-2 font-mono text-sm outline-none focus:border-brand; }
+    .btn-primary { @apply bg-brand text-dark font-display font-black uppercase px-4 py-2 brutal-clip hover:bg-white transition-all; }
+    .btn-secondary { @apply border border-gray-700 text-white font-mono text-xs font-bold uppercase px-4 py-2 brutal-clip hover:bg-[#1a1a1a]; }
+    .nav-item { @apply px-4 py-3 font-mono text-xs uppercase font-bold text-gray-500 cursor-pointer border-l-2 border-transparent hover:text-white hover:border-brand transition-all; }
+    .nav-item.active { @apply text-brand border-l-2 border-brand bg-[#1a1a1a]; }
     @media (max-width: 768px) {
       .sidebar { @apply fixed bottom-0 left-0 right-0 bg-[#1a1a1a] border-t border-gray-700; }
       .main-content { @apply pb-24; }
-      .sidebar-nav { @apply flex flex-row gap-0 overflow-x-auto; }
-      .nav-item { @apply flex-1 text-center py-2 border-t-2 border-transparent; }
-      .nav-item.active { @apply border-t-2 border-[#F59E0B] border-l-0 pl-4; }
+      .sidebar-nav { @apply flex flex-row gap-0; }
+      .nav-item { @apply flex-1 text-center py-2 border-t-2 border-b-0 border-l-0 border-transparent; }
+      .nav-item.active { @apply border-t-2 border-brand; }
     }
   </style>
 </head>
 <body>
-  <div class="flex min-h-screen">
-    <!-- SIDEBAR NAVIGATION -->
-    <nav id="sidebar" class="w-56 border-r border-gray-700 bg-[#0a0a0a] hidden md:flex md:flex-col md:fixed md:left-0 md:top-0 md:h-screen md:overflow-y-auto">
-      <div class="p-6 border-b border-gray-700">
-        <div class="font-mono text-[10px] text-gray-500 uppercase mb-2">Athlete Portal</div>
-        <h1 class="text-xl font-black uppercase" id="athlete-name">Loading...</h1>
+  <div class="flex min-h-screen md:gap-0">
+    <!-- SIDEBAR NAVIGATION (DESKTOP) -->
+    <nav class="w-56 border-r border-gray-700 bg-[#0a0a0a] hidden md:flex md:flex-col md:fixed md:left-0 md:top-0 md:h-screen md:overflow-y-auto">
+      <!-- ATHLETE HEADER -->
+      <div class="border-b border-gray-700 p-6 sticky top-0 bg-[#0a0a0a]">
+        <div class="w-12 h-12 bg-brand rounded-full mb-3 flex items-center justify-center">
+          <span class="font-display text-dark font-black text-lg">ND</span>
+        </div>
+        <h2 class="font-display text-lg font-black uppercase text-white" id="athlete-name">Noah Dabney</h2>
+        <div class="font-mono text-[10px] text-gray-500 mt-2 space-y-1">
+          <div id="athlete-jersey">Jersey #23</div>
+          <div id="athlete-position">Point Guard</div>
+          <div id="athlete-sport">Basketball</div>
+        </div>
       </div>
 
+      <!-- NAV ITEMS -->
       <div class="sidebar-nav flex-1 p-4">
-        <div class="nav-item active" onclick="switchModule('profile')">📋 Profile</div>
+        <div class="nav-item active" onclick="switchModule('profile')">👤 Profile</div>
         <div class="nav-item" onclick="switchModule('schedule')">📅 Schedule</div>
         <div class="nav-item" onclick="switchModule('messaging')">💬 Messaging</div>
         <div class="nav-item" onclick="switchModule('stats')">📊 Stats Logger</div>
         <div class="nav-item" onclick="switchModule('notes')">📝 Team Notes</div>
       </div>
 
-      <div class="p-4 border-t border-gray-700">
-        <button onclick="handleLogout()" class="btn-secondary w-full">Sign Out</button>
+      <div class="border-t border-gray-700 p-4">
+        <button onclick="handleLogout()" class="btn-secondary w-full text-xs">Sign Out</button>
       </div>
     </nav>
 
     <!-- MAIN CONTENT -->
-    <div id="main-content" class="main-content flex-1 md:ml-56">
-      <div class="max-w-4xl mx-auto p-4 md:p-8">
-
-        <!-- MOBILE NAV TOGGLE -->
-        <div class="md:hidden mb-6 flex items-center justify-between">
-          <h1 class="text-2xl font-black uppercase">AthleteIQ</h1>
-          <button onclick="toggleMobileNav()" class="px-4 py-2 border border-gray-700 text-xs font-bold uppercase">≡</button>
+    <div class="main-content flex-1 md:ml-56">
+      <!-- MOBILE HEADER -->
+      <div class="md:hidden bg-[#0a0a0a] border-b border-gray-700 p-4 flex items-center justify-between sticky top-0 z-50">
+        <div>
+          <h1 class="font-display font-black uppercase text-white">AthleteIQ</h1>
+          <div class="font-mono text-[10px] text-gray-500" id="mobile-athlete">Noah Dabney • #23</div>
         </div>
+        <button onclick="toggleMobileNav()" class="p-2 border border-gray-700 brutal-clip text-xs font-bold">≡</button>
+      </div>
+
+      <!-- CONTENT AREA -->
+      <div class="max-w-4xl mx-auto p-4 md:p-8">
 
         <!-- PROFILE MODULE -->
         <div id="module-profile" class="module-section">
-          <div class="mb-6">
-            <h2 class="text-4xl font-black uppercase mb-2">Profile</h2>
-            <div class="h-px w-12 bg-[#F59E0B]"></div>
+          <div class="mb-8">
+            <h2 class="font-display text-5xl font-black uppercase text-white mb-3">Athlete Profile</h2>
+            <div class="h-px w-12 bg-brand"></div>
           </div>
 
-          <div class="space-y-4 mb-6">
+          <div class="space-y-6">
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Full Name</label>
-                <input type="text" id="profile-name" placeholder="Noah Dabney" class="input-field w-full">
+                <input type="text" id="profile-name" class="input-field w-full" placeholder="Noah Dabney">
               </div>
               <div>
-                <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Jersey #</label>
-                <input type="number" id="profile-jersey" placeholder="23" class="input-field w-full">
+                <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Jersey Number</label>
+                <input type="number" id="profile-jersey" class="input-field w-full" placeholder="23">
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Sport</label>
-                <input type="text" id="profile-sport" placeholder="Basketball" class="input-field w-full">
+                <input type="text" id="profile-sport" class="input-field w-full" placeholder="Basketball">
               </div>
               <div>
                 <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Position</label>
-                <input type="text" id="profile-position" placeholder="Point Guard" class="input-field w-full">
+                <input type="text" id="profile-position" class="input-field w-full" placeholder="Point Guard">
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Height</label>
-                <input type="text" id="profile-height" placeholder="5'10\"" class="input-field w-full">
+                <input type="text" id="profile-height" class="input-field w-full" placeholder="5'10\"">
               </div>
               <div>
                 <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Weight</label>
-                <input type="text" id="profile-weight" placeholder="165 lbs" class="input-field w-full">
+                <input type="text" id="profile-weight" class="input-field w-full" placeholder="165 lbs">
               </div>
             </div>
-          </div>
 
-          <button onclick="saveProfile()" class="btn-primary">Save Profile</button>
+            <button onclick="saveProfile()" class="btn-primary w-full md:w-auto">Save Profile</button>
+          </div>
         </div>
 
         <!-- SCHEDULE MODULE -->
         <div id="module-schedule" class="module-section hidden">
-          <div class="mb-6">
-            <h2 class="text-4xl font-black uppercase mb-2">Schedule</h2>
-            <div class="h-px w-12 bg-[#F59E0B]"></div>
+          <div class="mb-8">
+            <h2 class="font-display text-5xl font-black uppercase text-white mb-3">Schedule</h2>
+            <div class="h-px w-12 bg-brand"></div>
           </div>
-
-          <div id="schedule-list" class="space-y-4">
-            <!-- Populated dynamically -->
-          </div>
+          <div id="schedule-list" class="space-y-4"></div>
         </div>
 
         <!-- MESSAGING MODULE -->
         <div id="module-messaging" class="module-section hidden">
-          <div class="mb-6">
-            <h2 class="text-4xl font-black uppercase mb-2">Messaging</h2>
-            <div class="h-px w-12 bg-[#F59E0B]"></div>
+          <div class="mb-8">
+            <h2 class="font-display text-5xl font-black uppercase text-white mb-3">Messaging</h2>
+            <div class="h-px w-12 bg-brand"></div>
           </div>
-
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Thread List -->
-            <div class="md:col-span-1 border border-gray-700 bg-[#0f0f0f] p-4">
+            <div class="module-card md:col-span-1">
               <div class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-4">Threads</div>
-              <div id="thread-list" class="space-y-2">
-                <!-- Populated dynamically -->
-              </div>
+              <div id="thread-list" class="space-y-2"></div>
             </div>
-
-            <!-- Message Thread -->
-            <div class="md:col-span-2 border border-gray-700 bg-[#0f0f0f] p-4 flex flex-col">
+            <div class="module-card md:col-span-2 flex flex-col">
               <div class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-4" id="thread-title">Select Thread</div>
-              <div id="message-display" class="flex-1 space-y-3 mb-4 overflow-y-auto max-h-64">
-                <!-- Messages populated dynamically -->
-              </div>
+              <div id="message-display" class="flex-1 space-y-3 mb-4 max-h-64 overflow-y-auto"></div>
               <div class="flex gap-2">
-                <input type="text" id="message-input" placeholder="Type message..." class="input-field flex-1">
-                <button onclick="sendMessage()" class="btn-primary">Send</button>
+                <input type="text" id="message-input" class="input-field flex-1" placeholder="Type message...">
+                <button onclick="sendMessage()" class="btn-primary text-sm px-3">Send</button>
               </div>
             </div>
           </div>
@@ -154,14 +164,14 @@
 
         <!-- STATS LOGGER MODULE -->
         <div id="module-stats" class="module-section hidden">
-          <div class="mb-6">
-            <h2 class="text-4xl font-black uppercase mb-2">Stats Logger</h2>
-            <div class="h-px w-12 bg-[#F59E0B]"></div>
+          <div class="mb-8">
+            <h2 class="font-display text-5xl font-black uppercase text-white mb-3">Stats Logger</h2>
+            <div class="h-px w-12 bg-brand"></div>
           </div>
 
-          <div id="post-game-alert" class="hidden mb-6 p-4 bg-[#1a1a1a] border-l-4 border-[#F59E0B]">
-            <div class="font-mono text-xs text-[#F59E0B] font-bold uppercase">POST-GAME NOTIFICATION</div>
-            <p class="text-sm mt-1">A game ended 1 hour ago. Log your stats now!</p>
+          <div id="post-game-alert" class="hidden mb-6 p-4 bg-[#1a3a1a] border-l-4 border-green-500">
+            <div class="font-display text-sm text-green-400 font-bold uppercase">POST-GAME NOTIFICATION</div>
+            <p class="text-sm text-green-300 mt-2">A game ended 1 hour ago. Log your stats now!</p>
           </div>
 
           <div class="space-y-6">
@@ -170,15 +180,15 @@
               <div class="grid grid-cols-3 gap-4">
                 <div>
                   <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Points (PTS)</label>
-                  <input type="number" id="stat-pts" placeholder="0" class="input-field w-full">
+                  <input type="number" id="stat-pts" class="input-field w-full" placeholder="0">
                 </div>
                 <div>
                   <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">3-Pointers Made</label>
-                  <input type="number" id="stat-3pm" placeholder="0" class="input-field w-full">
+                  <input type="number" id="stat-3pm" class="input-field w-full" placeholder="0">
                 </div>
                 <div>
                   <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Free Throws Made</label>
-                  <input type="number" id="stat-ftm" placeholder="0" class="input-field w-full">
+                  <input type="number" id="stat-ftm" class="input-field w-full" placeholder="0">
                 </div>
               </div>
             </div>
@@ -188,11 +198,11 @@
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Field Goals Made</label>
-                  <input type="number" id="stat-fgm" placeholder="0" class="input-field w-full">
+                  <input type="number" id="stat-fgm" class="input-field w-full" placeholder="0">
                 </div>
                 <div>
                   <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Field Goals Attempted</label>
-                  <input type="number" id="stat-fga" placeholder="0" class="input-field w-full">
+                  <input type="number" id="stat-fga" class="input-field w-full" placeholder="0">
                 </div>
               </div>
             </div>
@@ -202,56 +212,53 @@
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
                   <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Rebounds</label>
-                  <input type="number" id="stat-reb" placeholder="0" class="input-field w-full">
+                  <input type="number" id="stat-reb" class="input-field w-full" placeholder="0">
                 </div>
                 <div>
                   <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Assists</label>
-                  <input type="number" id="stat-ast" placeholder="0" class="input-field w-full">
+                  <input type="number" id="stat-ast" class="input-field w-full" placeholder="0">
                 </div>
                 <div>
                   <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Steals</label>
-                  <input type="number" id="stat-stl" placeholder="0" class="input-field w-full">
+                  <input type="number" id="stat-stl" class="input-field w-full" placeholder="0">
                 </div>
                 <div>
                   <label class="font-mono text-[10px] text-gray-500 uppercase font-bold mb-2 block">Blocks</label>
-                  <input type="number" id="stat-blk" placeholder="0" class="input-field w-full">
+                  <input type="number" id="stat-blk" class="input-field w-full" placeholder="0">
                 </div>
               </div>
             </div>
 
             <button onclick="submitStats()" class="btn-primary w-full py-3 text-sm">Log Stats</button>
             <div id="success-message" class="hidden p-4 bg-[#1a3a1a] border border-green-700 text-green-300 text-sm font-mono">
-              ✓ Stats recorded! You are <span id="social-proof">1 of 8</span> teammates who've logged today.
+              ✓ Stats saved! You are <span id="social-proof">1 of 8</span> teammates who logged stats.
             </div>
           </div>
         </div>
 
         <!-- TEAM NOTES MODULE -->
         <div id="module-notes" class="module-section hidden">
-          <div class="mb-6">
-            <h2 class="text-4xl font-black uppercase mb-2">Team Notes</h2>
-            <div class="h-px w-12 bg-[#F59E0B]"></div>
+          <div class="mb-8">
+            <h2 class="font-display text-5xl font-black uppercase text-white mb-3">Team Notes</h2>
+            <div class="h-px w-12 bg-brand"></div>
           </div>
-
-          <div id="notes-list" class="space-y-4">
-            <!-- Populated dynamically -->
-          </div>
+          <div id="notes-list" class="space-y-4"></div>
         </div>
       </div>
     </div>
 
     <!-- MOBILE FOOTER NAV -->
-    <nav id="mobile-nav" class="md:hidden fixed bottom-0 left-0 right-0 bg-[#1a1a1a] border-t border-gray-700 flex overflow-x-auto">
-      <button class="sidebar-nav nav-item flex-1 text-center active" onclick="switchModule('profile')">Profile</button>
-      <button class="sidebar-nav nav-item flex-1 text-center" onclick="switchModule('schedule')">Schedule</button>
-      <button class="sidebar-nav nav-item flex-1 text-center" onclick="switchModule('messaging')">Messages</button>
-      <button class="sidebar-nav nav-item flex-1 text-center" onclick="switchModule('stats')">Stats</button>
-      <button class="sidebar-nav nav-item flex-1 text-center" onclick="switchModule('notes')">Notes</button>
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#1a1a1a] border-t border-gray-700 flex overflow-x-auto sidebar">
+      <button class="nav-item flex-1 text-center border-0 active" onclick="switchModule('profile')">Profile</button>
+      <button class="nav-item flex-1 text-center border-0" onclick="switchModule('schedule')">Schedule</button>
+      <button class="nav-item flex-1 text-center border-0" onclick="switchModule('messaging')">Messages</button>
+      <button class="nav-item flex-1 text-center border-0" onclick="switchModule('stats')">Stats</button>
+      <button class="nav-item flex-1 text-center border-0" onclick="switchModule('notes')">Notes</button>
     </nav>
   </div>
 
   <script>
-    const DASHBOARD_STATE = {
+    const ATHLETE_STATE = {
       currentModule: 'profile',
       currentThread: null,
       athlete: {
@@ -268,26 +275,30 @@
         { date: '2026-06-20', time: '8:00 AM', event: 'Spring Tournament', location: 'Sports Complex', type: 'tournament' }
       ],
       threads: [
-        { id: 1, name: 'All Parents', unread: 2, messages: [
+        { id: 1, name: 'All Parents', messages: [
           { sender: 'Coach Davis', text: 'Practice moved to Thursday at 5 PM' },
           { sender: 'You', text: 'Thanks for the update!' }
         ]},
-        { id: 2, name: 'Coaching Staff', unread: 0, messages: [
+        { id: 2, name: 'Coaching Staff', messages: [
           { sender: 'Coach Mike', text: 'Great defensive effort today' }
         ]},
-        { id: 3, name: 'Team Alert', unread: 1, messages: [
+        { id: 3, name: 'Team Alert', messages: [
           { sender: 'League Admin', text: 'Payment due by Friday' }
         ]}
       ],
       notes: [
-        { coach: 'Coach Davis', focus: 'Work on ball handling in the pick-and-roll situations' },
+        { coach: 'Coach Davis', focus: 'Work on ball handling in pick-and-roll situations' },
         { coach: 'Coach Mike', focus: 'Excellent effort on defensive pressure. Keep building consistency.' }
-      ],
-      stats: []
+      ]
     };
 
     function initDashboard() {
-      document.getElementById('athlete-name').innerText = DASHBOARD_STATE.athlete.name;
+      document.getElementById('athlete-name').innerText = ATHLETE_STATE.athlete.name;
+      document.getElementById('athlete-jersey').innerText = `Jersey #${ATHLETE_STATE.athlete.jersey}`;
+      document.getElementById('athlete-position').innerText = ATHLETE_STATE.athlete.position;
+      document.getElementById('athlete-sport').innerText = ATHLETE_STATE.athlete.sport;
+      document.getElementById('mobile-athlete').innerText = `${ATHLETE_STATE.athlete.name} • #${ATHLETE_STATE.athlete.jersey}`;
+
       loadProfile();
       renderSchedule();
       renderThreadList();
@@ -298,24 +309,22 @@
     function switchModule(module) {
       document.querySelectorAll('.module-section').forEach(el => el.classList.add('hidden'));
       document.getElementById('module-' + module).classList.remove('hidden');
-
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       event.target.classList.add('active');
-
-      DASHBOARD_STATE.currentModule = module;
+      ATHLETE_STATE.currentModule = module;
     }
 
     function loadProfile() {
-      document.getElementById('profile-name').value = DASHBOARD_STATE.athlete.name;
-      document.getElementById('profile-jersey').value = DASHBOARD_STATE.athlete.jersey;
-      document.getElementById('profile-sport').value = DASHBOARD_STATE.athlete.sport;
-      document.getElementById('profile-position').value = DASHBOARD_STATE.athlete.position;
-      document.getElementById('profile-height').value = DASHBOARD_STATE.athlete.height;
-      document.getElementById('profile-weight').value = DASHBOARD_STATE.athlete.weight;
+      document.getElementById('profile-name').value = ATHLETE_STATE.athlete.name;
+      document.getElementById('profile-jersey').value = ATHLETE_STATE.athlete.jersey;
+      document.getElementById('profile-sport').value = ATHLETE_STATE.athlete.sport;
+      document.getElementById('profile-position').value = ATHLETE_STATE.athlete.position;
+      document.getElementById('profile-height').value = ATHLETE_STATE.athlete.height;
+      document.getElementById('profile-weight').value = ATHLETE_STATE.athlete.weight;
     }
 
     function saveProfile() {
-      DASHBOARD_STATE.athlete = {
+      ATHLETE_STATE.athlete = {
         name: document.getElementById('profile-name').value,
         jersey: parseInt(document.getElementById('profile-jersey').value),
         sport: document.getElementById('profile-sport').value,
@@ -323,16 +332,16 @@
         height: document.getElementById('profile-height').value,
         weight: document.getElementById('profile-weight').value
       };
-      alert('Profile saved!');
+      alert('Profile saved successfully!');
     }
 
     function renderSchedule() {
       const list = document.getElementById('schedule-list');
-      list.innerHTML = DASHBOARD_STATE.schedule.map(event => `
-        <div class="border border-gray-700 p-4 bg-[#0f0f0f]">
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="font-bold text-white">${event.event}</h3>
-            <span class="font-mono text-[9px] px-2 py-1 bg-[#1a1a1a] text-gray-400 uppercase">${event.type}</span>
+      list.innerHTML = ATHLETE_STATE.schedule.map(event => `
+        <div class="module-card">
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="font-bold text-white text-lg">${event.event}</h3>
+            <span class="font-mono text-[9px] px-2 py-1 bg-brand text-dark uppercase font-bold">${event.type}</span>
           </div>
           <div class="font-mono text-xs text-gray-400 space-y-1">
             <div>📅 ${event.date} | 🕐 ${event.time}</div>
@@ -344,22 +353,21 @@
 
     function renderThreadList() {
       const list = document.getElementById('thread-list');
-      list.innerHTML = DASHBOARD_STATE.threads.map(thread => `
-        <div class="p-3 bg-[#1a1a1a] border-l-2 border-gray-700 cursor-pointer hover:border-[#F59E0B] transition-colors" onclick="selectThread(${thread.id})">
+      list.innerHTML = ATHLETE_STATE.threads.map(thread => `
+        <div class="p-3 bg-[#1a1a1a] border-l-2 border-gray-700 cursor-pointer hover:border-brand transition-colors" onclick="selectThread(${thread.id})">
           <div class="font-bold text-white text-sm">${thread.name}</div>
-          ${thread.unread > 0 ? `<div class="text-[10px] text-[#F59E0B] font-bold mt-1">${thread.unread} new</div>` : ''}
         </div>
       `).join('');
     }
 
     function selectThread(id) {
-      const thread = DASHBOARD_STATE.threads.find(t => t.id === id);
-      DASHBOARD_STATE.currentThread = id;
+      const thread = ATHLETE_STATE.threads.find(t => t.id === id);
+      ATHLETE_STATE.currentThread = id;
       document.getElementById('thread-title').innerText = thread.name;
 
       const msgDisplay = document.getElementById('message-display');
       msgDisplay.innerHTML = thread.messages.map(msg => `
-        <div class="p-3 rounded ${msg.sender === 'You' ? 'bg-[#F59E0B]/20 text-right' : 'bg-[#1a1a1a]'}">
+        <div class="p-3 rounded ${msg.sender === 'You' ? 'bg-brand/20 text-right' : 'bg-[#1a1a1a]'}">
           <div class="font-mono text-[9px] text-gray-500 uppercase mb-1">${msg.sender}</div>
           <div class="text-sm">${msg.text}</div>
         </div>
@@ -369,7 +377,7 @@
     function sendMessage() {
       const input = document.getElementById('message-input');
       if (input.value.trim()) {
-        alert('Message sent to ' + DASHBOARD_STATE.threads.find(t => t.id === DASHBOARD_STATE.currentThread).name);
+        alert('Message sent!');
         input.value = '';
       }
     }
@@ -387,13 +395,12 @@
         blk: parseInt(document.getElementById('stat-blk').value) || 0
       };
 
-      DASHBOARD_STATE.stats.push(stats);
-
       document.querySelectorAll('input[id^="stat-"]').forEach(el => el.value = '0');
       document.getElementById('post-game-alert').classList.add('hidden');
 
       const successMsg = document.getElementById('success-message');
-      document.getElementById('social-proof').innerText = (Math.floor(Math.random() * 5) + 3) + ' of 12';
+      const count = Math.floor(Math.random() * 5) + 3;
+      document.getElementById('social-proof').innerText = count + ' of 12';
       successMsg.classList.remove('hidden');
 
       setTimeout(() => successMsg.classList.add('hidden'), 4000);
@@ -401,32 +408,29 @@
 
     function renderNotes() {
       const list = document.getElementById('notes-list');
-      list.innerHTML = DASHBOARD_STATE.notes.map(note => `
-        <div class="border border-gray-700 p-4 bg-[#0f0f0f]">
-          <div class="font-mono text-[10px] text-[#F59E0B] uppercase font-bold mb-2">${note.coach}</div>
+      list.innerHTML = ATHLETE_STATE.notes.map(note => `
+        <div class="module-card">
+          <div class="font-mono text-[10px] text-brand uppercase font-bold mb-2">${note.coach}</div>
           <p class="text-gray-300">${note.focus}</p>
         </div>
       `).join('');
     }
 
     function checkPostGameAlert() {
-      // Simulate 1-hour post-game check
-      const lastGameTime = new Date(Date.now() - 60 * 60 * 1000); // 1 hour ago
       document.getElementById('post-game-alert').classList.remove('hidden');
     }
 
     function toggleMobileNav() {
       const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('hidden');
+      sidebar?.classList.toggle('hidden');
     }
 
     function handleLogout() {
       if (confirm('Sign out of AthleteIQ?')) {
-        window.location.href = '/index.html?route=login';
+        window.location.href = '/index.html#/login';
       }
     }
 
-    // Initialize on load
     document.addEventListener('DOMContentLoaded', initDashboard);
   </script>
 </body>
