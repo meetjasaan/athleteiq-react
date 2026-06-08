@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AthleteIQ Player Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #FFFFFF;
+      --surface: #F9F9F9;
+      --surface2: #F1F1F1;
+      --border: #E0E0E0;
+      --border2: #C5C5C5;
+      --amber: #D97706;
+      --black: #080808;
+      --gray: #666666;
+      --gray2: #888888;
+      --green: #166534;
+      --green-bg: #F0FDF4;
+      --green-border: #BBF7D0;
+      --red: #DC2626;
+      --red-bg: #FEE2E2;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background-color: var(--bg);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(8,8,8,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(8,8,8,0.02) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* LAYOUT */
+    .container {
+      display: flex;
+      min-height: 100vh;
+      flex-direction: row;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 0 20px 20px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-list {
+      list-style: none;
+    }
+
+    .nav-item {
+      padding: 12px 20px;
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+      border-left: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--gray2);
+    }
+
+    .nav-item:hover {
+      background-color: var(--surface2);
+    }
+
+    .nav-item.active {
+      color: var(--black);
+      background-color: var(--bg);
+      border-left-color: var(--amber);
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      width: 20px;
+      text-align: center;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg);
+      padding-bottom: 80px;
+    }
+
+    .view-panel {
+      display: none;
+      padding: 32px;
+      flex: 1;
+    }
+
+    .view-panel.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* BUTTONS & FORMS */
+    .btn {
+      padding: 14px 24px;
+      border: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    }
+
+    .btn-primary {
+      background-color: var(--black);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--amber);
+      color: var(--black);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--black);
+      border: 1px solid var(--black);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--surface2);
+    }
+
+    .btn-small {
+      padding: 10px 16px;
+      font-size: 11px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--gray2);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      font-family: 'Barlow', sans-serif;
+      font-size: 14px;
+      border-radius: 0;
+      outline: none;
+      transition: all 0.2s ease;
+      background-color: var(--bg);
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .form-input[type="number"] {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--amber);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--amber);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    input[type="range"]::-moz-range-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .slider-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 18px;
+      min-width: 40px;
+      text-align: right;
+      color: var(--black);
+    }
+
+    /* CARDS */
+    .card {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--amber);
+      padding: 24px;
+      background-color: var(--bg);
+      transition: all 0.2s ease;
+      margin-bottom: 24px;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .card-header {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .metric-box {
+      background-color: var(--surface);
+      padding: 16px;
+      border: 1px dashed var(--border2);
+      text-align: center;
+    }
+
+    .metric-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--gray2);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .metric-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--black);
+      line-height: 1;
+    }
+
+    .metric-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--gray2);
+      margin-top: 8px;
+    }
+
+    /* MODALS */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .modal-content {
+      background-color: var(--bg);
+      width: 100%;
+      max-width: 500px;
+      margin: auto;
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--amber);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--gray2);
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--black);
+    }
+
+    .modal-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 24px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      padding-right: 40px;
+    }
+
+    .modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      justify-content: flex-end;
+    }
+
+    /* PROFILE HEADER */
+    .profile-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 32px;
+      padding: 32px;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--amber);
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      background-color: var(--amber);
+      color: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 32px;
+      flex-shrink: 0;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .profile-stats {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--gray2);
+      line-height: 1.6;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .profile-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    /* DASHBOARD GRID */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .metric-card {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--amber);
+      padding: 24px;
+      background-color: var(--bg);
+      transition: all 0.2s ease;
+    }
+
+    .metric-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .metric-card-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--gray2);
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .metric-card-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 32px;
+      color: var(--black);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .metric-card-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--gray2);
+    }
+
+    .metric-card.no-data .metric-card-value {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* QUICK LOG BUTTONS */
+    .quick-log-bar {
+      position: fixed;
+      bottom: 0;
+      left: 250px;
+      right: 0;
+      background-color: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      z-index: 50;
+    }
+
+    .quick-log-btn {
+      padding: 12px 20px;
+      background-color: var(--black);
+      color: white;
+      border: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 11px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+
+    .quick-log-btn:hover {
+      background-color: var(--amber);
+      color: var(--black);
+    }
+
+    /* LOGIN VIEW */
+    .login-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+      padding: 20px;
+    }
+
+    .login-card {
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      padding: 48px 40px;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .login-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    .login-tagline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--gray2);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .login-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      text-transform: uppercase;
+      margin-top: 16px;
+      margin-bottom: 12px;
+    }
+
+    .login-subtitle {
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--gray);
+      margin-bottom: 32px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* SUCCESS MESSAGE */
+    .success-badge {
+      background-color: var(--green-bg);
+      border: 1px solid var(--green-border);
+      color: var(--green);
+      padding: 12px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .success-badge.show {
+      display: block;
+    }
+
+    /* WEEKLY SUMMARY */
+    .summary-card {
+      border: 1px dashed var(--border);
+      padding: 24px;
+      background-color: var(--surface);
+      margin-bottom: 24px;
+    }
+
+    .summary-text {
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+
+    .streak-bar {
+      background-color: var(--border);
+      height: 6px;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .streak-fill {
+      background-color: var(--green);
+      height: 100%;
+      transition: all 0.3s ease;
+    }
+
+    /* INSIGHTS WIDGET */
+    .insights-widget {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--amber);
+      padding: 32px;
+      background-color: var(--surface);
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    .insights-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 16px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .insights-text {
+      font-family: 'Barlow', sans-serif;
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.8;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-bottom: 1px solid var(--border);
+        border-right: none;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+      }
+
+      .sidebar-header {
+        padding: 16px;
+        margin: 0;
+        border: none;
+        min-width: 150px;
+      }
+
+      .nav-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        flex: 1;
+      }
+
+      .nav-item {
+        padding: 8px 12px;
+        font-size: 10px;
+        border: none;
+        border-bottom: 2px solid transparent;
+        flex-shrink: 0;
+      }
+
+      .nav-item.active {
+        border-bottom: 2px solid var(--amber);
+        border-left: none;
+        background-color: transparent;
+      }
+
+      .nav-icon {
+        display: none;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 24px 16px;
+        padding-bottom: 100px;
+      }
+
+      .quick-log-bar {
+        left: 0;
+        padding: 12px 16px;
+      }
+
+      .view-panel {
+        padding: 0;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-stats {
+        justify-content: center;
+      }
+
+      .modal-content {
+        border-radius: 20px 20px 0 0;
+        border-top: 3px solid var(--amber);
+        padding: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .main-content {
+        padding: 16px;
+        padding-bottom: 80px;
+      }
+
+      .quick-log-bar {
+        gap: 8px;
+        padding: 12px 8px;
+      }
+
+      .quick-log-btn {
+        padding: 10px 16px;
+        font-size: 9px;
+        flex: 0 1 calc(50% - 4px);
+      }
+
+      .profile-header {
+        padding: 16px;
+      }
+
+      .avatar {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+      }
+
+      .profile-name {
+        font-size: 20px;
+      }
+
+      .profile-stats {
+        font-size: 10px;
+      }
+
+      .card {
+        padding: 16px;
+      }
+
+      .modal-content {
+        padding: 20px;
+      }
+
+      .login-card {
+        padding: 32px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN VIEW -->
+<div id="panel-login" class="view-panel">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-logo">IQ</div>
+        <div class="login-tagline">AthleteIQ</div>
+      </div>
+      <h1 class="login-title">Scouted</h1>
+      <p class="login-subtitle">Enter your invite code to unlock your player dashboard.</p>
+
+      <form class="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" id="login-fname" class="form-input" required placeholder="Noah">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" id="login-lname" class="form-input" required placeholder="Dabney">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" id="login-email" class="form-input" required placeholder="noah@example.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Invite Code</label>
+          <input type="text" id="login-code" class="form-input" required placeholder="ABC123XYZ" maxlength="10">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enter Dashboard</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD VIEW -->
+<div id="panel-dashboard" class="view-panel">
+  <div class="profile-header">
+    <div class="avatar" id="profile-avatar">ND</div>
+    <div class="profile-info">
+      <div class="profile-name" id="profile-name">Noah Dabney</div>
+      <div class="profile-stats">
+        <div class="profile-stat">Age <span id="profile-age">9</span></div>
+        <div class="profile-stat">Height <span id="profile-height">4'8"</span></div>
+        <div class="profile-stat">Weight <span id="profile-weight">72 lbs</span></div>
+        <div class="profile-stat">Position <span id="profile-position">Point Guard</span></div>
+        <div class="profile-stat">Sport <span id="profile-sport">Basketball</span></div>
+      </div>
+      <div class="profile-actions">
+        <button class="btn btn-secondary btn-small" onclick="openModal('edit-profile-modal')">Edit Profile</button>
+        <button class="btn btn-secondary btn-small" onclick="changeView('metrics')">View All Metrics</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="metrics-grid" id="metrics-grid">
+    <!-- Populated by JavaScript -->
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-text" id="summary-text">Loading weekly summary...</div>
+    <div class="streak-bar">
+      <div class="streak-fill" id="streak-fill" style="width: 0%"></div>
+    </div>
+  </div>
+
+  <div class="insights-widget">
+    <div class="insights-title">AthleteIQ Insights</div>
+    <div class="insights-text">
+      Coming Soon: AI-powered trend analysis analyzing sleep, training, and shooting to unlock your performance patterns.
+    </div>
+  </div>
+</div>
+
+<!-- METRICS VIEW -->
+<div id="panel-metrics" class="view-panel">
+  <div class="card">
+    <div class="card-header">Baseline Metrics</div>
+    <div class="card-row">
+      <div class="metric-box">
+        <div class="metric-label">Wingspan</div>
+        <div class="metric-value" id="metric-wingspan">66"</div>
+        <button class="btn btn-secondary btn-small" style="margin-top: 8px; width: 100%;" onclick="openEditMetricModal('wingspan', document.getElementById('metric-wingspan').textContent)">Edit</button>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">Vertical Jump</div>
+        <div class="metric-value" id="metric-vertical">18"</div>
+        <button class="btn btn-secondary btn-small" style="margin-top: 8px; width: 100%;" onclick="openEditMetricModal('vertical', document.getElementById('metric-vertical').textContent)">Edit</button>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">Mile Time</div>
+        <div class="metric-value" id="metric-mile">8:45</div>
+        <button class="btn btn-secondary btn-small" style="margin-top: 8px; width: 100%;" onclick="openEditMetricModal('mile', document.getElementById('metric-mile').textContent)">Edit</button>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">Pro-Agility</div>
+        <div class="metric-value" id="metric-agility">12.5s</div>
+        <button class="btn btn-secondary btn-small" style="margin-top: 8px; width: 100%;" onclick="openEditMetricModal('agility', document.getElementById('metric-agility').textContent)">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Training Logs</div>
+    <div id="training-logs-list">Loading...</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Shooting Logs</div>
+    <div id="shooting-logs-list">Loading...</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Nutrition Logs</div>
+    <div id="nutrition-logs-list">Loading...</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Sleep Logs</div>
+    <div id="sleep-logs-list">Loading...</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Recovery Logs</div>
+    <div id="recovery-logs-list">Loading...</div>
+  </div>
+</div>
+
+<!-- SHOT LOG VIEW -->
+<div id="panel-shot-log" class="view-panel">
+  <div class="card">
+    <div class="card-header">Shooting Performance</div>
+    <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">Track your shooting stats across different shot types and court locations.</p>
+    <div id="shooting-stats">Loading...</div>
+  </div>
+</div>
+
+<!-- TRAINING LOG VIEW -->
+<div id="panel-training-log" class="view-panel">
+  <div class="card">
+    <div class="card-header">Training History</div>
+    <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">View all your completed training sessions and intensity levels.</p>
+    <div id="training-stats">Loading...</div>
+  </div>
+</div>
+
+<!-- NUTRITION LOG VIEW -->
+<div id="panel-nutrition-log" class="view-panel">
+  <div class="card">
+    <div class="card-header">Nutrition Summary</div>
+    <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">Track your daily hydration, protein, and meal patterns.</p>
+    <div id="nutrition-stats">Loading...</div>
+  </div>
+</div>
+
+<!-- SLEEP LOG VIEW -->
+<div id="panel-sleep-log" class="view-panel">
+  <div class="card">
+    <div class="card-header">Sleep Tracking</div>
+    <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">Monitor your sleep hours and quality ratings over time.</p>
+    <div id="sleep-stats">Loading...</div>
+  </div>
+</div>
+
+<!-- RECOVERY LOG VIEW -->
+<div id="panel-recovery-log" class="view-panel">
+  <div class="card">
+    <div class="card-header">Recovery Sessions</div>
+    <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">Track your stretching, mobility work, and recovery practices.</p>
+    <div id="recovery-stats">Loading...</div>
+  </div>
+</div>
+
+<!-- SETTINGS VIEW -->
+<div id="panel-settings" class="view-panel">
+  <div class="card">
+    <div class="card-header">Settings</div>
+    <div class="form-group">
+      <label class="form-label">Account Email</label>
+      <input type="email" id="settings-email" class="form-input" disabled>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Sport</label>
+      <input type="text" id="settings-sport" class="form-input" disabled>
+    </div>
+    <button class="btn btn-secondary" onclick="logout()" style="margin-top: 24px;">Sign Out</button>
+  </div>
+</div>
+
+<!-- MODAL: EDIT PROFILE -->
+<div id="edit-profile-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('edit-profile-modal')">×</button>
+    <h2 class="modal-title">Edit Profile</h2>
+    <form class="modal-form" onsubmit="saveProfile(event)">
+      <div class="form-group">
+        <label class="form-label">Age</label>
+        <input type="number" id="edit-age" class="form-input" min="6" max="25" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Height</label>
+        <input type="text" id="edit-height" class="form-input" placeholder="e.g., 5'10&quot;" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Weight (lbs)</label>
+        <input type="number" id="edit-weight" class="form-input" min="40" max="400" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Position</label>
+        <input type="text" id="edit-position" class="form-input" placeholder="e.g., Point Guard" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sport</label>
+        <select id="edit-sport" class="form-select" required>
+          <option value="">Select Sport</option>
+          <option value="Basketball">Basketball</option>
+          <option value="Football">Football</option>
+          <option value="Baseball">Baseball</option>
+        </select>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-secondary btn-small" onclick="closeModal('edit-profile-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-small">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: EDIT METRIC -->
+<div id="edit-metric-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('edit-metric-modal')">×</button>
+    <h2 class="modal-title" id="edit-metric-title">Edit Metric</h2>
+    <form class="modal-form" onsubmit="saveMetric(event)">
+      <div class="form-group">
+        <label class="form-label" id="edit-metric-label">Value</label>
+        <input type="text" id="edit-metric-value" class="form-input" required>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-secondary btn-small" onclick="closeModal('edit-metric-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-small">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: LOG TRAINING -->
+<div id="log-training-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('log-training-modal')">×</button>
+    <h2 class="modal-title">Log Training</h2>
+    <form class="modal-form" onsubmit="logTraining(event)">
+      <div class="form-group">
+        <label class="form-label">Workout Type</label>
+        <select id="training-type" class="form-select" required>
+          <option value="">Select Type</option>
+          <option value="Strength">Strength</option>
+          <option value="Cardio">Cardio</option>
+          <option value="Sport-Specific">Sport-Specific</option>
+          <option value="Skill Work">Skill Work</option>
+          <option value="Conditioning">Conditioning</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Duration (minutes)</label>
+        <input type="number" id="training-duration" class="form-input" min="1" max="180" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Perceived Exertion (RPE)</label>
+        <div class="slider-container">
+          <input type="range" id="training-rpe" min="1" max="10" value="5">
+          <div class="slider-value" id="training-rpe-value">5</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes (Optional)</label>
+        <textarea id="training-notes" class="form-textarea" placeholder="How did it feel?"></textarea>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-secondary btn-small" onclick="closeModal('log-training-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-small">Save Training</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: LOG SHOOTING -->
+<div id="log-shooting-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('log-shooting-modal')">×</button>
+    <h2 class="modal-title">Log Shooting</h2>
+    <form class="modal-form" onsubmit="logShooting(event)">
+      <div class="form-group">
+        <label class="form-label">Shot Type</label>
+        <select id="shooting-type" class="form-select" required>
+          <option value="">Select Type</option>
+          <option value="Jump Shot">Jump Shot</option>
+          <option value="Layup">Layup</option>
+          <option value="Free Throw">Free Throw</option>
+          <option value="3-Pointer">3-Pointer</option>
+          <option value="Hook Shot">Hook Shot</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Makes</label>
+        <input type="number" id="shooting-makes" class="form-input" min="0" max="100" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Attempts</label>
+        <input type="number" id="shooting-attempts" class="form-input" min="1" max="100" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Court Location</label>
+        <select id="shooting-location" class="form-select">
+          <option value="">Select Location</option>
+          <option value="Paint">Paint</option>
+          <option value="Mid-Range">Mid-Range</option>
+          <option value="3-Point Line">3-Point Line</option>
+          <option value="Full Court">Full Court</option>
+        </select>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-secondary btn-small" onclick="closeModal('log-shooting-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-small">Save Shooting</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: LOG NUTRITION -->
+<div id="log-nutrition-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('log-nutrition-modal')">×</button>
+    <h2 class="modal-title">Log Nutrition</h2>
+    <form class="modal-form" onsubmit="logNutrition(event)">
+      <div class="form-group">
+        <label class="form-label">Meal Type</label>
+        <select id="nutrition-type" class="form-select" required>
+          <option value="">Select Meal</option>
+          <option value="Breakfast">Breakfast</option>
+          <option value="Lunch">Lunch</option>
+          <option value="Dinner">Dinner</option>
+          <option value="Snack">Snack</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hydration (ounces)</label>
+        <input type="number" id="nutrition-hydration" class="form-input" min="0" max="128" step="8" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Protein (grams)</label>
+        <input type="number" id="nutrition-protein" class="form-input" min="0" max="100" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes (Optional)</label>
+        <textarea id="nutrition-notes" class="form-textarea" placeholder="What did you eat?"></textarea>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-secondary btn-small" onclick="closeModal('log-nutrition-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-small">Save Nutrition</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: LOG SLEEP -->
+<div id="log-sleep-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('log-sleep-modal')">×</button>
+    <h2 class="modal-title">Log Sleep</h2>
+    <form class="modal-form" onsubmit="logSleep(event)">
+      <div class="form-group">
+        <label class="form-label">Hours Slept</label>
+        <input type="number" id="sleep-hours" class="form-input" min="0" max="14" step="0.5" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Sleep Quality</label>
+        <div class="slider-container">
+          <input type="range" id="sleep-quality" min="1" max="5" value="3">
+          <div class="slider-value" id="sleep-quality-value">3</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes (Optional)</label>
+        <textarea id="sleep-notes" class="form-textarea" placeholder="Wakeups, environment notes..."></textarea>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-secondary btn-small" onclick="closeModal('log-sleep-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-small">Save Sleep</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL: LOG RECOVERY -->
+<div id="log-recovery-modal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('log-recovery-modal')">×</button>
+    <h2 class="modal-title">Log Recovery</h2>
+    <form class="modal-form" onsubmit="logRecovery(event)">
+      <div class="form-group">
+        <label class="form-label">Recovery Type</label>
+        <select id="recovery-type" class="form-select" required>
+          <option value="">Select Type</option>
+          <option value="Stretching">Stretching</option>
+          <option value="Mobility Work">Mobility Work</option>
+          <option value="Foam Rolling">Foam Rolling</option>
+          <option value="Ice Bath">Ice Bath</option>
+          <option value="Massage">Massage</option>
+          <option value="Yoga">Yoga</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Duration (minutes)</label>
+        <input type="number" id="recovery-duration" class="form-input" min="1" max="120" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Intensity</label>
+        <div class="slider-container">
+          <input type="range" id="recovery-intensity" min="1" max="5" value="3">
+          <div class="slider-value" id="recovery-intensity-value">3</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes (Optional)</label>
+        <textarea id="recovery-notes" class="form-textarea" placeholder="How did you feel?"></textarea>
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-secondary btn-small" onclick="closeModal('log-recovery-modal')">Cancel</button>
+        <button type="submit" class="btn btn-primary btn-small">Save Recovery</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- SIDEBAR & QUICK LOG BAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">IQ AthleteIQ</div>
+  <ul class="nav-list">
+    <li class="nav-item active" onclick="changeView('dashboard'); updateNav(0)">
+      <span class="nav-icon">*</span>
+      <span>Dashboard</span>
+    </li>
+    <li class="nav-item" onclick="changeView('metrics'); updateNav(1)">
+      <span class="nav-icon">=</span>
+      <span>My Metrics</span>
+    </li>
+    <li class="nav-item" onclick="changeView('shot-log'); updateNav(2)">
+      <span class="nav-icon">!</span>
+      <span>Shot Log</span>
+    </li>
+    <li class="nav-item" onclick="changeView('training-log'); updateNav(3)">
+      <span class="nav-icon">+</span>
+      <span>Training</span>
+    </li>
+    <li class="nav-item" onclick="changeView('nutrition-log'); updateNav(4)">
+      <span class="nav-icon">#</span>
+      <span>Nutrition</span>
+    </li>
+    <li class="nav-item" onclick="changeView('sleep-log'); updateNav(5)">
+      <span class="nav-icon">~</span>
+      <span>Sleep</span>
+    </li>
+    <li class="nav-item" onclick="changeView('recovery-log'); updateNav(6)">
+      <span class="nav-icon">@</span>
+      <span>Recovery</span>
+    </li>
+    <li class="nav-item" onclick="changeView('settings'); updateNav(7)">
+      <span class="nav-icon">&</span>
+      <span>Settings</span>
+    </li>
+  </ul>
+</div>
+
+<div class="main-content">
+  <!-- Views are managed via JavaScript -->
+</div>
+
+<div class="quick-log-bar">
+  <button class="quick-log-btn" onclick="openModal('log-training-modal')">+ TRAINING</button>
+  <button class="quick-log-btn" onclick="openModal('log-shooting-modal')">+ SHOTS</button>
+  <button class="quick-log-btn" onclick="openModal('log-nutrition-modal')">+ FOOD</button>
+  <button class="quick-log-btn" onclick="openModal('log-sleep-modal')">+ SLEEP</button>
+  <button class="quick-log-btn" onclick="openModal('log-recovery-modal')">+ RECOVERY</button>
+</div>
+
+<script>
+  // ===== APPLICATION STATE =====
+  const APP_STATE = {
+    isLoggedIn: false,
+    currentView: 'dashboard',
+    playerProfile: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      age: 9,
+      height: "4'8\"",
+      weight: 72,
+      position: 'Point Guard',
+      sport: 'Basketball',
+      wingspan: 66,
+      verticalJump: 18,
+      mileTime: '8:45',
+      proAgilityShuttle: 12.5
+    },
+    logs: {
+      training: [],
+      shooting: [],
+      nutrition: [],
+      sleep: [],
+      recovery: []
+    }
+  };
+
+  // Valid invite codes for MVP (hardcoded whitelist)
+  const VALID_CODES = ['SCOUT001', 'SCOUT002', 'SCOUT003', 'ABC123XYZ'];
+
+  // ===== INITIALIZATION =====
+  function initApp() {
+    loadFromLocalStorage();
+    setupEventListeners();
+
+    if (APP_STATE.isLoggedIn) {
+      showAuthenticatedUI();
+      changeView('dashboard');
+      renderDashboard();
+    } else {
+      showLoginUI();
+    }
+  }
+
+  function setupEventListeners() {
+    // Slider value displays
+    const trainingRpeSlider = document.getElementById('training-rpe');
+    const trainingRpeValue = document.getElementById('training-rpe-value');
+    if (trainingRpeSlider && trainingRpeValue) {
+      trainingRpeSlider.addEventListener('input', (e) => {
+        trainingRpeValue.textContent = e.target.value;
+      });
+    }
+
+    const sleepQualitySlider = document.getElementById('sleep-quality');
+    const sleepQualityValue = document.getElementById('sleep-quality-value');
+    if (sleepQualitySlider && sleepQualityValue) {
+      sleepQualitySlider.addEventListener('input', (e) => {
+        sleepQualityValue.textContent = e.target.value;
+      });
+    }
+
+    const recoveryIntensitySlider = document.getElementById('recovery-intensity');
+    const recoveryIntensityValue = document.getElementById('recovery-intensity-value');
+    if (recoveryIntensitySlider && recoveryIntensityValue) {
+      recoveryIntensitySlider.addEventListener('input', (e) => {
+        recoveryIntensityValue.textContent = e.target.value;
+      });
+    }
+
+    // Modal close on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal.active').forEach(modal => {
+          modal.classList.remove('active');
+        });
+      }
+    });
+  }
+
+  // ===== AUTHENTICATION =====
+  function handleLogin(event) {
+    event.preventDefault();
+
+    const fname = document.getElementById('login-fname').value.trim();
+    const lname = document.getElementById('login-lname').value.trim();
+    const email = document.getElementById('login-email').value.trim();
+    const code = document.getElementById('login-code').value.trim().toUpperCase();
+
+    if (!VALID_CODES.includes(code)) {
+      alert('Invalid invite code. Please check and try again.');
+      return;
+    }
+
+    // Set player profile
+    APP_STATE.playerProfile.firstName = fname;
+    APP_STATE.playerProfile.lastName = lname;
+    APP_STATE.playerProfile.email = email;
+    APP_STATE.isLoggedIn = true;
+
+    saveToLocalStorage();
+    showAuthenticatedUI();
+    changeView('dashboard');
+    renderDashboard();
+  }
+
+  function logout() {
+    if (confirm('Are you sure you want to sign out?')) {
+      APP_STATE.isLoggedIn = false;
+      localStorage.clear();
+      location.reload();
+    }
+  }
+
+  function showLoginUI() {
+    document.getElementById('panel-login').classList.add('active');
+    document.getElementById('sidebar').style.display = 'none';
+    document.querySelector('.quick-log-bar').style.display = 'none';
+  }
+
+  function showAuthenticatedUI() {
+    document.getElementById('panel-login').classList.remove('active');
+    document.getElementById('sidebar').style.display = 'flex';
+    document.querySelector('.quick-log-bar').style.display = 'flex';
+  }
+
+  // ===== VIEW ROUTING =====
+  function changeView(viewName) {
+    APP_STATE.currentView = viewName;
+    document.querySelectorAll('[id^="panel-"]').forEach(panel => {
+      panel.classList.remove('active');
+    });
+    document.getElementById(`panel-${viewName}`).classList.add('active');
+    saveToLocalStorage();
+  }
+
+  function updateNav(index) {
+    document.querySelectorAll('.nav-item').forEach((item, i) => {
+      item.classList.toggle('active', i === index);
+    });
+  }
+
+  // ===== MODAL MANAGEMENT =====
+  function openModal(modalId) {
+    document.getElementById(modalId).classList.add('active');
+  }
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+  }
+
+  // ===== PROFILE EDITING =====
+  function saveProfile(event) {
+    event.preventDefault();
+
+    APP_STATE.playerProfile.age = parseInt(document.getElementById('edit-age').value);
+    APP_STATE.playerProfile.height = document.getElementById('edit-height').value;
+    APP_STATE.playerProfile.weight = parseInt(document.getElementById('edit-weight').value);
+    APP_STATE.playerProfile.position = document.getElementById('edit-position').value;
+    APP_STATE.playerProfile.sport = document.getElementById('edit-sport').value;
+
+    saveToLocalStorage();
+    closeModal('edit-profile-modal');
+    renderDashboard();
+    alert('Profile updated successfully!');
+  }
+
+  function openEditMetricModal(metric, currentValue) {
+    const labels = {
+      'wingspan': 'Wingspan (inches)',
+      'vertical': 'Vertical Jump (inches)',
+      'mile': 'Mile Time (MM:SS)',
+      'agility': 'Pro-Agility Shuttle (seconds)'
+    };
+    document.getElementById('edit-metric-title').textContent = `Edit ${labels[metric] || 'Metric'}`;
+    document.getElementById('edit-metric-label').textContent = labels[metric] || 'Value';
+    document.getElementById('edit-metric-value').value = currentValue;
+    document.getElementById('edit-metric-value').dataset.metric = metric;
+    openModal('edit-metric-modal');
+  }
+
+  function saveMetric(event) {
+    event.preventDefault();
+    const metric = document.getElementById('edit-metric-value').dataset.metric;
+    const value = document.getElementById('edit-metric-value').value;
+
+    const metricMap = {
+      'wingspan': 'wingspan',
+      'vertical': 'verticalJump',
+      'mile': 'mileTime',
+      'agility': 'proAgilityShuttle'
+    };
+
+    APP_STATE.playerProfile[metricMap[metric]] = value;
+    saveToLocalStorage();
+    closeModal('edit-metric-modal');
+    renderDashboard();
+    alert('Metric updated!');
+  }
+
+  // ===== LOG FUNCTIONS =====
+  function logTraining(event) {
+    event.preventDefault();
+
+    const log = {
+      date: new Date().toISOString().split('T')[0],
+      type: document.getElementById('training-type').value,
+      duration: parseInt(document.getElementById('training-duration').value),
+      rpe: parseInt(document.getElementById('training-rpe').value),
+      notes: document.getElementById('training-notes').value
+    };
+
+    APP_STATE.logs.training.unshift(log);
+    saveToLocalStorage();
+    closeModal('log-training-modal');
+    renderDashboard();
+    alert('Training logged successfully!');
+
+    // Clear form
+    document.getElementById('log-training-modal').querySelector('form').reset();
+    document.getElementById('training-rpe-value').textContent = '5';
+  }
+
+  function logShooting(event) {
+    event.preventDefault();
+
+    const makes = parseInt(document.getElementById('shooting-makes').value);
+    const attempts = parseInt(document.getElementById('shooting-attempts').value);
+    const percentage = Math.round((makes / attempts) * 100);
+
+    const log = {
+      date: new Date().toISOString().split('T')[0],
+      shotType: document.getElementById('shooting-type').value,
+      makes: makes,
+      attempts: attempts,
+      percentage: percentage,
+      location: document.getElementById('shooting-location').value
+    };
+
+    APP_STATE.logs.shooting.unshift(log);
+    saveToLocalStorage();
+    closeModal('log-shooting-modal');
+    renderDashboard();
+    alert(`Shooting logged: ${percentage}%`);
+
+    document.getElementById('log-shooting-modal').querySelector('form').reset();
+  }
+
+  function logNutrition(event) {
+    event.preventDefault();
+
+    const log = {
+      date: new Date().toISOString().split('T')[0],
+      mealType: document.getElementById('nutrition-type').value,
+      hydration: parseInt(document.getElementById('nutrition-hydration').value),
+      protein: parseInt(document.getElementById('nutrition-protein').value),
+      notes: document.getElementById('nutrition-notes').value
+    };
+
+    APP_STATE.logs.nutrition.unshift(log);
+    saveToLocalStorage();
+    closeModal('log-nutrition-modal');
+    renderDashboard();
+    alert('Nutrition logged!');
+
+    document.getElementById('log-nutrition-modal').querySelector('form').reset();
+  }
+
+  function logSleep(event) {
+    event.preventDefault();
+
+    const log = {
+      date: new Date().toISOString().split('T')[0],
+      hours: parseFloat(document.getElementById('sleep-hours').value),
+      quality: parseInt(document.getElementById('sleep-quality').value),
+      notes: document.getElementById('sleep-notes').value
+    };
+
+    APP_STATE.logs.sleep.unshift(log);
+    saveToLocalStorage();
+    closeModal('log-sleep-modal');
+    renderDashboard();
+    alert('Sleep logged!');
+
+    document.getElementById('log-sleep-modal').querySelector('form').reset();
+    document.getElementById('sleep-quality-value').textContent = '3';
+  }
+
+  function logRecovery(event) {
+    event.preventDefault();
+
+    const log = {
+      date: new Date().toISOString().split('T')[0],
+      type: document.getElementById('recovery-type').value,
+      duration: parseInt(document.getElementById('recovery-duration').value),
+      intensity: parseInt(document.getElementById('recovery-intensity').value),
+      notes: document.getElementById('recovery-notes').value
+    };
+
+    APP_STATE.logs.recovery.unshift(log);
+    saveToLocalStorage();
+    closeModal('log-recovery-modal');
+    renderDashboard();
+    alert('Recovery logged!');
+
+    document.getElementById('log-recovery-modal').querySelector('form').reset();
+    document.getElementById('recovery-intensity-value').textContent = '3';
+  }
+
+  // ===== RENDERING =====
+  function renderDashboard() {
+    const profile = APP_STATE.playerProfile;
+
+    // Update profile header
+    const initials = `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}`.toUpperCase();
+    document.getElementById('profile-avatar').textContent = initials;
+    document.getElementById('profile-name').textContent = `${profile.firstName} ${profile.lastName}`;
+    document.getElementById('profile-age').textContent = profile.age;
+    document.getElementById('profile-height').textContent = profile.height;
+    document.getElementById('profile-weight').textContent = `${profile.weight} lbs`;
+    document.getElementById('profile-position').textContent = profile.position;
+    document.getElementById('profile-sport').textContent = profile.sport;
+
+    // Update settings
+    document.getElementById('settings-email').value = profile.email;
+    document.getElementById('settings-sport').value = profile.sport;
+
+    // Update edit profile form
+    document.getElementById('edit-age').value = profile.age;
+    document.getElementById('edit-height').value = profile.height;
+    document.getElementById('edit-weight').value = profile.weight;
+    document.getElementById('edit-position').value = profile.position;
+    document.getElementById('edit-sport').value = profile.sport;
+
+    // Update baseline metrics
+    document.getElementById('metric-wingspan').textContent = `${profile.wingspan}"`;
+    document.getElementById('metric-vertical').textContent = `${profile.verticalJump}"`;
+    document.getElementById('metric-mile').textContent = profile.mileTime;
+    document.getElementById('metric-agility').textContent = `${profile.proAgilityShuttle}s`;
+
+    // Render metric cards
+    renderMetricCards();
+
+    // Render weekly summary
+    renderWeeklySummary();
+
+    // Render log lists
+    renderLogsList();
+  }
+
+  function renderMetricCards() {
+    const today = new Date().toISOString().split('T')[0];
+    const metricsGrid = document.getElementById('metrics-grid');
+    metricsGrid.innerHTML = '';
+
+    // Training card
+    const latestTraining = APP_STATE.logs.training.find(log => log.date === today);
+    metricsGrid.innerHTML += `
+      <div class="metric-card">
+        <div class="metric-card-title">Today's Training</div>
+        ${latestTraining ? `
+          <div class="metric-card-value">${latestTraining.type}</div>
+          <div class="metric-card-time">${latestTraining.duration} min • RPE ${latestTraining.rpe}</div>
+        ` : `
+          <div class="metric-card-value no-data">No Training</div>
+          <div class="metric-card-time">Log your first session</div>
+        `}
+      </div>
+    `;
+
+    // Shooting card
+    const latestShooting = APP_STATE.logs.shooting.find(log => log.date === today);
+    metricsGrid.innerHTML += `
+      <div class="metric-card">
+        <div class="metric-card-title">Today's Shooting</div>
+        ${latestShooting ? `
+          <div class="metric-card-value">${latestShooting.percentage}%</div>
+          <div class="metric-card-time">${latestShooting.makes}/${latestShooting.attempts} ${latestShooting.shotType}</div>
+        ` : `
+          <div class="metric-card-value no-data">No Shots</div>
+          <div class="metric-card-time">Start tracking today</div>
+        `}
+      </div>
+    `;
+
+    // Sleep card
+    const latestSleep = APP_STATE.logs.sleep.find(log => log.date === today);
+    metricsGrid.innerHTML += `
+      <div class="metric-card">
+        <div class="metric-card-title">Last Night's Sleep</div>
+        ${latestSleep ? `
+          <div class="metric-card-value">${latestSleep.hours}h</div>
+          <div class="metric-card-time">Quality: ${latestSleep.quality}/5</div>
+        ` : `
+          <div class="metric-card-value no-data">No Entry</div>
+          <div class="metric-card-time">Log your sleep</div>
+        `}
+      </div>
+    `;
+
+    // Nutrition card
+    const latestNutrition = APP_STATE.logs.nutrition.find(log => log.date === today);
+    metricsGrid.innerHTML += `
+      <div class="metric-card">
+        <div class="metric-card-title">Today's Nutrition</div>
+        ${latestNutrition ? `
+          <div class="metric-card-value">${latestNutrition.protein}g</div>
+          <div class="metric-card-time">${latestNutrition.hydration} oz water</div>
+        ` : `
+          <div class="metric-card-value no-data">No Entry</div>
+          <div class="metric-card-time">Log what you ate</div>
+        `}
+      </div>
+    `;
+  }
+
+  function renderWeeklySummary() {
+    const today = new Date();
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay());
+
+    const trainingCount = APP_STATE.logs.training.filter(log => {
+      const logDate = new Date(log.date);
+      return logDate >= weekStart && logDate <= today;
+    }).length;
+
+    const avgSleep = APP_STATE.logs.sleep
+      .filter(log => {
+        const logDate = new Date(log.date);
+        return logDate >= weekStart && logDate <= today;
+      })
+      .reduce((sum, log) => sum + log.hours, 0) / 7;
+
+    const totalHydration = APP_STATE.logs.nutrition
+      .filter(log => {
+        const logDate = new Date(log.date);
+        return logDate >= weekStart && logDate <= today;
+      })
+      .reduce((sum, log) => sum + log.hydration, 0);
+
+    const daysWithLogs = new Set();
+    [...APP_STATE.logs.training, ...APP_STATE.logs.shooting, ...APP_STATE.logs.sleep, ...APP_STATE.logs.nutrition, ...APP_STATE.logs.recovery].forEach(log => {
+      const logDate = new Date(log.date);
+      if (logDate >= weekStart && logDate <= today) {
+        daysWithLogs.add(log.date);
+      }
+    });
+
+    const streakPercentage = (daysWithLogs.size / 7) * 100;
+
+    document.getElementById('summary-text').textContent =
+      `This Week: ${trainingCount} training sessions, ${avgSleep.toFixed(1)} avg sleep, ${totalHydration} oz hydration`;
+    document.getElementById('streak-fill').style.width = `${streakPercentage}%`;
+  }
+
+  function renderLogsList() {
+    // Training logs
+    const trainingList = document.getElementById('training-logs-list');
+    if (APP_STATE.logs.training.length === 0) {
+      trainingList.innerHTML = '<p style="color: var(--gray); font-size: 13px;">No training sessions logged yet.</p>';
+    } else {
+      trainingList.innerHTML = APP_STATE.logs.training.map((log, i) => `
+        <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; margin-bottom: 4px;">${log.type}</div>
+            <div style="font-size: 12px; color: var(--gray);">${log.date} • ${log.duration} min • RPE ${log.rpe}</div>
+            ${log.notes ? `<div style="font-size: 12px; color: var(--gray2); margin-top: 4px;">"${log.notes}"</div>` : ''}
+          </div>
+          <button class="btn btn-secondary btn-small" onclick="deleteLog('training', ${i})">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    // Shooting logs
+    const shootingList = document.getElementById('shooting-logs-list');
+    if (APP_STATE.logs.shooting.length === 0) {
+      shootingList.innerHTML = '<p style="color: var(--gray); font-size: 13px;">No shooting sessions logged yet.</p>';
+    } else {
+      shootingList.innerHTML = APP_STATE.logs.shooting.map((log, i) => `
+        <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; margin-bottom: 4px;">${log.shotType}</div>
+            <div style="font-size: 12px; color: var(--gray);">${log.date} • ${log.percentage}% (${log.makes}/${log.attempts})${log.location ? ` • ${log.location}` : ''}</div>
+          </div>
+          <button class="btn btn-secondary btn-small" onclick="deleteLog('shooting', ${i})">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    // Nutrition logs
+    const nutritionList = document.getElementById('nutrition-logs-list');
+    if (APP_STATE.logs.nutrition.length === 0) {
+      nutritionList.innerHTML = '<p style="color: var(--gray); font-size: 13px;">No nutrition entries logged yet.</p>';
+    } else {
+      nutritionList.innerHTML = APP_STATE.logs.nutrition.map((log, i) => `
+        <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; margin-bottom: 4px;">${log.mealType}</div>
+            <div style="font-size: 12px; color: var(--gray);">${log.date} • ${log.protein}g protein • ${log.hydration} oz water</div>
+            ${log.notes ? `<div style="font-size: 12px; color: var(--gray2); margin-top: 4px;">"${log.notes}"</div>` : ''}
+          </div>
+          <button class="btn btn-secondary btn-small" onclick="deleteLog('nutrition', ${i})">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    // Sleep logs
+    const sleepList = document.getElementById('sleep-logs-list');
+    if (APP_STATE.logs.sleep.length === 0) {
+      sleepList.innerHTML = '<p style="color: var(--gray); font-size: 13px;">No sleep entries logged yet.</p>';
+    } else {
+      sleepList.innerHTML = APP_STATE.logs.sleep.map((log, i) => `
+        <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; margin-bottom: 4px;">${log.hours} hours</div>
+            <div style="font-size: 12px; color: var(--gray);">${log.date} • Quality ${log.quality}/5</div>
+            ${log.notes ? `<div style="font-size: 12px; color: var(--gray2); margin-top: 4px;">"${log.notes}"</div>` : ''}
+          </div>
+          <button class="btn btn-secondary btn-small" onclick="deleteLog('sleep', ${i})">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    // Recovery logs
+    const recoveryList = document.getElementById('recovery-logs-list');
+    if (APP_STATE.logs.recovery.length === 0) {
+      recoveryList.innerHTML = '<p style="color: var(--gray); font-size: 13px;">No recovery sessions logged yet.</p>';
+    } else {
+      recoveryList.innerHTML = APP_STATE.logs.recovery.map((log, i) => `
+        <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; margin-bottom: 4px;">${log.type}</div>
+            <div style="font-size: 12px; color: var(--gray);">${log.date} • ${log.duration} min • Intensity ${log.intensity}/5</div>
+            ${log.notes ? `<div style="font-size: 12px; color: var(--gray2); margin-top: 4px;">"${log.notes}"</div>` : ''}
+          </div>
+          <button class="btn btn-secondary btn-small" onclick="deleteLog('recovery', ${i})">Delete</button>
+        </div>
+      `).join('');
+    }
+  }
+
+  function deleteLog(type, index) {
+    if (confirm('Delete this log entry?')) {
+      APP_STATE.logs[type].splice(index, 1);
+      saveToLocalStorage();
+      renderDashboard();
+    }
+  }
+
+  // ===== STORAGE =====
+  function saveToLocalStorage() {
+    localStorage.setItem('athleteiq_player_state', JSON.stringify(APP_STATE));
+  }
+
+  function loadFromLocalStorage() {
+    const saved = localStorage.getItem('athleteiq_player_state');
+    if (saved) {
+      const loaded = JSON.parse(saved);
+      Object.assign(APP_STATE, loaded);
+    } else {
+      // Initialize with demo data
+      initializeDemoData();
+    }
+  }
+
+  function initializeDemoData() {
+    // Add sample logs for demo
+    const daysAgo = (n) => {
+      const d = new Date();
+      d.setDate(d.getDate() - n);
+      return d.toISOString().split('T')[0];
+    };
+
+    APP_STATE.logs.training = [
+      { date: daysAgo(0), type: 'Sport-Specific', duration: 60, rpe: 8, notes: 'Shooting drills and footwork' },
+      { date: daysAgo(1), type: 'Strength', duration: 45, rpe: 7, notes: 'Upper body focus' },
+      { date: daysAgo(2), type: 'Cardio', duration: 30, rpe: 9, notes: 'Sprint intervals' },
+      { date: daysAgo(3), type: 'Skill Work', duration: 45, rpe: 7, notes: '' }
+    ];
+
+    APP_STATE.logs.shooting = [
+      { date: daysAgo(0), shotType: 'Jump Shot', makes: 18, attempts: 25, percentage: 72, location: 'Mid-Range' },
+      { date: daysAgo(1), shotType: '3-Pointer', makes: 8, attempts: 15, percentage: 53, location: '3-Point Line' },
+      { date: daysAgo(2), shotType: 'Layup', makes: 22, attempts: 25, percentage: 88, location: 'Paint' }
+    ];
+
+    APP_STATE.logs.nutrition = [
+      { date: daysAgo(0), mealType: 'Breakfast', hydration: 24, protein: 25, notes: 'Eggs and toast' },
+      { date: daysAgo(0), mealType: 'Lunch', hydration: 20, protein: 35, notes: 'Chicken and rice' },
+      { date: daysAgo(1), mealType: 'Breakfast', hydration: 16, protein: 20, notes: 'Oatmeal and banana' }
+    ];
+
+    APP_STATE.logs.sleep = [
+      { date: daysAgo(0), hours: 8.5, quality: 4, notes: 'Good sleep' },
+      { date: daysAgo(1), hours: 8, quality: 3, notes: 'Woke up once' },
+      { date: daysAgo(2), hours: 9, quality: 5, notes: 'Excellent sleep' }
+    ];
+
+    APP_STATE.logs.recovery = [
+      { date: daysAgo(0), type: 'Stretching', duration: 20, intensity: 3, notes: '' },
+      { date: daysAgo(1), type: 'Foam Rolling', duration: 15, intensity: 4, notes: 'Focused on legs' }
+    ];
+  }
+
+  // ===== START APP =====
+  document.addEventListener('DOMContentLoaded', initApp);
+</script>
+
+</body>
+</html>
