@@ -1089,34 +1089,37 @@
 
   <!-- HOME VIEW -->
   <div id="view-home" class="route-panel pt-14 flex-1">
-    <div class="relative border-b border-gray-800 bg-[#080808] py-24 px-4 text-center">
-      <span class="font-mono text-[11px] text-[#F59E0B] uppercase tracking-widest font-bold block mb-3">Built for Youth Leagues & Teams</span>
-      <h1 class="font-display text-4xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white max-w-4xl mx-auto mb-6">
+    <!-- HERO SECTION: WHITE BACKGROUND -->
+    <div class="relative bg-white py-32 px-4 text-center">
+      <span class="font-mono text-[11px] text-dark uppercase tracking-widest font-bold block mb-3">Built for Youth Leagues & Teams</span>
+      <h1 class="font-display text-4xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] text-dark max-w-4xl mx-auto mb-6">
         Player Stats & Team Schedules,<br>Simplified.
       </h1>
-      <p class="font-body text-gray-300 text-base md:text-lg max-w-2xl mx-auto mb-8 text-balance">
+      <p class="font-body text-gray-600 text-base md:text-lg max-w-2xl mx-auto mb-8 text-balance">
         Track rosters, log game statistics, manage upcoming schedules, and communicate directly with parents—all from one clean mobile dashboard.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <button onclick="routeTo('signup')" class="w-full sm:w-auto bg-[#F59E0B] text-[#080808] font-display text-base tracking-wider uppercase font-black px-8 py-3.5 brutal-clip hover:bg-white transition-all duration-200">
+        <button onclick="routeTo('signup')" class="w-full sm:w-auto bg-dark text-white font-display text-base tracking-wider uppercase font-black px-8 py-3.5 brutal-clip hover:bg-brand hover:text-dark transition-all duration-200">
           Get Started →
         </button>
-        <button onclick="scrollToSection('features-block')" class="w-full sm:w-auto border-2 border-white text-white font-display text-base tracking-wider uppercase font-black px-8 py-3 brutal-clip hover:bg-white hover:text-[#080808] transition-all duration-200">
+        <button onclick="scrollToSection('features-block')" class="w-full sm:w-auto border-2 border-dark text-dark font-display text-base tracking-wider uppercase font-black px-8 py-3 brutal-clip hover:bg-clinical2 transition-all duration-200">
           Explore Features
         </button>
       </div>
     </div>
 
-    <div id="features-block" class="py-20 px-4 max-w-7xl mx-auto bg-[#0f0f0f]">
-      <div class="text-center mb-24">
-        <div class="flex items-center justify-center gap-4 mb-6">
-          <div class="h-px w-12 bg-[#F59E0B]"></div>
-          <span class="font-mono text-xs text-gray-400 font-bold uppercase tracking-wider">The Standard</span>
-          <div class="h-px w-12 bg-[#F59E0B]"></div>
+    <!-- FEATURES SECTION: WHITE BACKGROUND WITH MARKERS -->
+    <div id="features-block" class="bg-white px-4 py-32">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-24">
+          <div class="flex items-center justify-center gap-4 mb-6">
+            <div class="h-px w-12 bg-dark"></div>
+            <span class="font-mono text-xs text-gray-500 font-bold uppercase tracking-wider">Core Platform</span>
+            <div class="h-px w-12 bg-dark"></div>
+          </div>
+          <h2 class="font-display text-6xl font-black text-dark uppercase tracking-tighter">Platform Core Features</h2>
+          <p class="font-body text-lg text-gray-600 mt-4">Everything you need to operate your program effectively</p>
         </div>
-        <h2 class="font-display text-6xl font-black text-white uppercase tracking-tighter">Platform Core Features</h2>
-        <p class="font-body text-lg text-gray-400 mt-4">Everything you need to operate your program effectively</p>
-      </div>
 
       <!-- FEATURE SHOWCASE SECTIONS -->
       <div class="space-y-24">
@@ -1124,11 +1127,11 @@
         <!-- FEATURE 1: SCHEDULES (Text Left / Dashboard Right) -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div class="order-2 md:order-1">
-            <span class="font-mono text-xs text-[#F59E0B] font-bold uppercase tracking-wider">Feature 01</span>
-            <h2 class="font-display text-3xl md:text-4xl font-black text-white uppercase mt-2 mb-4">Schedule everything in real time.</h2>
-            <p class="font-body text-base text-gray-300 leading-relaxed">Publish practices, games, and tournaments instantly. Sync events to parent calendars in one click. No more missed notifications.</p>
+            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 01</span>
+            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Schedule everything in real time.</h2>
+            <p class="font-body text-base text-gray-600 leading-relaxed">Publish practices, games, and tournaments instantly. Sync events to parent calendars in one click. No more missed notifications.</p>
           </div>
-          <div class="order-1 md:order-2 border-2 border-dark p-6 bg-clinical overflow-hidden brutal-clip">
+          <div class="order-1 md:order-2 border-2 border-dark p-6 bg-white overflow-hidden brutal-clip">
             <div class="font-mono text-[10px] text-brand font-bold uppercase mb-4">Schedule Feed</div>
             <div class="space-y-2">
               <div class="border-l-2 border-brand bg-white p-3 text-xs">
@@ -1176,18 +1179,18 @@
             </div>
           </div>
           <div>
-            <span class="font-mono text-xs text-[#F59E0B] font-bold uppercase tracking-wider">Feature 02</span>
-            <h2 class="font-display text-3xl md:text-4xl font-black text-white uppercase mt-2 mb-4">Cut through the noise.</h2>
-            <p class="font-body text-base text-gray-300 leading-relaxed">Send urgent updates and payment notifications directly to mobile devices. Skip the cluttered email inbox. Guaranteed delivery in seconds.</p>
+            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 02</span>
+            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Cut through the noise.</h2>
+            <p class="font-body text-base text-gray-600 leading-relaxed">Send urgent updates and payment notifications directly to mobile devices. Skip the cluttered email inbox. Guaranteed delivery in seconds.</p>
           </div>
         </div>
 
         <!-- FEATURE 3: ROSTER (Text Left / Dashboard Right) -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div class="order-2 md:order-1">
-            <span class="font-mono text-xs text-[#F59E0B] font-bold uppercase tracking-wider">Feature 03</span>
-            <h2 class="font-display text-3xl md:text-4xl font-black text-white uppercase mt-2 mb-4">Your program, fully organized.</h2>
-            <p class="font-body text-base text-gray-300 leading-relaxed">Manage player info, positions, and contact details in one central directory. Edit profiles, track stats, and manage team assignments instantly.</p>
+            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 03</span>
+            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Your program, fully organized.</h2>
+            <p class="font-body text-base text-gray-600 leading-relaxed">Manage player info, positions, and contact details in one central directory. Edit profiles, track stats, and manage team assignments instantly.</p>
           </div>
           <div class="order-1 md:order-2 border-2 border-dark p-6 bg-white overflow-hidden brutal-clip">
             <div class="font-mono text-[10px] text-brand font-bold uppercase mb-4">Roster Directory</div>
@@ -1242,25 +1245,27 @@
             </div>
           </div>
           <div>
-            <span class="font-mono text-xs text-[#F59E0B] font-bold uppercase tracking-wider">Feature 04</span>
-            <h2 class="font-display text-3xl md:text-4xl font-black text-white uppercase mt-2 mb-4">Billing made invisible.</h2>
-            <p class="font-body text-base text-gray-300 leading-relaxed">Automate subscriptions and manage custom billing adjustments without the headache. Track outstanding balances and payment status in real-time.</p>
+            <span class="font-mono text-xs text-brand font-bold uppercase tracking-wider">Feature 04</span>
+            <h2 class="font-display text-3xl md:text-4xl font-black text-dark uppercase mt-2 mb-4">Billing made invisible.</h2>
+            <p class="font-body text-base text-gray-600 leading-relaxed">Automate subscriptions and manage custom billing adjustments without the headache. Track outstanding balances and payment status in real-time.</p>
           </div>
         </div>
 
       </div>
     </div>
 
-    <div id="pricing-block" class="py-20 px-4 max-w-7xl mx-auto bg-[#080808]">
-      <div class="text-center mb-16">
-        <div class="flex items-center justify-center gap-4 mb-6">
-          <div class="h-px w-12 bg-[#F59E0B]"></div>
-          <span class="font-mono text-xs text-gray-400 font-bold uppercase tracking-wider">Plans & Pricing</span>
-          <div class="h-px w-12 bg-[#F59E0B]"></div>
+    <!-- PRICING SECTION: BLACK BACKGROUND (FULL BLEED) -->
+    <div id="pricing-block" class="bg-[#080808] py-32 px-4">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-24">
+          <div class="flex items-center justify-center gap-4 mb-6">
+            <div class="h-px w-12 bg-[#F59E0B]"></div>
+            <span class="font-mono text-xs text-gray-400 font-bold uppercase tracking-wider">Plans & Pricing</span>
+            <div class="h-px w-12 bg-[#F59E0B]"></div>
+          </div>
+          <h2 class="font-display text-6xl font-black text-white uppercase tracking-tighter">Simple League Pricing</h2>
+          <p class="font-body text-lg text-gray-400 mt-4">Choose the right size for your program or club</p>
         </div>
-        <h2 class="font-display text-6xl font-black text-white uppercase tracking-tighter">Simple League Pricing</h2>
-        <p class="font-body text-lg text-gray-400 mt-4">Choose the right size for your program or club</p>
-      </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="border border-gray-700 p-5 flex flex-col justify-between bg-[#0f0f0f]">
@@ -1324,6 +1329,7 @@
           </div>
           <button onclick="changeSubscriptionTier('TIER_3')" class="mt-6 w-full border border-gray-700 py-2 font-mono text-[11px] uppercase font-bold text-white hover:bg-white hover:text-[#080808] transition-colors">[ Select Plan ]</button>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -1610,7 +1616,8 @@
         playerOtpRequested = false;
         document.getElementById('player-otp-field-container').classList.add('hidden');
         document.getElementById('player-auth-submit-btn').innerText = "Send Verification Code";
-        routeTo('player');
+        // Route to standalone player dashboard
+        window.location.href = 'player-dashboard.html';
       }
     }
 
